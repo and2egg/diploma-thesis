@@ -1,0 +1,108 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+% Load in biblatex
+% To use a different bibliography style, just change "numeric" to
+% your preferred style (mla for MLA style, alphabetic for Author-Year
+% style, etc.) There are a lot of options; check the BibLaTeX documentation.
+\usepackage[backend=bibtex8,style=numeric]{biblatex}
+% Select the bibliography file
+\addbibresource{sources.bib}
+
+
+\title{Cost aware management of virtual machines in distributed cloud data centers}
+\author{Andreas Egger \\0626885}
+\date{Technical University of Vienna}
+
+\begin{document}
+\maketitle
+
+
+\section{Problem Statement}
+
+In times of cloud computing where computer resources are expected to be readily available from anywhere \cite{buyya2009cloud} and with an ever growing global network of interconnected devices energy efficiency plays an increasingly important role in delivering and consuming cloud based services. Due to a study in 2007 \cite{gartner2007gartner} the global power consumption of data centers accounts for about 2\% of all $CO_2$ emissions, which is equal to the emission rate in the aviation industry. 
+
+Due to increasing energy prices advancements in cloud computing may be slowed down or hindered. Thus, cloud providers must ensure that delivering their services remains profitable. Lower energy prices increase the competitive ability of cloud providers and bigger investments are possible. At the same time customers may benefit from more affordable cloud services. 
+
+One way to lower the operating expense is to increase energy efficiency in data centers. This can be done by changing the infrastructure, i.e.\ by investing in more energy efficient hardware, or by applying energy aware scheduling algorithms for managing virtual machines. Another way is to build data centers in locations where energy prices are low or the cooling infrastructure is supported by the outside temperature. Energy prices are traded and change hourly within the energy markets, so long term investigations need to be made in order to make qualified statements about the estimated energy price in a specific area.
+
+Since energy prices change dynamically a flexible approach of moving data center resources to more cost-effective locations is needed. This work is based on the scenario of a company running a private cloud with data centers located in different countries. Depending on the current and estimated energy price for a certain region resources may be relocated to another data center located at a more cost-effective region.
+
+The key technology to implement the relocation of data center resources is virtual machine (VM) migration \cite{nelson2009virtual}. All data and services are located on servers and belong to specific virtual machines within a data center. Since a server may host several VMs that operate completely independent from each other, they can be relocated (migrated) to another server without affecting other VMs running on the same server. VM migration can be applied via networks and great geographical distances (geo migrations) by leveraging connections via the internet. It is also possible to do live migrations on a large scale without noticeable service interruption. 
+
+For an optimal distribution of tasks the current load factor of a data center needs to be taken into account. In reality some parameters need to be considered such as the total availability of CPU power, available RAM or disk space. For this work the scenario is simplified to only consider CPU power, which is the only parameter that directly affects energy consumption and thus energy costs as well. In addition, by considering the history of energy prices and resource load within a certain region or data center the most promising date of migration has to be estimated or whether a migration makes sense regarding the current load and configuration. Therefore, forecasting methods in combination with machine learning techniques will be evaluated and applied to the scenario. 
+
+
+
+\section{Expected Results}
+
+The aim of this thesis is to provide insights on how to cost-efficiently manage distributed data centers within the same cloud. For this reason a simulation framework will be established that illustrates the optimal placement of data center resources considering changing energy prices and workload for a given time frame. 
+
+The simulation will be based on a predefined scenario of a private cloud consisting of distributed data centers. The workload and price will be estimated for various time intervals, i.e.\ one day, five days, ten days etc. To be able to make qualified decisions at a given time the effect of migrations at different timestamps is evaluated under currently estimated workloads and energy prices. By applying forecasting methods on workload and energy price history it can be determined if a VM migration may be justified at some point in time or not at all. This should help cloud providers make informed decisions to save energy costs by initiating virtual machine migration between data centers. 
+
+Furthermore the estimated and actual price and workload behavior should be compared to estimate the precision of the applied forecasting methods. Different forecasting methods should be evaluated and compared whereby the most suitable method should be applied to the simulation framework. 
+
+Since current and historical energy prices from within Europe can be obtained from the European energy exchange market (EEX)\footnote{EEX: European energy exchange, http://www.eex.com/}  the simulation framework can make realistic assumptions of when and how to migrate virtual machines in data centers across Europe. Therefore this scenario can be a valuable contribution to current research using real data from Europe’s energy markets. 
+
+The results should show exactly which measures need to be taken to reduce energy costs with respect to time, energy and workload. The framework should provide the ability to adjust these parameters to show the results under various preconditions. For example, by adjusting the time frame the workload and energy price should accommodate those changes. A visual representation should provide both an overview of parameters of various clouds and detailed behavior of workload and price traces. 
+
+
+\section{Methodological Approach}
+
+The first step will be to define the scenario with a private cloud comprising data centers located in different European countries. The geographical location of the data centers should be defined and get connected with each other such that VM migrations may be done interchangeably. 
+
+Then a model should be defined with parameters needed for further operation. For example, the amount of bandwidth between two data centers needs to be set and a method for calculating the cost of VM migration needs to be defined, depending on current energy prices. Furthermore the minimum block size (number of VMs) should be defined that may be migrated in order to compensate for the migration costs.
+
+As a next step test data for work load should be generated (i.e.\ CPU Power load) and distributed to the data centers. This should reflect real operation and support the testing framework. Actual and historical energy price data is available at the EEX website which is valid for certain countries, respectively. 
+
+Different forecasting methods should be evaluated and compared to find the most accurate one regarding this scenario. The accuracy should be evaluated for various time ranges, i.e.\ one day up to a few months. The models should first be trained with generated test data consisting of different mathematical functions to estimate trends and show the validity of the models. The models should then be applied to the workload and energy price data depending on the chosen time interval. 
+
+The simulation framework should be built as a web application, having a visual representation of the interconnected clouds with the option to have a detailed look at a cloud’s workload and energy price behavior in that region. The time interval can be adjusted dynamically to get insights into the data flow at any time.
+
+Applications with predefined workload (high performance or web applications) may be started and stopped at any data center, possibly creating the need for migration. In addition certain constraints may be defined to prevent disparate workload distributions and data center overload. A time frame can be chosen for which energy and price estimations are calculated. At any given point in time suggestions are displayed to the user as to how many virtual machines currently need to be migrated in order to meet requirements or to reduce energy costs. The user then should decide which action to take. There should be the possibility of prioritizing energy costs over optimal workload distribution. 
+
+
+\section{State-of-the-art}
+
+Concerning electricity costs a lot of ongoing research is in progress. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In this scenario a network of geographically distributed data centers is built where not only energy costs but also penalties of SLAs are taken into account. For different workloads and scheduling algorithms one can derive an optimal distribution of tasks which can lead to effective cost savings. 
+
+The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between “green” and normal instances, taking into account some loss of availability for a reduced price. 
+
+Time series analysis is an active research topic as it is important to find efficient algorithms that scale on very large amounts of data. A survey on machine learning models in time series forecasting is presented in \cite{ahmed2010empirical}, where the suitability of the models concerning forecasting is evaluated. Notably, some models did considerably better than others, therefore these models are good candidates for applications in time series forecasting. 
+
+In \cite{lin2011pattern} a comprehensive benchmark on multivariate time series is described using similarity and distance measurement functions and pattern recognition techniques. In this work unsupervised / semi-supervised machine learning methods are investigated and a new similarity measure is introduced which exhibits a very high hit rate. 
+
+There are different proposed approaches related to virtual machine migration in distributed cloud environments \cite{celesti2010improving, malet2010resource}. In \cite{celesti2010improving} the so-called Composed Image Cloning (CIC) methodology designed for migration of VMs across federated clouds is introduced. This work aims to reduce the needed bandwidth and migration time by setting up a new virtual machine in the destination cloud and transferring only user data instead of relocating the whole VM disc image. 
+
+In another work \cite{malet2010resource} the placement of applications is dynamically adjusted across distributed data centers according to the location of the currently highest request rate. Agarwal et al.\ \cite{agarwal2010volley} provide a framework to minimize inter-data center traffic and user perceived latency by analyzing log files and thus determine the best placement and migration strategy. 
+
+
+\section{Relation to the Study of Software Engineering}
+
+This work aims to provide a contribution to cloud based scheduling applications focusing on reducing the overall energy expenses of interconnected data centers. Due to the growing popularity of cloud and internet based services these topics have found their way into the curriculum of ``Software Engineering \& Internet Computing'' \cite{curriculum2013curriculum}. 
+
+The following constitutes a list of the most relevant courses related to this topic:
+
+
+\begin{itemize}
+
+\item{184.269 VU Advanced Internet Computing}
+\item{184.260 VU Distributed Systems Technologies}
+\item{184.738 VU Computer Networks}
+\item{184.153 VU Distributed Systems Engineering}
+\item{184.271 VU Large-scale Distributed Computing}
+\item{183.286 VU Mobile Network Services and Applications}
+\item{184.706 VO Network Engineering}
+\item{184.707 UE Network Engineering}
+\item{184.194 SE Seminar in Distributed Systems}
+\item{184.163 VU Service Level Agreements }
+
+\end{itemize}
+
+\printbibliography
+\end{document}

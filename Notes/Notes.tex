@@ -1,0 +1,179 @@
+%% Based on a TeXnicCenter-Template, which was
+%% created by Christoph Börensen
+%% and slightly modified by Tino Weinkauf.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,12pt]{scrartcl} %This is a special class provided by the KOMA script, which does a lot of adjustments to adapt the standard LaTeX classes to european habits, change to [a4paper,12pt,twoside] for doublesided layout
+
+
+%########################### Preferences #################################
+
+
+% ********* Font definiton ************
+\usepackage{t1enc} % as usual
+\usepackage[latin1]{inputenc} % as usual
+\usepackage{times}		
+%\usepackage{mathptmx}  	%mathematical fonts for use with times, I encountered some problems using this package togather with pdftex, which I was not able to resolve
+
+% ********* Graphics definition *******
+\usepackage[pdftex]{graphicx} % required to import graphic files
+\usepackage{color} %allows to mark some entries in the tables with color
+\usepackage{eso-pic} % these two are required to add the little picture on top of every page
+\usepackage{everyshi} % these two are required to add the little picture on top of every page
+\renewcommand{\floatpagefraction}{0.7} %default:0.5 allows two big pictures on one page
+
+%********** Enybeling Hyperlinks *******
+\usepackage[pdfborder=000,pdftex=true]{hyperref}% this enables jumping from a reference and table of content in the pdf file to its target
+
+% ********* Table layout **************
+\usepackage{booktabs}	  	%design of table, has an excellent documentation
+%\usepackage{lscape}			%use this if you want to rotate the table together with the lines around the table
+
+% ********* Caption Layout ************
+\usepackage{ccaption} % allows special formating of the captions
+\captionnamefont{\bf\footnotesize\sffamily} % defines the font of the caption name (e.g. Figure: or Table:)
+\captiontitlefont{\footnotesize\sffamily} % defines the font of the caption text (same as above, but not bold)
+\setlength{\abovecaptionskip}{0mm} %lowers the distace of captions to the figure
+
+
+% ********* Header and Footer **********
+% This is something to play with forever. I use here the advanced settings of the KOMA script
+
+\usepackage{scrpage2} %header and footer using the options for the KOMA script
+\renewcommand{\headfont}{\footnotesize\sffamily} % font for the header
+\renewcommand{\pnumfont}{\footnotesize\sffamily} % font for the pagenumbers
+
+%the following lines define the pagestyle for the main document
+\defpagestyle{cb}{%
+(\textwidth,0pt)% sets the border line above the header
+{\pagemark\hfill\headmark\hfill}% doublesided, left page
+{\hfill\headmark\hfill\pagemark}% doublesided, right page
+{\hfill\headmark\hfill\pagemark}%  onesided
+(\textwidth,1pt)}% sets the border line below the header
+%
+{(\textwidth,1pt)% sets the border line above the footer
+{{\it Technical University of Vienna}\hfill Andreas Egger}% doublesided, left page
+{Andreas Egger\hfill{\it Technical University of Vienna}}% doublesided, right page
+{Andreas Egger\hfill{\it Technical University of Vienna}} % one sided printing
+(\textwidth,0pt)% sets the border line below the footer
+}
+
+%this defines the page style for the first pages: all empty
+\renewpagestyle{plain}%
+	{(\textwidth,0pt)%
+		{\hfill}{\hfill}{\hfill}%
+	(\textwidth,0pt)}%
+	{(\textwidth,0pt)%	
+		{\hfill}{\hfill}{\hfill}%
+	(\textwidth,0pt)}
+
+%********** Footnotes **********
+\renewcommand{\footnoterule}{\rule{5cm}{0.2mm} \vspace{0.3cm}} %increases the distance of footnotes from the text
+\deffootnote[1em]{1em}{1em}{\textsuperscript{\normalfont\thefootnotemark}} %some moe formattion on footnotes
+
+%################ End Preferences, Begin Document #####################
+
+\pagestyle{plain} % on headers or footers on the first page
+
+\begin{document}
+
+\begin{center}
+
+\begin{figure}[th]
+    \centering
+		%\includegraphics[width=10cm]{logo.jpg}
+	\label{fig:logo}
+\end{figure}
+
+\vspace{2cm}
+
+% There might be better solutions for the title page, giving all distances and sizes manually was simply the easiest solution
+
+{\Huge\bf\sf Notes }
+
+\vspace{.5cm}
+
+{\Huge\bf\sf for }
+
+\vspace{.5cm}
+
+{\Huge\bf\sf Diploma Thesis}
+
+\vspace{2cm}
+
+{\Large\bf\sf Andreas Egger}%as this is an english text I didn't load the german package, this would ease the use of special characters
+
+\vspace{.5cm}
+
+{\Large\bf\sf 0626885}
+
+\vspace{2cm}
+
+{\Large\bf\sf \today} %adds the current date
+
+\vspace{\fill}
+
+egger.andreas.1@gmail.com
+
+\end{center}
+\newpage
+
+%%The following loads the picture on top of every page, the numbers in \put() define the position on the page:
+%\AddToShipoutPicture{\setlength\unitlength{0.1mm}\put(604,2522){\includegraphics[width=1.5cm]{logo.jpg}}}
+
+\pagestyle{cb} % now we want to have headers and footers
+
+\tableofcontents
+
+\newpage
+
+\section{Expose}
+
+\subsection{VM Migrations and Forecasting}
+
+{\hfill\today}
+\vspace{0.4cm}
+
+Forecasting can only be made for individual workloads on different servers / data centers. 
+But are forecasts of 5 to 10 days even possible when migration of virtual machines is included? 
+Suppose a job runs on multiple VMs, and it is migrated in some point in time. Considering all servers and data centers
+it is not possible to predict each migration, as it soon gets too complex. 
+So the purpose of forecasts can only be a vague estimate of what might be advantageous in the future? 
+
+
+\emph{BUT} of course in terms of energy prices forecasts perfectly make sense in that you can predict the price for
+certain areas and data centers. Then you can check if the prices will significantly differ for a longer period of time 
+in the future. It makes sense also for short term considerations. 
+
+For example, there is a situation where a migration seems beneficial in that moment, but looking ahead one can see that
+migrating wouldn't be worth it and it is better to do nothing. 
+
+
+\subsection{Workloads and test data}
+
+Open Questions:
+
+\begin{itemize}
+
+\item How should workloads be generated?
+	\subitem -> workloads are CPU traces of programs, probably distributed across several CPUs (CPU power load)
+\item Which programs should be used? 
+	\subitem Matlab
+	\subitem R
+	\subitem Mathcad
+	\subitem \ldots
+\item Which kind of distribution should they exhibit (time series)?
+\item Is there a way to get workload data / time series data from real data centers?
+
+\end{itemize}
+
+\subsection{Workload traces}
+
+A workload trace is common for all data centers, since they are administrated from one central point. 
+From there the workload is distributed across the data centers, already taking into account electricity cost. 
+When a new request arrives, it is checked whether the application can be served at any of the data centers. 
+If not, the start is delayed until resources are available. Otherwise it is assigned to the presumably cheapest
+data center. If later the prices change load will be migrated from more expensive to cheaper data centers. 
+
+
+\end{document}
