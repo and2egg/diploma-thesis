@@ -20,6 +20,12 @@
 \usepackage{color} %allows to mark some entries in the tables with color
 \usepackage{eso-pic} % these two are required to add the little picture on top of every page
 \usepackage{everyshi} % these two are required to add the little picture on top of every page
+
+% ********* Defining citation styles *********
+\usepackage[backend=bibtex8,style=numeric]{biblatex}
+% Select the bibliography file
+\addbibresource{sources.bib}
+
 \renewcommand{\floatpagefraction}{0.7} %default:0.5 allows two big pictures on one page
 
 %********** Enybeling Hyperlinks *******
@@ -79,13 +85,7 @@
 
 \begin{center}
 
-\begin{figure}[th]
-    \centering
-		%\includegraphics[width=10cm]{logo.jpg}
-	\label{fig:logo}
-\end{figure}
-
-\vspace{2cm}
+\vspace{4cm}
 
 % There might be better solutions for the title page, giving all distances and sizes manually was simply the easiest solution
 
@@ -188,6 +188,77 @@ SWISSIX: Swiss Index: Switzerland
 
 FRENCH FINANCIAL POWER FUTURES: France
 
+
+\subsection{Forecasting}
+
+A good explanation of forecasting can be found at \cite{weka2011weka}
+This is especially valid for time series forecasting but can be applied to other methods as well. 
+
+\subsubsection{Methods}
+
+\begin{itemize}
+
+\item Neural Networks
+
+Finding some specifics on NN models ..
+
+\item Regression Trees
+
+Model (Regression) trees are decision trees with linear regression functions at the leaves. 
+
+\end{itemize}
+
+\subsection{Parameters}
+
+\begin{itemize}
+\item Migration Overhead / Costs
+
+\item On/Off Peak Prices (e.g. UK, when no hourly prices are available)
+
+\item different Time Zones
+
+		Boston, Portland (-5)
+		UK (UTC)
+		Germany (+1)
+		Finland(+2)
+		
+\item Considering cooling? 
+
+		Fan/Chillers, turned off/on, which speed etc. 
+		depending on outside temperature
+		
+\item Which kind of workload?
+
+		applications running for short/long amount of time? 
+		
+\item Power consumption behavior
+
+		Idle Servers
+		
+		Partially utilized Servers (max. 1 -> negligible)
+		EXCEPT having jobs with different CPU-core demand
+		
+		Fully utilized Servers
+		
+\item What kind of forecasting? 
+
+		Short term (day ahead, few days)
+		
+		Mid term (half a month up to a few months)
+		
+		Long term (half a year up to a few years)
+
+\item How many VMs moved in one step? 
+
+		May be defined, such that the migration pays concerning the running jobs. 
+
+\item Considering different kinds of energy sources (renewables, Atom, fossils etc.)?
+
+		Possible consideration in scheduling algorithm. Choosing priorities for either price or green IT. 
+
+\end{itemize}
+
+\printbibliography
 
 
 \end{document}
