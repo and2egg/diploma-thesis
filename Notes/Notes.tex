@@ -157,13 +157,15 @@ Open Questions:
 
 \item How should workloads be generated?
 	\subitem -> workloads are CPU traces of programs, probably distributed across several CPUs (CPU power load)
+	\subitem -> define applications to run with different workloads
+	
 \item Which programs should be used? 
-	\subitem Matlab
+	\subitem \underline{Matlab}
 	\subitem R
 	\subitem Mathcad
 	\subitem \ldots
 \item Which kind of distribution should they exhibit (time series)?
-\item Is there a way to get workload data / time series data from real data centers?
+\item Is there a way to get workload traces / time series data from real data centers?
 
 \end{itemize}
 
@@ -180,6 +182,14 @@ data center. If later the prices change load will be migrated from more expensiv
 
 \subsection{Data Center Locations}
 
+The framework will comprise seven data centers located in different countries and assigned to four different energy markets, namely the 
+European energy exchange (EEX)\footnote{EEX: European energy exchange, http://www.eex.com/}, Nord Pool Spot\footnote{Nord Pool Spot, http://www.nordpoolspot.com/}, APX Power Spot Exchange\footnote{APX Power Spot Exchange, http://www.apxgroup.com/} and ISO New England\footnote{ISO New England, http://www.iso-ne.com/}. 
+
+
+\subsection{Power markets}
+
+\subsubsection{EEX}
+
 PHELIX: Physical Electricity Index: Germany, Austria
 
 ELIX: Electricity Index: ?
@@ -191,10 +201,10 @@ FRENCH FINANCIAL POWER FUTURES: France
 
 \subsection{Forecasting}
 
-A good explanation of forecasting can be found at \cite{weka2011weka}
+A good explanation of forecasting can be found at \cite{weka2011weka} (from the weka forecasting tool). 
 This is especially valid for time series forecasting but can be applied to other methods as well. 
 
-\subsubsection{Methods}
+\subsubsection{Models}
 
 \begin{itemize}
 
@@ -205,6 +215,8 @@ Finding some specifics on NN models ..
 \item Regression Trees
 
 Model (Regression) trees are decision trees with linear regression functions at the leaves. 
+
+\item ...
 
 \end{itemize}
 
@@ -257,6 +269,29 @@ Model (Regression) trees are decision trees with linear regression functions at 
 		Possible consideration in scheduling algorithm. Choosing priorities for either price or green IT. 
 
 \end{itemize}
+
+
+\section{Cooling}
+
+Questions
+
+\begin{itemize}
+
+\item Should the costs of the cooling infrastructure be considered when running the simulation, or for the thesis at all? 
+
+\item which cooling infrastructure should be used for the data centers? 
+
+	-> get some estimations or examples from real world data centers
+	
+	-> build a model
+
+\item How to define when chillers need to be turned on? At which temperature?
+
+\item Differ chillers and fans? Time to switch on / off? Costs / Energy? 
+
+\end{itemize}
+
+
 
 \printbibliography
 
