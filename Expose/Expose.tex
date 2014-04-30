@@ -15,7 +15,7 @@
 \addbibresource{sources.bib}
 
 
-\title{Cost aware management of virtual machines in distributed cloud data centers}
+\title{Energy price aware management of virtual machines in distributed cloud data centers}
 \author{Andreas Egger \\0626885}
 \date{Technical University of Vienna}
 
@@ -31,7 +31,7 @@ Due to increasing energy prices advancements in cloud computing may be slowed do
 
 One way to lower the operating expense is to increase energy efficiency in data centers. This can be done by changing the infrastructure, i.e.\ by investing in more energy efficient hardware, or by applying energy aware scheduling algorithms for managing virtual machines. Another way is to build data centers in locations where energy prices are low or the cooling infrastructure is supported by the outside temperature. Energy prices are traded and change hourly within the energy markets, so long term investigations need to be made in order to make qualified statements about the estimated energy price in a specific area.
 
-Since energy prices change dynamically a flexible approach of moving data center resources to more cost-effective locations is needed. This work is based on the scenario of a company running a private cloud with data centers located in different countries. Depending on the current and estimated energy price for a certain region resources may be relocated to another data center located at a more cost-effective region.
+Since energy prices change dynamically a flexible approach of moving data center resources to more cost-effective locations is needed. This work is based on the scenario of a company running a private cloud with data centers located in different countries. Depending on the current and estimated energy price for a certain region resources may be relocated to other data centers located at more cost-effective regions.
 
 The key technology to implement the relocation of data center resources is virtual machine (VM) migration \cite{nelson2009virtual}. All data and services are located on servers and belong to specific virtual machines within a data center. Since a server may host several VMs that operate completely independent from each other, they can be relocated (migrated) to another server without affecting other VMs running on the same server. VM migration can be applied via networks and great geographical distances (geo migrations) by leveraging connections via the internet. It is also possible to do live migrations on a large scale without noticeable service interruption. 
 

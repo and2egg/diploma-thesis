@@ -127,7 +127,7 @@ egger.andreas.1@gmail.com
 
 \newpage
 
-\section{Expose}
+\section{General Concerns}
 
 \subsection{VM Migrations and Forecasting}
 
@@ -136,7 +136,7 @@ egger.andreas.1@gmail.com
 
 Forecasting can only be made for individual workloads on different servers / data centers. 
 But are forecasts of 5 to 10 days even possible when migration of virtual machines is included? 
-Suppose a job runs on multiple VMs, and it is migrated in some point in time. Considering all servers and data centers
+Suppose a job runs on multiple VMs (possible ???), and it is migrated in some point in time. Considering all servers and data centers
 it is not possible to predict each migration, as it soon gets too complex. 
 So the purpose of forecasts can only be a vague estimate of what might be advantageous in the future? 
 
@@ -147,6 +147,43 @@ in the future. It makes sense also for short term considerations.
 
 For example, there is a situation where a migration seems beneficial in that moment, but looking ahead one can see that
 migrating wouldn't be worth it and it is better to do nothing. 
+
+
+
+\subsection{Server Architecture}
+
+\begin{itemize}
+	
+	\item Can a server host more than one virtual machine?
+	
+	\item Can several jobs run on one server? (Depends on CPU requirements)
+	
+	\item Should different jobs run on different VMs on the same server? (I think so). 
+	
+	\item Share CPU power of two (or more) virtual machines on different hosts?
+
+\end{itemize}
+
+
+\subsection{Job Definition}
+
+\begin{itemize}
+
+	\item May a job run on multiple VMs (if it needs more CPU power than one machine can provide.. unusual)? 
+	
+	\item Job Requirements: 
+	
+		\subitem CPU power (frequency)
+		
+		\subitem CPU cores
+		
+		\subitem Expected Runtime
+		
+		\subitem Expected Costs (Derived)
+		
+		\subitem Meeting SLA (e.g. maximum price level)
+
+\end{itemize}
 
 
 \subsection{Workloads and test data}
