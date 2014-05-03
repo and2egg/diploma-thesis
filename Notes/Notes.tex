@@ -134,20 +134,15 @@ egger.andreas.1@gmail.com
 {\hfill\today}
 \vspace{0.4cm}
 
-Forecasting can only be made for individual workloads on different servers / data centers. 
-But are forecasts of 5 to 10 days even possible when migration of virtual machines is included? 
-Suppose a job runs on multiple VMs (possible ???), and it is migrated in some point in time. Considering all servers and data centers
-it is not possible to predict each migration, as it soon gets too complex. 
-So the purpose of forecasts can only be a vague estimate of what might be advantageous in the future? 
+Forecasts can be made on the workload stream that is common to all data centers within the cloud. 
+This will be a collection of CPU, RAM and disk data of the scheduled jobs to be run. 
+The stream will be generated and can also be forecasted, but how to use?
 
+With energy price forecasts you can check if the prices will significantly differ for a longer period of time 
+in the future (long running jobs?). It makes sense especially for short term considerations (short running jobs). 
 
-\emph{BUT} of course in terms of energy prices forecasts perfectly make sense in that you can predict the price for
-certain areas and data centers. Then you can check if the prices will significantly differ for a longer period of time 
-in the future. It makes sense also for short term considerations. 
-
-For example, there is a situation where a migration seems beneficial in that moment, but looking ahead one can see that
-migrating wouldn't be worth it and it is better to do nothing. 
-
+VM Migration (between data centers) only makes sense if the costs of migration is less than the benefit (lower energy price). 
+Also it doesn't make sense if jobs are finishing soon (only consider longer running jobs). 
 
 
 \subsection{Server Architecture}
@@ -156,7 +151,7 @@ migrating wouldn't be worth it and it is better to do nothing.
 	
 	\item Can a server host more than one virtual machine? Yes, see \cite{nelson2009virtual}.
 	
-	\item Can several jobs run on one server? (Depends on CPU requirements)
+	\item Can several jobs run on one server? (Depends on CPU and space requirements)
 	
 	\item Should different jobs run on different VMs on the same server? (I think so). 
 	
@@ -168,8 +163,6 @@ migrating wouldn't be worth it and it is better to do nothing.
 \subsection{Job Definition}
 
 \begin{itemize}
-
-	\item May a job run on multiple VMs (if it needs more CPU power than one machine can provide.. unusual)? 
 	
 	\item Job Requirements: 
 	
