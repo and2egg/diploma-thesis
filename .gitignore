@@ -3,6 +3,8 @@
 *.blg
 *.log
 *.pdf
+!**/figures/*.pdf
+!**/figures/**/*.pdf
 *run.xml
 *blx.bib
 *.sc
