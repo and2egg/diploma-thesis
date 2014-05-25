@@ -15,7 +15,7 @@
 \addbibresource{sources.bib}
 
 
-\title{Cost aware management of virtual machines in distributed cloud data centers}
+\title{Cost aware management of virtual machines in distributed data centers}
 \author{Andreas Egger \\0626885}
 \date{Technical University of Vienna}
 
@@ -33,14 +33,14 @@ As stated in \cite{qureshi2009cutting} internet scale systems consume a high amo
 The goal of this thesis is to reduce energy costs of interconnected data centers while maintaining defined quality of service levels. The proposed approach is to optimize load migration between data centers considering time and location based energy prices. The scenario includes data centers located in different countries where different energy markets and prices are applicable. Thus constellations may arise where it is profitable to migrate a certain amount of resources from a data center facing high energy prices to a data center where energy prices are low at the current point in time. 
 
 Energy prices are traded and change hourly within the energy markets, so long term investigations need to be made in order to make qualified statements about the estimated energy price in a specific area.
-An important part of the investigation is energy price forecasting, where energy prices for different energy markets are estimated for various time ranges, i.e.\ one day (day-ahead) up to several days. Based upon the results it is decided how many resources may be migrated for how many days in order to obtain the maximum possible energy cost reduction. However, there is always a gap between estimated and real energy prices which is represented by a forecasting error measure (i.e.\ MAPE). The challenge is that in general the error increases non-linearly with the length of the estimation window which has to be considered when investigating the results. 
+An important part of the investigation is energy price forecasting, where energy prices for different energy markets are estimated for various time ranges, i.e.~one day up to several days. Based upon the results it is decided how many resources may be migrated for how many days in order to obtain the maximum possible energy cost reduction. However, there is a gap between estimated and real energy prices which is represented by a forecasting error measure (i.e.~MAPE). The challenge is that in general the error increases with the length of the estimation window which has to be considered when investigating the results. 
 
 
 %One way to lower the operating expense is to increase energy efficiency in data centers. This can be done by changing the infrastructure, i.e.\ by investing in more energy efficient hardware, or by applying energy aware scheduling algorithms for managing virtual machines. Another way is to build data centers in locations where energy prices are low or the cooling infrastructure is supported by the outside temperature. Energy prices are traded and change hourly within the energy markets, so long term investigations need to be made in order to make qualified statements about the estimated energy price in a specific area.
 
 Since energy prices change dynamically a flexible approach of moving data center resources to more cost-effective locations is needed. This work is based on the scenario of a company running a private cloud with data centers distributed across several countries. Depending on the current and estimated energy price for a certain region resources may be relocated to other data centers located at more cost-effective regions.
 
-The key technology to implement the relocation of data center resources is virtual machine (VM) migration \cite{nelson2009virtual}. All data and services are located on servers and belong to specific virtual machines within a data center. Since a server may host several VMs that operate completely independent from each other, they can be relocated (migrated) to other servers without affecting VMs running on the same server. VM migration can be applied via networks and large geographical distances (geo migrations) by leveraging connections via the internet. It is also possible to do live migrations on a large scale without noticeable service interruption. 
+The key technology to implement the relocation of data center resources is virtual machine (VM) migration \cite{nelson2009virtual}. All data and services are located on servers and belong to specific virtual machines within a data center. Since a server may host several VMs that operate completely independent from each other, they can be relocated (migrated) to other servers without affecting VMs running on the same server. VM migration can be applied via networks and large geographical distances (geo migrations) by leveraging connections via the internet. It is also possible to do live migrations on a large scale without noticeable service interruption \cite{celesti2010improving}. 
 
 %Various load policies exist to optimize the load factor and distribution of tasks within data centers \cite{buyya2010energy}. A workload manager has to make sure that there are still servers having enough resources and no SLA is violated on the assignment of a new job. 
 %This work additionally aims to optimize workload distribution among several data centers with respect to changing energy prices. 
@@ -58,7 +58,8 @@ The aim of this thesis is to provide insights on how to cost-efficiently manage 
 
 The simulation will be based on a predefined scenario of a private cloud consisting of data centers located in different countries. The electricity price will be estimated for various time intervals in the future, i.e.\ one day, five days, ten days etc. The predicted energy prices are used to decide if short term or long term migrations would lead to substantial cost savings while taking into account resulting migration overheads. 
 By applying forecasting methods on workload and energy price history it can be determined if a VM migration may be justified in the near future or not at all. 
-This should help cloud providers make informed decisions to save energy costs by letting virtual machine migrations be initiated between data centers at the right time. 
+The results should outline which duration of resource migration result in a maximum of cost savings on average given certain preconditions. 
+%This should help cloud providers make informed decisions to save energy costs by letting virtual machine migrations be initiated between data centers at the right time. 
 
 The framework should be able to outline which energy savings are possible considering various preconditions. 
 These preconditions comprise different load and migration policies where virtual machines may be migrated to other servers within the data center to optimize the distribution of tasks. This allows to use fewer servers to host the VMs and to switch off the remaining idle ones. Thus, the overall energy consumption and energy costs may be reduced. 
