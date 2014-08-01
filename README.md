@@ -1,9 +1,13 @@
-# Diploma Thesis #
+##
 #
-# Cost aware management of virtual machines in distributed cloud data centers #
+## Cost aware management of virtual machines in distributed cloud data centers ##
 #
-# Andreas Egger #
+### Proposed topic for diploma thesis
 #
-# 29.06.2014
+### Technical University of Vienna ###
+### Author: Andreas Egger###
+### MatrNr: 0626885 ###
+#
+### 01.08.2014 ###
 
 
