@@ -208,6 +208,17 @@ If not, the start is delayed until resources are available. Otherwise it is assi
 data center. If later the prices change load will be migrated from more expensive to cheaper data centers. 
 
 
+\subsection{Definition of Terms}
+
+\begin{itemize}
+
+\item PUE (Power Usage Effectiveness)
+
+Developed by The Green Grid, PUE is a data center metric that takes the total power used by a data center and divides it by the amount of power used by the IT hardware housed in the data center. (source: http://tech.ebay.com/about-dashboard)
+
+\end{itemize}
+
+
 \section{Simulation}
 
 \subsection{Data Center Locations}
@@ -233,27 +244,6 @@ SWISSIX: Swiss Index: Switzerland
 
 FRENCH FINANCIAL POWER FUTURES: France
 
-
-\subsection{Forecasting}
-
-A good explanation of forecasting can be found at \cite{weka2011weka} (from the weka forecasting tool). 
-This is especially valid for time series forecasting but can be applied to other methods as well. 
-
-\subsubsection{Models}
-
-\begin{itemize}
-
-\item Neural Networks
-
-Finding some specifics on NN models ..
-
-\item Regression Trees
-
-Model (Regression) trees are decision trees with linear regression functions at the leaves. 
-
-\item ...
-
-\end{itemize}
 
 \subsection{Parameters}
 
@@ -306,37 +296,71 @@ Model (Regression) trees are decision trees with linear regression functions at 
 \end{itemize}
 
 
-\section{Cooling}
 
-Questions
+\section{Methodology}
+
+
+\subsection{Forecasting}
+
+A good explanation of forecasting can be found at \cite{weka2011weka} (from the weka forecasting tool). 
+This is especially valid for time series forecasting but can be applied to other methods as well. 
+
+\subsubsection{Models}
 
 \begin{itemize}
 
-\item Should the costs of the cooling infrastructure be considered when running the simulation, or for the thesis at all? 
+\item Neural Networks
 
-\item which cooling infrastructure should be used for the data centers? 
+Finding some specifics on NN models ..
 
-	-> get some estimations or examples from real world data centers
-	
-	-> build a model
+\item Regression Trees
 
-\item How to define when chillers need to be turned on? At which temperature?
+Model (Regression) trees are decision trees with linear regression functions at the leaves. 
 
-\item Differ chillers and fans? Time to switch on / off? Costs / Energy? 
+\item ...
 
 \end{itemize}
 
 
+\subsection{Dynamic request routing}
 
-\section{Research}
+\begin{itemize}
 
-\subsection{Statista}
+\item kind of load balancing
 
-How should this page be used for research? 
+\item Determines the currently cheapest data center (comparing energy prices in all areas)
 
-Just searching through hoping to find some energy-price related charts? 
+\item combine with forecasting (prices)? 
 
-There are also research papers published (where ???), research in this direction? 
+\item Does load forecasting make sense ? 
+
+\subitem Maybe combine forecasting with current DC load to get an estimated DC load? 
+
+\end{itemize}
+
+\subsection{VM Migration}
+
+\begin{itemize}
+
+\item \textbf{Minimum job duration} for amortization of costs?
+
+\item Same VM / DataCenter Selection Mechanism as with dynamic request routing?
+
+\end{itemize}
+
+\subsubsection{Comparison of approaches}
+
+\begin{itemize}
+
+\item Compare above approaches both with and without forecasting
+
+\item Compare overall electricity consumption / electricity costs
+
+\subitem - Does consumption directly map to costs? 
+\subitem - How to derive the power consumption, just by CPU load? (depends on elasticity)
+\subitem - Should the migration costs be taken into account?
+
+\end{itemize}
 
 
 \printbibliography
