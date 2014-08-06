@@ -216,7 +216,21 @@ data center. If later the prices change load will be migrated from more expensiv
 
 Developed by The Green Grid, PUE is a data center metric that takes the total power used by a data center and divides it by the amount of power used by the IT hardware housed in the data center. (source: http://tech.ebay.com/about-dashboard)
 
+\item Energy Elasticity
+
+degree to which the energy consumed by a cluster depends on the load placed on it. Ideally, clusters would draw no power in the absence of load. In the worst case, there would be no difference between the peak power and the idle power of a cluster. Present state-of-the-art systems fall somewhere in the middle, with idle power being around 60\% \cite{qureshi2009cutting}.
+
 \end{itemize}
+
+
+\section{Goals}
+
+\subsection{What I want to show in my thesis}
+
+First of all, I want to show ways for data center operators to save on their power bill by exploiting VM migrations and the variability of energy prices in wholesale power markets. Given the fact that data centers consume a huge amount of energy (several megawatts) that could power whole cities they could as well be directly integrated into a wholesale energy market. The benefit of this approach would be that the location based variability of energy prices within power markets could be exploited such that resources are placed and migrated to locations that currently exhibit cheaper energy prices. 
+
+Combined with energy price forecasts resources may be scheduled intelligently such that price changes within the near future can be detected and resources are placed with respect to the estimated prices. This approach can be evaluated against an ad-hoc approach where resources are assigned to data centers by only considering current energy prices and workload. 
+
 
 
 \section{Simulation}
