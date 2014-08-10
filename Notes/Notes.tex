@@ -212,13 +212,18 @@ data center. If later the prices change load will be migrated from more expensiv
 
 \begin{itemize}
 
-\item PUE (Power Usage Effectiveness)
+\item Power Usage Effectiveness
 
-Developed by The Green Grid, PUE is a data center metric that takes the total power used by a data center and divides it by the amount of power used by the IT hardware housed in the data center. (source: http://tech.ebay.com/about-dashboard)
+Developed by The Green Grid, Power usage effectiveness (PUE) is a data center metric that measures the amount of power directly used by IT resources such as servers and routers compared to the overall energy consumption of the data center. A PUE value of 2 means that there is as much energy used to power non-IT equipment such as cooling facilities etc. as there is to power IT devices. 
+% takes the total power used by a data center and divides it by the amount of power used by the IT hardware housed in the data center. (source: http://tech.ebay.com/about-dashboard)
 
 \item Energy Elasticity
 
 degree to which the energy consumed by a cluster depends on the load placed on it. Ideally, clusters would draw no power in the absence of load. In the worst case, there would be no difference between the peak power and the idle power of a cluster. Present state-of-the-art systems fall somewhere in the middle, with idle power being around 60\% \cite{qureshi2009cutting}.
+
+\item Colocation providers
+
+A colocation provider denotes a facility manager that provides space and server infrastructures to industrial customers that rent the space and infrastructure to house their customers' applications. 
 
 \end{itemize}
 
@@ -227,9 +232,11 @@ degree to which the energy consumed by a cluster depends on the load placed on i
 
 \subsection{What I want to show in my thesis}
 
-First of all, I want to show ways for data center operators to save on their power bill by exploiting VM migrations and the variability of energy prices in wholesale power markets. Given the fact that data centers consume a huge amount of energy (several megawatts) that could power whole cities they could as well be directly integrated into a wholesale energy market. The benefit of this approach would be that the location based variability of energy prices within power markets could be exploited such that resources are placed and migrated to locations that currently exhibit cheaper energy prices. 
+First of all, I want to show ways for data center operators in charge of geographically distributed and interconnected data centers to save on their power bill by exploiting VM migrations and the variability of energy prices in wholesale power markets. This approach presumes that data center operators are charged directly by wholesale power markets, which is the case already for a few data centers to date. By leveraging the technique of migration of resources to data centers where cheaper energy prices apply at the current point in time significant savings in energy bills are possible. 
 
-Combined with energy price forecasts resources may be scheduled intelligently such that price changes within the near future can be detected and resources are placed with respect to the estimated prices. This approach can be evaluated against an ad-hoc approach where resources are assigned to data centers by only considering current energy prices and workload. 
+By initially placing resources at data centers that currently exhibit cheap energy prices the energy expense can be reduced compared to a non power aware approach. Combined with energy price forecasts resources may be scheduled intelligently such that price changes within the near future can be detected and resources are placed with respect to the estimated prices. This approach may be evaluated against an ad-hoc approach where resources are assigned to data centers by only considering current energy prices and workload. 
+
+Given the fact that data centers consume a huge amount of energy (several megawatts) that could power whole cities it becomes a viable option to integrate them into wholesale energy markets. Arising challenges and opportunities related to integration into energy markets will be discussed in later chapters. 
 
 
 
