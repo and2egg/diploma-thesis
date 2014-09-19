@@ -129,6 +129,14 @@ egger.andreas.1@gmail.com
 
 \section{General Concerns}
 
+\subsection{Naming suggestion}
+
+S1: Cost aware management of resources in distributed cloud data centers
+
+S2: Cost aware resource management in distributed data centers
+
+S3: Cost aware management of virtual machines in distributed cloud data centers
+
 \subsection{VM Migrations and Forecasting}
 
 {\hfill\today}
@@ -239,6 +247,67 @@ By initially placing resources at data centers that currently exhibit cheap ener
 Given the fact that data centers consume a huge amount of energy (several megawatts) that could power whole cities it becomes a viable option to integrate them into wholesale energy markets. Arising challenges and opportunities related to integration into energy markets will be discussed in later chapters. 
 
 
+\section{Forecasting}
+
+\subsection{Definition}
+
+A very general definition of forecasting and its prerequisites is given here \footnote{O-Texts https://www.otexts.org/fpp/1/1}:
+
+\begin{quote}
+The predictability of an event or a quantity depends on several factors including:
+
+\begin{itemize}
+\item how well we understand the factors that contribute to it
+\item how much data are available
+\item whether the forecasts can affect the thing we are trying to forecast
+\end{itemize}
+\end{quote}
+
+
+\subsection{Types of forecasting}
+
+Forecasting can be done in different ways, each having their own drawbacks and benefits. 
+
+Forecasting methods can be classified into two categories: Qualitative and Quantitative forecasting. 
+
+\begin{itemize}
+\item Qualitative forecasting methods assume that there is no or no relevant data that can be used to make forecasts. This is the case for forecasts that aim to predict i.e. the first year's sales of a new product line or the expected profit of a newly created startup company. In both examples there is no data available beforehand and the forecast has to be derived from already known conditions also called predictor variables. 
+
+\item Qantitative forecasting methods are based on numerical historical data, from which forecasts are derived. It is assumed that the data´s pattern over time stays the same or will behave in a similar way in the future. 
+\end{itemize}
+
+Quantitative forecasting methods can again be classified roughly into two categories: Cross-sectional forecasting and Time Series forecasting. 
+
+\begin{itemize}
+\item Cross-sectional forecasts collect data from a single point in time to predict a value for an item not in the dataset. For example, prices of real estates in a specific area and point in time are collected and the price for another real estate is estimated based on predictor variables (i.e., size of properties and number of floors). 
+
+\item Time series forecasts are solely based on historical data from the value to be predicted. No other variables are considered for the calculation, which on the one hand might miss some influential factors from external conditions but on the other hand appears to be more accurate regarding the output of the forecasts. 
+In case of energy price forecasts external variables that change energy price behavior might include bids in auctions of wholesale energy markets, the current oil price or availability of renewable energy sources. However, in time series forecasts these variables are neglected to set the focus on the time series of historical energy prices. 
+\end{itemize}
+
+
+\subsection{Forecast accuracy}
+
+There are different kinds of accuracy measures that can be applied to forecasting methods. \footnote{https://www.otexts.org/fpp/2/5}
+
+\subsubsection{Scale-dependent error measures}
+
+Scale dependent errors are absolute error measures given in the same scale as the dataset that is examined. Thus they are most useful when testing fc methods on the same dataset or on the same scale, respectively. 
+
+\begin{itemize}
+\item Mean absolute error (MAE)
+The absolute error is defined by the value difference between a value of the dataset and its forecasted value. The mean absolute error returns the mean of all absolute errors on the dataset. [insert formula]
+
+\item Root mean squared error (RMSE)
+The root mean squared error takes the root of the sum of the squared forecast errors, and is scale dependent as well. [insert formula]
+
+\end{itemize}
+
+\subsubsection{Percentage error measures}
+
+The most common percentage error is the mean absolute percentage error (MAPE) which is defined as the mean of percentage errors of a dataset. A percentage error is defined as $p_i=e_i/y_i * 100$. The mean absolute percentage error is then $mean(|pi|)$. 
+
+The disadvantage of percentage error measures is that the value becomes infinite if there is some $y_i = 0$ on the dataset. Also, extreme values occur when the values on the dataset come close to zero. 
 
 \section{Simulation}
 
@@ -342,6 +411,32 @@ Model (Regression) trees are decision trees with linear regression functions at 
 
 \end{itemize}
 
+
+\subsubsection{Forecast error classification}
+
+(see \footnote{http://wiki.pentaho.com/display/DATAMINING/Time+Series+Analysis+and+Forecasting+with+Weka
+\#TimeSeriesAnalysisandForecastingwithWeka-3.2.5Evaluation})
+
+\begin{itemize}
+
+\item Mean absolute error (MAE): $sum(abs(predicted - actual)) / N$
+
+\item Mean squared error (MSE): $sum((predicted - actual)^2) / N$
+
+\item Root mean squared error (RMSE): $sqrt(sum((predicted - actual)^2) / N)$
+
+\item Mean absolute percentage error (MAPE): $sum(abs((predicted - actual) / actual)) / N$
+
+\item Direction accuracy (DAC): \\
+$count(sign(actual\_current - actual\_previous) == sign(pred\_current - pred\_previous)) / N$
+
+\item Relative absolute error (RAE): \\
+$sum(abs(predicted - actual)) / sum(abs(previous\_target - actual))$
+
+\item Root relative squared error (RRSE): \\
+$sqrt(sum((predicted - actual)^2) / N) / sqrt(sum(previous\_target - actual)^2) / N)$
+
+\end{itemize}
 
 \subsection{Dynamic request routing}
 
