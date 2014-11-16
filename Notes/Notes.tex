@@ -85,19 +85,9 @@
 
 \begin{center}
 
-\vspace{4cm}
-
 % There might be better solutions for the title page, giving all distances and sizes manually was simply the easiest solution
 
-{\Huge\bf\sf Notes }
-
-\vspace{.5cm}
-
-{\Huge\bf\sf for }
-
-\vspace{.5cm}
-
-{\Huge\bf\sf Diploma Thesis}
+{\Huge\bf\sf Thesis Notes }
 
 \vspace{3cm}
 
@@ -107,7 +97,7 @@
 
 {\Huge\bf\sf distributed cloud data centers}
 
-\vspace{3cm}
+\vspace{4cm}
 
 {\Large\bf\sf Andreas Egger}%as this is an english text I didn't load the german package, this would ease the use of special characters
 
@@ -126,94 +116,33 @@ egger.andreas.1@gmail.com
 \end{center}
 \newpage
 
+%%The following loads the picture on top of every page, the numbers in \put() define the position on the page:
+%\AddToShipoutPicture{\setlength\unitlength{0.1mm}\put(604,2522){\includegraphics[width=1.5cm]{logo.jpg}}}
+
 \pagestyle{cb} % now we want to have headers and footers
 
 \tableofcontents
 
 \newpage
 
-\section{General Concerns}
 
-\subsection{VM Migrations and Forecasting}
+\section{Goal Setting}
 
-{\hfill\today}
-\vspace{0.4cm}
+The goal of this thesis is to show ways for data center operators in charge of geographically distributed and interconnected data centers to save on their power bill by exploiting VM migrations and the variability of energy prices in wholesale power markets. This approach presumes that data center operators are charged directly by wholesale power markets, which is the case already for a few data centers to date. Given the fact that data centers consume a huge amount of energy (several megawatts) that could power whole cities it becomes a viable option to integrate them into wholesale energy markets. By leveraging the technique of resource migration to data centers where cheaper energy prices apply at the current point in time significant savings in energy bills are possible while still maintaining a defined level of quality of service. 
 
-Forecasts can be made on the workload stream that is common to all data centers within the cloud. 
-This will be a collection of CPU, RAM and disk data of the scheduled jobs to be run. 
-The stream will be generated and can also be forecasted, but how to use?
+By initially placing resources at data centers that currently exhibit cheap energy prices the energy expense can be reduced compared to a non power aware approach. Combined with energy price forecasts resources may be scheduled intelligently such that price changes within the near future can be detected and resources are placed with respect to the estimated prices. This approach may be evaluated against an ad-hoc approach where resources are assigned to data centers by only considering current energy prices and workload. 
 
-With energy price forecasts you can check if the prices will significantly differ for a longer period of time 
-in the future (long running jobs?). It makes sense especially for short term considerations (short running jobs). 
+A simulation scenario will be established where workload is placed on several geographically distributed and interconnected data centers and results are evaluated based on the given workload, energy prices and data center capacities. In addition energy price forecasts will be integrated to predict significant changes in energy price levels at different energy markets. This should lead to a more cost efficient scheduling approach where workload is placed at data centers which provide best energy price conditions for the current and/or future time stamps. 
 
-VM Migration (between data centers) only makes sense if the costs of migration is less than the benefit (lower energy price). 
-Also it doesn't make sense if jobs are finishing soon (only consider longer running jobs). 
+The simulation will be based on a well established cloud scheduler\footnote{https://philharmonic.github.io/} with set parameters to simulate a predefined scenario. The results for different scenarios and parameter settings (i.e.~with or without forecasts) will be compared and evaluated such that the possible benefit of these approaches can be examined. 
+In addition to energy prices and workload this scheduler may take into account cooling costs related to ambient temperatures around the data centers which may be considered as well when running the simulation. 
 
+A special focus will be laid on evaluating energy price forecasting methods to find the best fit for the given data and scenarios. For the simulation there will be a focus on short term price forecasting, as energy price levels change rapidly within energy markets and exhibit a very volatile nature. %a short period of time 
+Different forecasting methods will be compared by accuracy and error measures to determine the most suitable forecasting horizon and parameter settings for various models. It is expected that through good quality forecasting the results of the simulation in terms of energy costs can be improved significantly which should help cloud providers to save on their energy bills and provide more efficient scheduling of cloud related data. 
 
-\subsection{Server Architecture}
+\newpage
 
-\begin{itemize}
-	
-	\item Can a server host more than one virtual machine? Yes, see \cite{nelson2009virtual}.
-	
-	\item Can several jobs run on one server? (Depends on CPU and space requirements)
-	
-	\item Should different jobs run on different VMs on the same server? (I think so). 
-	
-	\item Share CPU power of two (or more) virtual machines on different hosts?
-
-\end{itemize}
-
-
-\subsection{Job Definition}
-
-\begin{itemize}
-	
-	\item Job Requirements: 
-	
-		\subitem CPU power (frequency)
-		
-		\subitem CPU cores
-		
-		\subitem Expected Runtime
-		
-		\subitem Expected Costs (Derived)
-		
-		\subitem Meeting SLA (e.g. maximum price level)
-
-\end{itemize}
-
-
-\subsection{Workloads and test data}
-
-Open Questions:
-
-\begin{itemize}
-
-\item How should workloads be generated?
-	\subitem -> workloads are CPU traces of programs, probably distributed across several CPUs (CPU power load)
-	\subitem -> define applications to run with different workloads
-	
-\item Which programs should be used? 
-	\subitem \underline{Matlab}
-	\subitem R
-	\subitem Mathcad
-	\subitem \ldots
-\item Which kind of distribution should they exhibit (time series)?
-\item Is there a way to get workload traces / time series data from real data centers?
-
-\end{itemize}
-
-\subsection{Workload traces}
-
-A workload trace is common for all data centers, since they are administrated from one central point. 
-From there the workload is distributed across the data centers, already taking into account electricity cost. 
-When a new request arrives, it is checked whether the application can be served at any of the data centers. 
-If not, the start is delayed until resources are available. Otherwise it is assigned to the presumably cheapest
-data center. If later the prices change load will be migrated from more expensive to cheaper data centers. 
-
-
-\subsection{Definition of Terms}
+\section{Definition of Terms}
 
 \begin{itemize}
 
@@ -224,7 +153,7 @@ Developed by The Green Grid, Power usage effectiveness (PUE) is a data center me
 
 \item Energy Elasticity
 
-degree to which the energy consumed by a cluster depends on the load placed on it. Ideally, clusters would draw no power in the absence of load. In the worst case, there would be no difference between the peak power and the idle power of a cluster. Present state-of-the-art systems fall somewhere in the middle, with idle power being around 60\% \cite{qureshi2009cutting}.
+Denotes the degree to which the energy consumed by a cluster depends on the load placed on it. Ideally, clusters would draw no power in the absence of load. In the worst case, there would be no difference between the peak power and the idle power of a cluster. Present state-of-the-art systems fall somewhere in the middle, with idle power being around 60\% \cite{qureshi2009cutting}.
 
 \item Colocation providers
 
@@ -233,24 +162,11 @@ A colocation provider denotes a facility manager that provides space and server 
 \end{itemize}
 
 
-\section{Goals}
-
-\subsection{What I want to show in my thesis}
-
-The goal of this thesis is to show ways for data center operators in charge of geographically distributed and interconnected data centers to save on their power bill by exploiting VM migrations and the variability of energy prices in wholesale power markets. This approach presumes that data center operators are charged directly by wholesale power markets, which is the case already for a few data centers to date. By leveraging the technique of migration of resources to data centers where cheaper energy prices apply at the current point in time significant savings in energy bills are possible. 
-
-By initially placing resources at data centers that currently exhibit cheap energy prices the energy expense can be reduced compared to a non power aware approach. Combined with energy price forecasts resources may be scheduled intelligently such that price changes within the near future can be detected and resources are placed with respect to the estimated prices. This approach may be evaluated against an ad-hoc approach where resources are assigned to data centers by only considering current energy prices and workload. 
-
-
-
-Given the fact that data centers consume a huge amount of energy (several megawatts) that could power whole cities it becomes a viable option to integrate them into wholesale energy markets. Arising challenges and opportunities related to integration into energy markets will be discussed in later chapters. 
-
-
 \section{Forecasting}
 
 \subsection{Definition}
 
-A very general definition of forecasting and its prerequisites is given here \footnote{O-Texts https://www.otexts.org/fpp/1/1}:
+A very general definition of forecasting and its prerequisites is given here\footnote{O-Texts https://www.otexts.org/fpp/1/1}:
 
 \begin{quote}
 The predictability of an event or a quantity depends on several factors including:
@@ -269,11 +185,11 @@ The predictability of an event or a quantity depends on several factors includin
 
 Forecasting methods can be classified into two categories: Qualitative and Quantitative forecasting. 
 
-\begin{itemize}
-\item Qualitative forecasting methods assume that there is no or no relevant data that can be used to make forecasts. This is the case for forecasts that aim to predict i.e. the first year's sales of a new product line or the expected profit of a newly created startup company. In both examples there is no data available beforehand and the forecast has to be derived from already known conditions also called predictor variables. 
+\subsubsection{Qualitative forecasting}
+Qualitative forecasting methods assume that there is no or no relevant data that can be used to make forecasts. This is the case for forecasts that aim to predict i.e. the first year's sales of a new product line or the expected profit of a newly created startup company. In both examples there is no data available beforehand and the forecast has to be derived from already known conditions also called predictor variables. 
 
-\item Qantitative forecasting methods are based on numerical historical data, from which forecasts are derived. It is assumed that the data´s pattern over time stays the same or will behave in a similar way in the future. 
-\end{itemize}
+\subsubsection{Quantitative forecasting}
+Qantitative forecasting methods are based on numerical historical data, from which forecasts are derived. It is assumed that the data´s pattern over time stays the same or will behave in a similar way in the future. 
 
 Quantitative forecasting methods can again be classified roughly into two categories: Cross-sectional forecasting and Time Series forecasting. 
 
@@ -344,75 +260,87 @@ A time series exhibiting a trend, seasonal variations and random fluctuations ca
 
 \subsection{Data Center Locations}
 
-The framework will comprise seven data centers located in different countries and assigned to four different energy markets, namely the 
-European energy exchange (EEX)\footnote{EEX: European energy exchange, http://www.eex.com/}, Nord Pool Spot\footnote{Nord Pool Spot, http://www.nordpoolspot.com/}, APX Power Spot Exchange\footnote{APX Power Spot Exchange, http://www.apxgroup.com/} and ISO New England\footnote{ISO New England, http://www.iso-ne.com/}. 
+Data center locations have been chosen such that they are placed in areas where a wholesale electricity market is available. For some locations data has been generated based on distribution of data in actual power markets. 
 
+Price and temperature data is available for the following locations throughout the year 2010: 
 
-\subsubsection{Countries}
+Belgium - St. Ghislain
 
-Germany, Switzerland, France (EEX), Finland (Nord Pool Spot), UK (APX Spot), Massachusetts and Maine (ISO New England)
+Singapore - Singapore
 
+Taiwan - Changhua County
+
+Indiana - Indianapolis
+
+Michigan - Detroit
 
 \subsection{Power markets}
 
-\subsubsection{EEX}
-
-PHELIX: Physical Electricity Index: Germany, Austria
-
-ELIX: Electricity Index: ?
-
-SWISSIX: Swiss Index: Switzerland
-
-FRENCH FINANCIAL POWER FUTURES: France
-
+Various power markets exist that provide data about historical energy prices. For simplicity, real data was taken for locations in the US and based on that generated for the other locations. The prices have been normalized to values between 0 and 1 based on maximum and minimum values in the dataset. Therefore, prices can be compared directly and do not need to be converted. 
 
 \subsection{Parameters}
 
 \begin{itemize}
 \item Migration Overhead / Costs
 
-\item On/Off Peak Prices (e.g. UK, when no hourly prices are available)
+\item On/Off Peak Prices
 
 \item different Time Zones
-
-		Boston, Portland (-5)
-		UK (UTC)
-		Germany (+1)
-		Finland(+2)
 		
-\item Considering cooling? 
-
-		Fan/Chillers, turned off/on, which speed etc. 
-		depending on outside temperature
+\item Cooling depending on outside temperatures
 		
-\item Which kind of workload?
-
-		applications running for short/long amount of time? 
+\item Types of workload - short / long running jobs
 		
-\item Power consumption behavior
-
-		Idle Servers
+\item Elasticity level of servers
 		
-		Partially utilized Servers (max. 1 -> negligible)
-		EXCEPT having jobs with different CPU-core demand
-		
-		Fully utilized Servers
-		
-\item What kind of forecasting? 
+\item Type(s) of forecasting - short term, mid term, long term
 
-		Short term (day ahead, few days)
-		
-		Mid term (half a month up to a few months)
-		
-		Long term (half a year up to a few years)
+\item Minimum number of VMs to migrate in order to amortize migration costs
 
-\item How many VMs moved in one step? 
+\item Possible consideration of different energy sources - renewables, atom, fossils
 
-		May be defined, such that the migration pays concerning the running jobs. 
+\end{itemize}
 
-\item Considering different kinds of energy sources (renewables, Atom, fossils etc.)?
 
-		Possible consideration in scheduling algorithm. Choosing priorities for either price or green IT. 
+\subsection{Dynamic request routing}
+
+\begin{itemize}
+
+\item Load balancing of data of requests over all data centers
+
+\item Determination of the currently cheapest data center
+
+\item Possibly combined with forecasting energy prices
+
+\item Integrating load forecasting as an additional measure
+
+\item Estimation of DC load based on current DC load
+
+\end{itemize}
+
+\subsection{VM Migration}
+
+\begin{itemize}
+
+\item Minimum job duration for amortization of costs
+
+\item Same VM / DC Selection Mechanism as with dynamic request routing
+
+\end{itemize}
+
+\subsection{Simulation models}
+
+\begin{itemize}
+
+\item Create scenarios both with and without forecasting
+
+\item Evaluation of simulation results, overall power consumption/costs
+
+\item Mapping power consumption to energy costs
+
+\item Derive power consumption based on CPU load and possibly other parameters. Depends on elasticity
+
+\item Model migration costs, depending on the workload
 
 \end{itemize}
 
@@ -423,34 +351,11 @@ FRENCH FINANCIAL POWER FUTURES: France
 
 \subsection{Forecasting}
 
-A good explanation of forecasting can be found at \cite{weka2011weka} (from the weka forecasting tool). 
-This is especially valid for time series forecasting but can be applied to other methods as well. 
-
-\subsubsection{Models}
-
-\begin{itemize}
-
-\item Neural Networks
-
-Finding some specifics on NN models ..
-
-\item Regression Trees
-
-Model (Regression) trees are decision trees with linear regression functions at the leaves. 
-
-\item ...
-
-\end{itemize}
-
-
 \subsubsection{Forecast error classification}
 
-(see \footnote{http://wiki.pentaho.com/display/DATAMINING/Time+Series+Analysis+and+Forecasting+with+Weka
-\#TimeSeriesAnalysisandForecastingwithWeka-3.2.5Evaluation})
-
 \begin{itemize}
 
-\item Mean absolute error (MAE): $sum(abs(predicted - actual)) / N$
+\item Mean absolute error (MAE): \[ \frac{1}{n} \sum_{i=1}^{n} |\hat{y}_i - y_i| \] % \[\sum_{i=1}^{10} t_i\] %\sum(abs(predicted - actual)) / N
 
 \item Mean squared error (MSE): $sum((predicted - actual)^2) / N$
 
@@ -469,45 +374,6 @@ $sqrt(sum((predicted - actual)^2) / N) / sqrt(sum(previous\_target - actual)^2) 
 
 \end{itemize}
 
-\subsection{Dynamic request routing}
-
-\begin{itemize}
-
-\item kind of load balancing
-
-\item Determines the currently cheapest data center (comparing energy prices in all areas)
-
-\item combine with forecasting (prices)? 
-
-\item Does load forecasting make sense ? 
-
-\subitem Maybe combine forecasting with current DC load to get an estimated DC load? 
-
-\end{itemize}
-
-\subsection{VM Migration}
-
-\begin{itemize}
-
-\item \textbf{Minimum job duration} for amortization of costs?
-
-\item Same VM / DataCenter Selection Mechanism as with dynamic request routing?
-
-\end{itemize}
-
-\subsubsection{Comparison of approaches}
-
-\begin{itemize}
-
-\item Compare above approaches both with and without forecasting
-
-\item Compare overall electricity consumption / electricity costs
-
-\subitem - Does consumption directly map to costs? 
-\subitem - How to derive the power consumption, just by CPU load? (depends on elasticity)
-\subitem - Should the migration costs be taken into account?
-
-\end{itemize}
 
 
 \printbibliography
