@@ -139,7 +139,7 @@
 \gdef\tuinfthesisbetrdrei{}
 
 
-\newcommand{\thesistitle}[2]{\xdef\tuinfthesistitle{#1} \xdef\tuinfthesistitleen{#2}}
+\newcommand{\thesistitle}[1]{\xdef\tuinfthesistitle{#1}}
 \newcommand{\thesissubtitle}[1]{\xdef\tuinfthesissubtitle{#1}}
 \newcommand{\thesisdate}[1]{\xdef\tuinfthesisdate{#1}}
 \newcommand{\thesistype}[2]{\xdef\tuinfthesistype{#1} \xdef\tuinfthesistypeen{#2}}
