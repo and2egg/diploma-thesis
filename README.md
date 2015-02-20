@@ -1,6 +1,6 @@
 ##
 #
-## Cost aware management of virtual machines in distributed cloud data centers ##
+## Cost aware resource management in distributed cloud data centers ##
 #
 ### Proposed topic for diploma thesis
 #
@@ -8,6 +8,6 @@
 ### Author: Andreas Egger###
 ### MatrNr: 0626885 ###
 #
-### 01.08.2014 ###
+### 24.11.2014 ###
 
 

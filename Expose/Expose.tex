@@ -6,6 +6,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{url}
+\usepackage{hyperref}					% links in pdf
 
 % Load in biblatex
 % To use a different bibliography style, just change "numeric" to
@@ -15,9 +16,6 @@
 % Select the bibliography file
 \addbibresource{sources.bib}
 
-
-%\title{Cost aware management of virtual machines in distributed cloud data centers}
-%\title{Cloud management optimised for real-time electricity pricing}
 \title{Cost aware resource management in distributed cloud data centers}
 \author{Andreas Egger \\0626885}
 \date{Technical University of Vienna}
@@ -30,69 +28,50 @@
 
 In times of cloud computing where computer resources are expected to be readily available from anywhere \cite{buyya2009cloud} and with an ever growing global network of interconnected devices energy efficiency plays an increasingly important role in delivering and consuming cloud based services. 
 
-As stated in \cite{qureshi2009cutting} internet scale systems consume a high amount of power annually where the electricity bill for such systems is in the range of several millions of dollars per year. Due to increasing energy consumption in data centers and high energy prices advancements in cloud computing may be slowed down or hindered. Thus, cloud providers must ensure that delivering their services remains profitable. Lower energy costs increase the competitive ability of cloud providers and bigger investments are possible. Likewise customers may benefit from more affordable cloud services. 
-
+Internet scale systems consume a high amount of power annually where the electricity bill for such systems is in the range of several millions of dollars per year \cite{qureshi2009cutting}. Energy consumption, which increases as data centers become larger, and high energy prices may slow down or hinder advancements in cloud computing. Thus, cloud providers must ensure that delivering their services remains profitable. Lower energy costs increase the competitive ability of cloud providers and bigger investments are possible. Likewise customers may benefit from more affordable cloud services. 
 
 The goal of this thesis is to reduce energy related costs of interconnected data centers while maintaining defined quality of service levels. The proposed approach is to optimize load migration between data centers considering time and location based energy prices. The scenario includes data centers located in different countries where different energy markets and prices apply. Thus constellations may arise where it is profitable to migrate a certain amount of resources from a data center facing high energy prices to a data center where energy prices are low at the current point in time or in the near future. 
 
-Energy prices are traded and change hourly within the energy markets, so investigations need to be made in order to make qualified statements about the estimated energy price in a specific area.
-This is done by analyzing historical price data and building models for accurate energy price forecasting. Energy prices belonging to different energy markets are estimated for various time ranges into the future. Based upon the results it is decided how many resources may be migrated currently or in the near future in order to obtain the maximum possible energy cost reduction. 
-%When extending the estimation window the gaps between estimated and real energy prices generally increase and error measures need to be taken into account to obtain accurate forecasts. 
-%However, there is a gap between estimated and real energy prices which is represented by forecasting error measures (i.e.~MAPE). The challenge is that in general the error increases with the length of the estimation window which has to be considered when investigating the results. 
-However, forecasting errors represented by the difference between estimated and real energy prices increase with the length of the estimation window which has to be taken into account when investigating forecasting models. 
-%which has to be taken into account when forecasting energy prices. 
-
-
-%One way to lower the operating expense is to increase energy efficiency in data centers. This can be done by changing the infrastructure, i.e.\ by investing in more energy efficient hardware, or by applying energy aware scheduling algorithms for managing virtual machines. Another way is to build data centers in locations where energy prices are low or the cooling infrastructure is supported by the outside temperature. Energy prices are traded and change hourly within the energy markets, so long term investigations need to be made in order to make qualified statements about the estimated energy price in a specific area.
+Energy prices are traded and change hourly within the energy markets, so investigations need to be made in order to make qualified statements about the estimated energy price at some point in time in the near future.
+This is done by analyzing historical price data and building models for accurate energy price forecasting. Energy prices belonging to different energy markets are estimated for various time ranges into the future. Based upon the results it is decided how many resources may be migrated currently or in the future in order to obtain the maximum possible energy cost reduction. 
+However, forecasting errors represented by the difference between estimated and real energy prices increase with the length of the estimation window which has to be taken into account when determining the length of the forecasting window. 
 
 Since energy prices change dynamically a flexible approach of moving data center resources to more cost-effective locations is needed. This work is based on the scenario of a company running data centers distributed across several countries. Depending on the current and estimated energy price for a certain region resources may be relocated to other data centers located at more cost-effective regions.
 
 The key technology to implement the relocation of data center resources is virtual machine (VM) migration \cite{nelson2009virtual}. All data and services are located on servers and belong to specific virtual machines within a data center. Since a server may host several VMs that operate completely independent from each other, they can be relocated (migrated) to other servers, possibly over networks without affecting VMs running on the same server. VM migration may be applied across large geographical distances (geo migrations) by leveraging connections via the internet. It is also possible to do live migrations on a large scale without noticeable service interruption \cite{celesti2010improving}. 
 
 Various load policies exist to optimize the load factor and distribution of tasks within data centers \cite{buyya2010energy}. A workload manager has to make sure that there are still servers having enough resources and no service level agreement (SLA) is violated on the assignment of a new job. 
-In addition, this work aims to optimize workload distribution among geographically distributed data centers with respect to changing energy prices. 
-%For an optimal distribution of tasks the current load factor of a data center needs to be taken into account. 
-%A job definition comprises parameters like the maximum required CPU power, RAM and disk space. 
+In contrast, this work aims to optimize workload distribution among geographically distributed data centers by utilizing forecasting methods and predicting changing energy prices within the near future. 
 Furthermore, by considering the history of energy prices and resource load within a certain region it is estimated whether or not a migration to another data center makes sense regarding the current load and configuration. Therefore, forecasting methods in combination with machine learning techniques will be evaluated and applied to the scenario. 
-
-%In real world scenarios additional parameters need to be considered such as the total availability of CPU power, available RAM and disk space. For this work the scenario is simplified to only consider CPU power, which is the only parameter that directly affects energy consumption and thus energy costs as well. In addition, by considering the history of energy prices and resource load within a certain region or data center the most promising date of migration may be estimated and whether a migration makes sense regarding the current load and configuration. Therefore, forecasting methods in combination with machine learning techniques will be evaluated and applied to the scenario. 
-
 
 
 \section{Expected Results}
 
-The goal of this thesis is to show ways for data center operators in charge of geographically distributed and interconnected data centers to save on their power bill by exploiting VM migrations and the variability of energy prices in wholesale power markets. This approach presumes that data center operators are charged directly by wholesale power markets, which can effectively increase the power usage efficiency (PUE) within a data center\footnote{https://www.datacenterworld.com/fall2013/account/Uploader/uploader\_files/show/335/}. Given the fact that data centers consume a huge amount of energy (several megawatts)\cite{qureshi2009cutting} that could power whole cities it becomes a viable option for them to be integrated into wholesale energy markets. By leveraging the technique of resource migration to data centers where cheaper energy prices apply at the current point in time significant savings in energy bills are possible while still maintaining a defined level of quality of service. 
+The goal of this thesis is to show ways for data center operators in charge of geographically distributed and interconnected data centers to save on their power bill by exploiting VM migrations and the variability of energy prices in wholesale power markets. This approach presumes that data center operators are charged directly by wholesale power markets, which can be a suitable option since power market integration can effectively increase the power usage efficiency (PUE) within a data center\footnote{Data Center Trends: Optimizing power markets \url{http://www.datacenterworld.com/fall2013/account/Uploader/uploader\_files/show/335/}}. Given the fact that data centers consume a huge amount of energy comparable to the energy consumption of small cities\cite{qureshi2009cutting} it becomes a viable option for them to be integrated into wholesale energy markets. By leveraging the technique of resource migration to data centers where cheaper energy prices apply at the current point in time significant savings in energy bills are possible while still maintaining a defined level of quality of service. 
 
-By initially placing resources at data centers that currently exhibit cheap energy prices the energy expense can be reduced compared to a non power aware approach. Combined with energy price forecasts resources may be scheduled intelligently such that price changes within the near future can be detected and resources are placed with respect to the estimated prices. This approach may be evaluated against an ad-hoc approach where resources are assigned to data centers by only considering current energy prices and workload. 
+Initially placing resources at data centers that currently exhibit cheap energy prices can reduce energy expenses significantly compared to a non power aware approach. Combined with energy price forecasts resources may be scheduled intelligently such that price changes within the near future can be detected and resources are placed with respect to the estimated prices. This approach may be evaluated against an ad-hoc approach where resources are assigned to data centers by only considering current energy prices and workload. 
 
-A simulation scenario will be established where workload is placed on several geographically distributed and interconnected data centers and results are evaluated based on the given workload, energy prices and data center capacities. In addition, energy price forecasts will be integrated to predict significant changes in energy price levels at different energy markets. This should lead to a more cost efficient scheduling approach where workload is placed at data centers which provide best energy price conditions for the current and/or future time stamps. 
+A simulation scenario will be established where workload is placed on several geographically distributed and interconnected data centers and results are evaluated based on the given workload, energy prices and data center capacities. In addition, energy price forecasts will be integrated to predict significant changes in energy price levels at different energy markets. This should lead to a more cost efficient scheduling approach where workload is placed at data centers which provide best energy price conditions for current and/or future time spots. 
 
-The simulation will be based on a well established cloud scheduler\footnote{https://philharmonic.github.io/} with set parameters to simulate a predefined scenario. The results for different scenarios and parameter settings (i.e.~with or without forecasts) will be compared and evaluated such that the possible benefit of these approaches can be examined. 
-In addition to energy prices and workload this scheduler may take into account cooling costs related to ambient temperatures which may be considered as well when running the simulation. 
+The simulation will be based on a well established cloud scheduler\footnote{\url{http://philharmonic.github.io/}} with set parameters to simulate a predefined scenario. The results for different scenarios and parameter settings (i.e.~with or without forecasts) will be compared and evaluated such that the possible benefits and drawbacks of each of these approaches can be examined. 
+In addition to energy prices and workload this scheduler may take into account cooling costs related to ambient temperatures which can take up a significant part of data center expenses. 
 
-A special focus will be laid on evaluating energy price forecasting methods to find the best fit for the given data and scenarios. For the simulation there will be a focus on short term price forecasting, as energy price levels change rapidly within energy markets and exhibit a very volatile nature.  
-Different forecasting methods will be compared by accuracy and error measures to determine the most suitable forecasting horizon and parameter settings for various models. It is expected that through good quality forecasting the results of the simulation in terms of energy costs can be improved significantly which should help cloud providers to save on their energy bills and provide more efficient scheduling of cloud related data. 
+A special focus will be laid on evaluating energy price forecasting methods to find the best fit for the given data and scenarios. For the simulation there will be a focus on short term price forecasting, as energy price levels change rapidly within energy markets and exhibit a very volatile nature. Therefore accurate price forecasting is only possible when applied to short term forecasts. 
+Different forecasting methods will be compared by accuracy and error measures to determine the most suitable forecasting horizon and parameter settings for various models and data. It is expected that through good quality forecasting the results of the simulation in terms of energy costs can be improved significantly. This should help cloud providers to save on their energy bills and provide more efficient scheduling of cloud related data. 
 
 
 \section{Methodological Approach}
 
-To maximize the accuracy of price forecasting different parameters of forecasting methods should be evaluated and compared to get the most accurate results regarding this scenario. The accuracy should be evaluated for various time ranges on both in-sample and out-of-sample forecasts. Due to the volatile nature of hourly real time energy prices there is a natural boundary of about 48 hours up to which forecasts can be made with reasonable accuracy. Models should be trained and compared by calculating their in-sample forecast errors (i.e.~MAPE) such that the most accurate models can be chosen. 
+The proposed scenario consists of a private cloud with data centers located in countries where participation in power markets is possible and energy price data is available. The geographical location and connections between data centers should be defined such that VM migrations may be done interchangeably. 
 
-As a next step the scenario is to be defined which represents a private cloud with data centers located in countries where energy data is available. The geographical location of the data centers should be defined and connections should be established such that VM migrations may be done interchangeably. 
+To maximize the predictive accuracy of price forecasting different parameters of forecasting methods should be evaluated and compared to determine the settings with the most accurate results in each case. The accuracy should be evaluated for various time ranges on both in-sample and out-of-sample forecasts and each location and time series separately. Due to the volatile nature of hourly real time energy prices there is a natural boundary of about 48 hours up to which forecasts can be made with reasonable accuracy. Models should be trained and compared based on forecast error measures on in-sample data (i.e.~MAPE) to determine the most accurate models. 
 
-Then a model is to be defined for the simulation with parameters needed for further operation. For example, the amount of bandwidth between two data centers needs to be set and a method for calculating the cost of VM migration has to be defined, depending on current energy prices. Furthermore the minimum block size (number of VMs) should be defined that may be migrated in order to compensate for the migration costs. 
+As a next step a model is to be defined for the simulation with parameters needed for further operation. For example, the amount of bandwidth between two data centers needs to be set and a method for calculating the cost of VM migration has to be defined, depending on current energy prices. Furthermore the minimum number of VMs should be set that may be migrated in order to compensate for migration costs. 
 
-Regarding forecasting models there is evidence that some models are more suitable for energy price forecasting than others \cite{weron2008forecasting}\cite{weron2005forecasting}. For example, for averaged short term forecasts a common model to use is simple exponential smoothing (SES) which averages out any variations in the data and provides a good stationary estimate of future data values. In many cases this generates results with sufficient accuracy due to a strong irregular component (random fluctuations) in the data set. 
+Regarding forecasting models there is evidence that some models are generally more suitable for energy price forecasting than others \cite{weron2008forecasting}\cite{weron2005forecasting}. For example, for averaged short term forecasts a common model to use is simple exponential smoothing (SES) which averages out any variations in the data and provides a good stationary estimate of future data values. In many cases this generates results with sufficient accuracy due to a strong irregular component (random fluctuations) in the data set. 
 
 Another common model for price forecasting is the ARIMA model which may contain both an auto-regressive (AR) and moving-average (MA) part and can thus be applied to various data sets depending on the chosen parameters. Also, various forms of auto-regressive models exist which may provide a good fit for mid term forecasting. 
-Therefore representatives from each of these models will be chosen where the focus lies on predicting real-time energy prices as they can be predicted on an hourly basis in contrast to the day-ahead spot energy prices which are provided for the next 24 hours simultaneously. 
-
-%A vector autoregressive (VAR) model will be used, specifically a Bayesian VAR model, to cover these requirements \cite{raviv2013forecasting}. 
-%In addition, it is well known that a combination of forecasting models can provide better results than each of the individual models \cite{raviv2013forecasting}. Therefore a combination of time series models, neural networks and regression trees will be used to make accurate predictions for short and mid-term forecasting. 
-
-%There should be a front end managing the data flow of all data centers. The data flow is represented as a workload trace containing job specifications with a defined start and end time, maximum CPU load and number of required CPU cores. According to these specifications the jobs are distributed to a data center depending on current load and energy prices. 
-%Since a virtual machine represents a job running on one CPU multi core jobs may be distributed across several VMs and servers. 
-%Due to changing energy prices and workload it might be advantageous or necessary to migrate jobs to another data center. It might also be necessary to delay jobs such that cheaper energy prices are exploited. However, jobs may not be delayed beyond a defined threshold in order to ensure compliance of SLAs. 
+Therefore representatives from each of these models will be chosen where the focus lies on predicting real-time energy prices as they are collected on an hourly basis in contrast to the day-ahead spot energy prices which are provided for the next 24 hours simultaneously. 
 
 
 \section{State-of-the-art}
@@ -114,7 +93,7 @@ In another work \cite{malet2010resource} the placement of applications is dynami
 
 \section{Relation to the Study of Software Engineering}
 
-This work aims to provide a contribution to cloud based scheduling applications focusing on reducing the overall energy expenses of interconnected data centers. Due to the growing popularity of cloud and internet based services these topics have can be found in the curriculum of ``Software Engineering \& Internet Computing'' \cite{curriculum2013curriculum}. 
+This work aims to provide a contribution to cloud based scheduling applications focusing on reducing the overall energy expenses of interconnected data centers. Due to the growing popularity of cloud and internet based services these topics can be found in the curriculum of ``Software Engineering \& Internet Computing'' \cite{curriculum2013curriculum}. 
 
 The following constitutes a list of the most relevant courses related to this topic:
 
