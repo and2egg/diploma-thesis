@@ -1,0 +1,38 @@
+%% Based on a TeXnicCenter-Template, which was
+%% created by Christoph Börensen
+%% and slightly modified by Tino Weinkauf.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,12pt]{scrartcl} %This is a special class provided by the KOMA script, which does a lot of adjustments to adapt the standard LaTeX classes to european habits, change to [a4paper,12pt,twoside] for doublesided layout
+
+
+%########################### Preferences #################################
+
+
+% ********* Font definiton ************
+%\usepackage{t1enc} % as usual
+\usepackage[utf8]{inputenc} % as usual
+\usepackage{times}		
+%\usepackage{mathptmx}  	%mathematical fonts for use with times, I encountered some problems using this package togather with pdftex, which I was not able to resolve
+
+% ********* Graphics definition *******
+\usepackage[pdftex]{graphicx} % required to import graphic files
+\usepackage{color} %allows to mark some entries in the tables with color
+\usepackage{eso-pic} % these two are required to add the little picture on top of every page
+\usepackage{everyshi} % these two are required to add the little picture on top of every page
+
+% ********* Defining citation styles *********
+\usepackage[backend=bibtex8,style=numeric]{biblatex}
+% Select the bibliography file
+\addbibresource{Bibliography.bib}
+
+%\bibliography{Bibliography}
+
+\begin{document}
+
+\nocite{*}
+
+\printbibliography
+
+
+\end{document}

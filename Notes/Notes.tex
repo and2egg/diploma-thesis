@@ -89,7 +89,7 @@
 
 {\Huge\bf\sf Thesis Notes }
 
-\vspace{3cm}
+\vspace{4.5cm}
 
 {\Huge\bf\sf Cost aware resource management in }
 
@@ -97,7 +97,7 @@
 
 {\Huge\bf\sf distributed cloud data centers}
 
-\vspace{4cm}
+\vspace{6cm}
 
 {\Large\bf\sf Andreas Egger}%as this is an english text I didn't load the german package, this would ease the use of special characters
 
@@ -107,7 +107,7 @@
 
 \vspace{2cm}
 
-{\Large\bf\sf \today} %adds the current date
+%{\Large\bf\sf \today} %adds the current date
 
 \vspace{\fill}
 
@@ -134,7 +134,7 @@ By initially placing resources at data centers that currently exhibit cheap ener
 
 A simulation scenario will be established where workload is placed on several geographically distributed and interconnected data centers and results are evaluated based on the given workload, energy prices and data center capacities. In addition energy price forecasts will be integrated to predict significant changes in energy price levels at different energy markets. This should lead to a more cost efficient scheduling approach where workload is placed at data centers which provide best energy price conditions for the current and/or future time stamps. 
 
-The simulation will be based on a well established cloud scheduler\footnote{https://philharmonic.github.io/} with set parameters to simulate a predefined scenario. The results for different scenarios and parameter settings (i.e.~with or without forecasts) will be compared and evaluated such that the possible benefit of these approaches can be examined. 
+The simulation will be based on a well established cloud scheduler\footnote{\url{https://philharmonic.github.io/}} with set parameters to simulate a predefined scenario. The results for different scenarios and parameter settings (i.e.~with or without forecasts) will be compared and evaluated such that the possible benefit of these approaches can be examined. 
 In addition to energy prices and workload this scheduler may take into account cooling costs related to ambient temperatures around the data centers which may be considered as well when running the simulation. 
 
 A special focus will be laid on evaluating energy price forecasting methods to find the best fit for the given data and scenarios. For the simulation there will be a focus on short term price forecasting, as energy price levels change rapidly within energy markets and exhibit a very volatile nature. %a short period of time 
@@ -143,13 +143,44 @@ Different forecasting methods will be compared by accuracy and error measures to
 
 \section{Wholesale power markets}
 
+\subsection{Characteristics of power markets}
+
+In our investigation we observed several power markets to evaluate and compare possible differences in their energy price behavior. 
+
+The following power markets will be evaluated: 
+
+\begin{itemize}
+
+\item EEX
+
+\item Nord Pool Spot
+
+\item ISO New England
+
+\end{itemize}
+
+\subsubsection{Nord Pool Spot Market}
+
+The Nord Pool Spot power market is the oldest power market existing and is also said to be the most mature when it comes to stability in energy price behavior. 
+
+It exhibits significant seasonality on an annual basis\cite{weron2007modeling} which is especially interesting in long term forecasting. A forecasting model that should apply to energy prices from the Nord Pool Spot market should consider its seasonality behavior. 
+
+
 \subsection{Integration of DCs into power markets}
 
-- Possibility of getting lower energy prices (compared to flatrate)
+\begin{itemize}
 
-- Possibility of providing power services back to markets (for large DCs / Cloud Providers) when there is an excess of energy\footnote{Data Center Trends: Optimizing power markets \url{http://www.datacenterworld.com/fall2013/account/Uploader/uploader\_files/show/335/}}
+\item
+Taking part in wholesale electricity markets is in most cases a viable option only for big energy consumers, as are operators of big data centers. Smaller scale customers would have the possibility to take part in wholesale-indexed electric billing plans as described in \cite{qureshi2009cutting}. It is evident that most companies are taking part in a fixed billing structure where they are billed at a fixed rate. However, paying for actual power usage may be advantegeous compared to provisioned power pricing, since variations in price schemes may be taken advantage of. 
 
+\item
+Large data center operators and cloud providers may even provide utilities for independent power generation alongside operation of data centers. This is not only advantageous in order to have a backup power supply in case of power outages but when connected to the grid the excess of energy can be brought back to the markets.\footnote{Data Center Trends: Optimizing power markets \url{http://www.datacenterworld.com/fall2013/account/Uploader/uploader\_files/show/335/}}
 
+\item
+In \cite{qureshi2009cutting} another interesting approach is discussed, namely \emph{demand response} programs. For a considerable reduction of prices customers are willing to reduce load on demand, i.e.\ when load reduction requests are sent out. This has a positive effect on load distribution within a grid while load peaks may be mitigated. This concept is called \emph{Selling Flexibility} since operators are selling flexibility to clients which in turn are compensated based on the level of commitment. 
+This program is most useful in large distributed environments or systems since these systems usually can provide enough flexibility to distribute load. In contrast, it is not considered suitable for single data center operators, as they generally cannot afford to reduce load even in exchange for price reductions. 
+
+\end{itemize}
 
 \newpage
 
@@ -368,22 +399,68 @@ Various power markets exist that provide data about historical energy prices. Fo
 
 \item Mean absolute error (MAE): \[ \frac{1}{n} \sum_{i=1}^{n} |\hat{y}_i - y_i| \] % \[\sum_{i=1}^{10} t_i\] %\sum(abs(predicted - actual)) / N
 
-\item Mean squared error (MSE): $sum((predicted - actual)^2) / N$
+\item Mean squared error (MSE): \[ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 \] %$sum((predicted - actual)^2) / N$
 
-\item Root mean squared error (RMSE): $sqrt(sum((predicted - actual)^2) / N)$
+\item Root mean squared error (RMSE): \[ \sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}\] % $sqrt(sum((predicted - actual)^2) / N)$
 
-\item Mean absolute percentage error (MAPE): $sum(abs((predicted - actual) / actual)) / N$
+\item Mean absolute percentage error (MAPE): \[ \frac{1}{n} \sum_{i=1}^{n} \left|\frac{\hat{y}_i - y_i}{y_i}\right| \] % $sum(abs((predicted - actual) / actual)) / N$
 
-\item Direction accuracy (DAC): \\
-$count(sign(actual\_current - actual\_previous) == sign(pred\_current - pred\_previous)) / N$
+\item Direction accuracy (DAC): \[ \frac{count(sign(y_i - y_{i-1}) = sign(\hat{y}_i - \hat{y}_{i-1}))}{n} \]
+% $count(sign(actual\_current - actual\_previous) == sign(pred\_current - pred\_previous)) / N$
 
-\item Relative absolute error (RAE): \\
-$sum(abs(predicted - actual)) / sum(abs(previous\_target - actual))$
+\item Relative absolute error (RAE): \[  \frac{ \sum_{i=1}^{n} |\hat{y}_i - y_i|}{ \sum_{i=1}^{n} |\hat{y}_{i-1} - y_i|}   \]
+ % $sum(abs(predicted - actual)) / sum(abs(previous\_target - actual))$
 
-\item Root relative squared error (RRSE): \\
-$sqrt(sum((predicted - actual)^2) / N) / sqrt(sum(previous\_target - actual)^2) / N)$
+\item Root relative squared error (RRSE): \[  \frac{ \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 }} { \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_{i-1} - y_i)^2 }} \]
+ % $sqrt(sum((predicted - actual)^2) / N) / sqrt(sum(previous\_target - actual)^2 / N)$
 
 \end{itemize}
+
+
+\subsubsection{White noise tests for residuals}
+
+To test if residuals can be regarded as white noise, its auto correlation functions is examined. In case auto correlations are present it means that some values within the series depend on one another. In theory a true white noise series should not exhibit any auto correlations but since we operate on finite time series there will always be a few correlations present in the data\cite{makridakisforecasting}. 
+
+It can be shown that the auto correlations of a white noise series have a sampling distribution similar to a gaussian distribution with zero mean and a standard deviation of $1/\sqrt{n}$ where $n$ denotes the total number of observations in the series\cite{makridakisforecasting}. 
+
+\subsection{General forecasting procedure}
+
+\begin{itemize}
+
+\item Selection of data sets (location, frequency)
+
+\item Investigation of characteristics of the selected data sets (stationarity, variance)
+
+\item Making series stationary on demand
+
+\item Evaluation of appropriate models to be applied to the given data sets
+
+\item Model generation based on evaluation
+
+\item Model evaluation and comparison (goodness of fit, accuracy, residual characteristics) 
+
+\item Tests on in-sample and out-of-sample data
+
+\item Testing different forecasting horizons
+
+\item Comparison of results for different time sets and locations
+
+\item Conclusion and model selection based on results
+
+\end{itemize}
+
+\subsection{Forecasting workflow}
+
+
+
+
+\subsection{Dynamic model selection}
+
+Different energy markets show different characteristics in their time series of energy price data, i.e.\ seasonal or non-seasonal behavior or strong or weak probability of energy spike occurrence within a given time frame. Depending on these characteristics different forecasting models may be chosen s.t. they accommodate the behavior of the time series. 
+However there are still minor changes in characteristics of time series within the same energy market so that it is generally not possible to identify a single model that is optimized for all energy price time series of a market. 
+Depending on the given time frame and the selected series a different model may be selected. The criteria for model selection are its residual behavior (white noise characteristics) and parameter estimation as described in section []. 
+
+When energy price data is provided to the simulator (and further to the forecasting plugin) it is first checked on its characteristics to determine a suitable model for this kind of data. Different types of models can be predetermined among which the best model will be chosen based on its residual and forecasting behavior. 
 
 
 
