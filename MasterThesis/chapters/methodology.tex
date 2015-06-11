@@ -1,8 +1,38 @@
 
 
-\section{Methodology}
+\section{Energy markets}
 
-\subsection{Energy markets}
+Energy markets have emerged steadily from the mid-eighties (Research history!!). 
+
+
+
+
+
+
+\subsection{Types of energy markets}
+
+Two main models exist for the exchange and types of trading of energy prices in power markets which are bilateral trading and electricity pooling \cite{onaiwu2009does,hogan1997reshaping,barroso2005classification}.
+
+In bilateral trading utility operators (producers) and energy consumers establish bilateral contracts to determine the terms and conditions applied for trading energy. Generators or producers may also buy electricity from other suppliers in case their own electricity generation does not fit current demand. The exact amount, price and time when tradings take place are negotiated on the contract. Since electricity demand may vary from the negotiated terms the resulting imbalances have to be taken care of by the system operator. 
+
+Electricity pooling provides a way for utility operators to offer a certain amount of energy at a set price. 
+
+
+Still customers, brokers and aggregators have the choice to either establish long term contracts of electricity or rely on the short-term market. \cite{hogan1997reshaping}
+
+
+\subsection{Energy market characteristics}
+
+
+
+TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
+
+TODO Discuss impact of evaluation of bandwidth costs. In \cite{rao2010minimizing} (page 7) bandwidth costs are deliberately neglected, but the option should be discussed at least. 
+
+
+\subsection{Summary of selected energy markets}
+
+
 
 \subsubsection{Nord Pool Spot}
 
@@ -58,7 +88,7 @@ market yet, offering efficiency in:
 
 
 
-\subsubsection{Nord Pool Spot - Day ahead market}
+Nord Pool Spot - Day ahead market
 
 [c BEGIN]
 
@@ -76,7 +106,6 @@ Daily trading is driven by the members’ planning. A buyer, typically a utility
 
 \emph{Supply and demand}
 
-
 Hourly prices are typically announced to the market at 12:42 CET or later. Once the market prices have been calculated, trades are settled. From 00:00 CET the next day, power contracts are physically delivered (meaning that the power is provided to the buyer) hour for hour according to the contracts agreed.
 
 \emph{The cost of transmission constraints}
@@ -87,7 +116,7 @@ While supply and demand are the key factors determining the hourly market prices
 
 
 
-\subsubsection{Nord Pool Spot - Intraday market}
+Nord Pool Spot - Intraday market
 
 [c BEGIN]
 
@@ -112,7 +141,7 @@ The intraday market is becoming increasingly important as more wind power enters
 
 The market of ISO New England is located at \url{http://www.iso-ne.com/}. It offers day ahead as well as real time energy prices where day ahead prices are available at an hourly interval while (preliminary) real time prices are available both at hourly and five minute intervals. 
 
-Current locational marginal prices (LMPs) can be downloaded from a base url\footnote{\url{http://www.iso-ne.com/static-transform/csv/histRpts/da-lmp/}} and a specialized suffix depending on the file and date\footnote{WW\_DALMP\_ISO\_20150414.csv}. In this case, files are provided in csv format for better machine processing. 
+Current locational marginal prices (LMPs) can be downloaded from a base url\footnote{\url{http://www.iso-ne.com/static-transform/csv/histRpts/da-lmp/}} and a specialized suffix depending on the file and date (e.g.~WW\_DALMP\_ISO\_20150414.csv). In this case, files are provided in csv format for better machine processing. 
 
 Example: 
 \begin{verbatim}
@@ -132,8 +161,12 @@ A summary of all data that is available is provided for day ahead as well as rea
 See at \url{http://www.pjm.com/}. 
 
 
+\subsubsection{Spanish power market}
 
-\subsection{Definitions}
+EDP (Energias de Portugal) represents the wholesale electricity market for Spain, Portugal and is also responsible for delivery and transmission of energy to other countries.\footnote{See \url{http://www.edp.pt/en/aedp/sectordeenergia/sistemaelectricoespanhol/Pages/SistElectES.aspx}}
+
+
+\subsection{Terms and definitions}
 
 \subsubsection{Definition of 'Clearing Price'}
 
@@ -144,6 +177,18 @@ The specified monetary value assigned to a security or asset. This price is dete
 
 In any exchange, sellers prefer to part with their assets for the highest price possible while investors interested in buying the same asset desire the lowest purchase price possible. At some point, a mutually agreeable price is reached between buyers and sellers. It is at this point that economists say the market has "cleared" and transactions take place. Thus, the clearing price of an asset is the price at which it was most recently traded.
 \end{quote}
+
+
+\subsubsection{Locational marginal price}
+
+TODO explain LMP (-> see ISO New England energy data, smd hourly!)
+
+\subsubsection{System Load}
+
+TODO
+
+Some energy markets provide the total system load as measured by metering. It is used for day-ahead and long term forecasting purposes and in addition it serves as important indicator in reports. The system load for the ISO New England energy market is calculated by $System Load = generation - pumping + net\_interchange$
+
 
 \subsubsection{Forward Capacity Market (FCM)}
 
@@ -177,3 +222,96 @@ A two settlement system has been defined for the PJM power market (PJM standing 
 
 A two-settlement system in power markets is understood as a system comprising a day ahead as well as a real time (balancing) power market\cite{lambert2001creating}. 
 
+
+
+
+\section{Forecasting}
+
+\subsection{Introduction}
+
+Since the occurrence of competitive energy markets forecasting of energy prices has been vital to utility operators. 
+
+
+\subsection{Forecasting models}
+
+
+\subsubsection{Forecasting benchmarks}
+
+
+
+\subsubsection{ARIMA models}
+
+\emph{ARIMA model generation}
+
+Box-Jenkins Methodology
+
+
+
+Neural network forecasting competition (2008): 
+
+\url{http://www.neural-forecasting-competition.com/NN5/}
+
+
+\subsection{Accuracy measures}
+
+
+\subsection{Model selection}
+
+
+\subsection{Energy price related forecasts}
+
+
+
+\section{Cloud-based Simulator}
+
+
+\subsection{Motivation}
+
+\subsection{Structure of simulator}
+
+\subsection{Functional requirements}
+
+\subsection{Non-functional requirements}
+
+\subsection{Incorporating forecast models}
+
+As already discussed in (forecast chapter? TODO) forecasting is an integral component of the simulation as it should support in decision making when assigning workload and performing migrations. Since forecast errors can have a negative impact on workload allocation which may result in non-optimal workload distributions \cite{de2013study} it is of paramount importance that the forecast models are trained thoroughly and forecast errors are kept at a minimum. In order to reduce the impact of forecast errors in the simulation forecasting is done several hours into the future whereby the results are averaged to obtain a broader estimate of energy prices of the near future. 
+
+
+\subsection{Simulation runs}
+
+
+
+\section{Cost models}
+
+Cost models are required to map the servers' energy consumption to costs depending on current energy prices. Different cost models exist exhibiting higher or lower accuracy and differ in their type of calculation. 
+
+In this thesis several assumptions have been made: 
+
+\begin{itemize}
+
+\item \textbf{idle power.} A server has a defined idle power (e.g.~100 Watts (W)). This is the power that is drawn when the server is in idle mode (no tasks are running). 
+
+\item \textbf{peak power.} A server has a defined peak power (e.g.~200 Watts (W)). This is the power that is drawn when the server runs on maximum load (maximum number of tasks running). 
+
+\item \textbf{utilization.} Each server has a utilization between 0 and 100 percent. A utilization of zero percent means the server is idle, in contrast a utilization of hundred percent means the server is at peak load. 
+
+\item \textbf{power consumption.} The power consumption is defined as the effective power consumed by a server during a certain period of time (e.g.~one hour). The result is a measure of power consumed per time (e.g.~150 Watt hours (Wh) for a server running on 50\% utilization for one hour)\footnote{\url{http://whatis.techtarget.com/definition/kilowatt-hour-kWh}}. %Energy can also be measured in Joule (J) where one Watt (W) equals 1 Joule per second (J/s)\footnote{\url{http://en.wikipedia.org/wiki/Kilowatt_hour}}. Thus one kilowatt hour equals $3.6 * 10^6$ kilojoules. 
+
+\item \textbf{energy price.} The energy price is taken from the energy market that the data center is connected to. These prices typically change every hour which is therefore the relevant time interval for all further operations. 
+
+\end{itemize}
+
+From these assumptions a simple cost model can be derived. Since power is measured per hour in Watts and prices are given per Kilowatt Hours (kWh) the power consumed by servers can be directly mapped to energy costs. This model is simplified in that it does not consider frequency scaling or other power measures taken for a server (suspend, sleep mode). Thus it serves as a base for comparing different scenarios and it is also useful to get a first impression on the overall power consumption and costs involved in a given scenario. 
+
+A cost model is essential for evaluating the usefulness of the approach presented in this thesis as the ultimate goal is to reduce energy related costs of geographically distributed and connected data centers based on changing energy prices. 
+
+
+
+
+
+\section{power consumption}
+
+According to a study from the Borderstep Institute of Germany\footnote{\url{http://www.bitkom.org/files/documents/Kurzstudie__Borderstep_l_Rechenzentren.pdf}} the power consumption of servers in Germany alone amounted to 9.7 terawatt hours in 2011 which equalled to about 1.8\% of Germany's total power consumption. From 2008 there has already been a reduction in energy consumption by 1.4 terawatt hours but another 2.3 TWh would have been possible if a "`Green IT"' Scenario would have been applied. Green IT means that only latest technology should be used combined with energy aware hardware to reduce power consumption of servers. 
+
+Another approach to reduce energy consumption is to reduce cooling costs, since they represent a significant part of the overall energy expenses[c]. This relates to the power usage effectiveness (PUE) which indicates the relation of energy expense caused by IT equipment to the overall energy expenses of a data center. It is commonly used as an indicator to show the level of energy efficiency of a data center. 

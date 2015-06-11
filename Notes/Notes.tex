@@ -195,11 +195,23 @@ Developed by The Green Grid, Power usage effectiveness (PUE) is a data center me
 
 \item Energy Elasticity
 
-Denotes the degree to which the energy consumed by a cluster depends on the load placed on it. Ideally, clusters would draw no power in the absence of load. In the worst case, there would be no difference between the peak power and the idle power of a cluster. Present state-of-the-art systems fall somewhere in the middle, with idle power being around 60\% \cite{qureshi2009cutting}.
+Denotes the degree to which the energy consumed by a cluster depends on the load placed on it. Ideally, clusters would draw no power in the absence of load. In the worst case, there would be no difference between the peak power and the idle power of a cluster. Present state-of-the-art systems fall somewhere in the middle, with idle power being around 60\% of peak power\cite{qureshi2009cutting}.
+
+For example, an energy saving server might operate at idle power of 100 Watts and going up to 220 Watts at peak load. The difference of 120 Watts or 55\% would represent the increase of power depending on load. For simplicity reasons, a linear relationship may be assumed. Thus, each increase in load causes an increase in drawing power at a certain rate. The smaller the rate, the lower the energy elasticity and energy efficiency of the server. 
 
 \item Colocation providers
 
 A colocation provider denotes a facility manager that provides space and server infrastructures to industrial customers that rent the space and infrastructure to house their customers' applications. 
+
+\item Server Power Consumption
+
+In an german article of the PrimeEnergyIT Consortium\footnote{\label{primeenergyit}\url{http://www.efficient-datacenter.eu/fileadmin/docs/dam/brochures/primeenergyit_de_FInal.pdf}} it is stated that the server infrastructure is responsible for 30\% - 40\% of the total energy consumption of a data center. Therefore this represents a good entry point for improvements in energy efficiency. 
+
+The power consumption of a server is determined through its installed parts, CPU is responsible for most of the server's power consumption\footnote{See footnote \ref{primeenergyit}}. 
+
+Power consumption can be decreased through dynamic voltage and frequency scaling (decrease CPU cycles) or suspend unused CPU cores or hard disks. Another measure of efficiency specifically for CPUs is the Thermal Design Power (TDP) which measures the maximum thermal power dissipation that can be an indicator of cooling power needs. 
+
+The \emph{SPECpower\_ssj2008} is a reference benchmark for measuring energy efficiency of servers and multi node servers\footnote{\url{https://www.spec.org/power_ssj2008/}}. This is a handy tool to effectively evaluate a server's energy consumption in different scenarios. It can also be shown that there is a significant increase in power consumption with increasing load which is related to energy elasticity. 
 
 \end{itemize}
 
@@ -208,7 +220,7 @@ A colocation provider denotes a facility manager that provides space and server 
 
 \subsection{Definition}
 
-A very general definition of forecasting and its prerequisites is given here\footnote{O-Texts https://www.otexts.org/fpp/1/1}:
+A very general definition of forecasting and its prerequisites is given here\footnote{O-Texts \url{https://www.otexts.org/fpp/1/1}}:
 
 \begin{quote}
 The predictability of an event or a quantity depends on several factors including:
