@@ -13,26 +13,24 @@ Energy markets have emerged steadily from the mid-eighties (Research history!!).
 
 Two main models exist for the exchange and types of trading of energy prices in power markets which are bilateral trading and electricity pooling \cite{onaiwu2009does,hogan1997reshaping,barroso2005classification}.
 
-In bilateral trading utility operators (producers) and energy consumers establish bilateral contracts to determine the terms and conditions applied for trading energy. Generators or producers may also buy electricity from other suppliers in case their own electricity generation does not fit current demand. The exact amount, price and time when tradings take place are negotiated on the contract. Since electricity demand may vary from the negotiated terms the resulting imbalances have to be taken care of by the system operator. 
+In bilateral trading utility operators (producers) and energy consumers establish bilateral contracts to determine the terms and conditions applied for trading energy \cite{onaiwu2009does}. Generators or producers may also buy electricity from other suppliers in case their own electricity generation does not fit current demand. The exact amount, price and time when tradings take place are negotiated on the contract. Since electricity demand may vary from the negotiated terms the resulting imbalances have to be taken care of by the system operator. 
 
 Electricity pooling provides a way for utility operators to offer a certain amount of energy at a set price. Each generator places a bid containing the quantity and expected price \cite{barroso2005classification}. In return consumers place bids on how much they are willing to pay for a given amount of energy. The intersection of the aggregated demand and supply curves defines the energy price for that hour. 
 
-Still customers, brokers and aggregators have the choice to either establish long term contracts of electricity or rely on the short-term market. \cite{hogan1997reshaping}
+Still customers, brokers and aggregators have the choice to either establish long term contracts of electricity or rely on the short-term market \cite{hogan1997reshaping}.
 
 
 \subsubsection{Day ahead vs real time markets}
 
-Both day ahead and real time markets exist within the scope of a deregulated wholesale power market. As discussed above, electricity pooling is a flexible way of determining energy prices for a short period of time \cite{hogan1997reshaping}. Prices are set based on current demand and supply and a price is fixed for a particular point in time. This price is then valid for all market participants during that time period. 
+Both day ahead and real time markets exist within the scope of a deregulated wholesale power market. As discussed above, electricity pooling is a flexible way of determining energy prices for a short period of time in the future \cite{hogan1997reshaping}. Prices are set based on current demand and supply and are fixed for a particular point in time. This price is then valid for all market participants during that time period. 
 
-In day ahead markets bids are placed for each consecutive hour of the following day. Thus prices are determined on a very short timescale and may exhibit a significant volatility. Prices may change substantially from one hour to the next, up to a factor of ten \cite{huisman2007hourly}. Therefore market operators need to apply profound techniques of risk management to alleviate such price spikes. 
+In day ahead markets bids are placed for each consecutive hour of the following day. Thus prices are determined on a very short timescale and may exhibit significant volatility. Prices may change substantially from one hour to the next, up to a factor of ten \cite{huisman2007hourly}. Therefore market operators need to apply profound risk management techniques to alleviate such price spikes. 
 %it is hard to predict
 
 The real time market on the other hand is used to compensate demand variations during the day which may result in additional changes in energy price. 
 Due to this characteristic the real time market prices exhibit an even greater volatility than prices at the day-ahead market whereby the latter is generally used for reference. 
 
 TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
-
-TODO Discuss impact of evaluation of bandwidth costs. In \cite{rao2010minimizing} (page 7) bandwidth costs are deliberately neglected, but the option should be discussed at least. 
 
 
 \subsection{Summary of selected energy markets}
@@ -275,6 +273,8 @@ Neural network forecasting competition (2008):
 \subsection{Structure of simulator}
 
 \subsection{Functional requirements}
+
+TODO Discuss impact of evaluation of bandwidth costs. In \cite{rao2010minimizing} (page 7) bandwidth costs are deliberately neglected, but the option should be discussed at least. 
 
 \subsection{Non-functional requirements}
 
