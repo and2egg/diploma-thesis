@@ -27,8 +27,8 @@ Both day ahead and real time markets exist within the scope of a deregulated who
 In day ahead markets bids are placed for each consecutive hour of the following day. Thus prices are determined on a very short timescale and may exhibit significant volatility. Prices may change substantially from one hour to the next, up to a factor of ten \cite{huisman2007hourly}. Therefore market operators need to apply profound risk management techniques to alleviate such price spikes. 
 %it is hard to predict
 
-The real time market on the other hand is used to compensate demand variations during the day which may result in additional changes in energy price. 
-Due to this characteristic the real time market prices exhibit an even greater volatility than prices at the day-ahead market whereby the latter is generally used for reference. 
+The real time market on the other hand is used to compensate demand variations during the day which may result in additional changes in energy prices. 
+Due to this characteristic the real time market prices exhibit an even greater volatility than those at the day-ahead market whereby the latter is generally used for reference. 
 
 TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
 
@@ -196,7 +196,7 @@ TODO
 Some energy markets provide the total system load as measured by metering. It is used for day-ahead and long term forecasting purposes and in addition it serves as important indicator in reports. The system load for the ISO New England energy market is calculated by $System Load = generation - pumping + net\_interchange$
 
 
-\subsubsection{Forward Capacity Market (FCM)}
+\subsubsection{Forward Capacity Market (FCM)} 
 
 A forward capacity market is used to ensure having enough capacity for a specific amount of time into the future. A capacity commitment period (CCP) ensures that a certain amount of capacity will be available during that period. For example, the CCP at ISO-NE is set as one year ranging from June 1st until May 31st. 
 
@@ -239,6 +239,28 @@ Since the occurrence of competitive energy markets forecasting of energy prices 
 
 
 \subsection{Forecasting models}
+
+TODO Discussion of suitable models for price series from energy markets
+
+
+\subsubsection{Random walk}
+
+A random walk model is best suited for series that exhibit major fluctuations on a short term and where no apparent trend can be recognized \cite{makridakisforecasting}(pg. 461). Thus this model can be described by an accumulation of a random error over time (equation \ref{eq:random_walk}). 
+
+\begin{equation} \label{eq:random_walk}
+Y_t = \sum e_t
+\end{equation}
+
+$Y_t$ denotes the value of the time series at time point $t$ whereas $e_t$ is a timeseries of random errors where the errors exhibit no correlation and are normally distributed \cite{makridakisforecasting}(pg. 461). 
+
+In \cite{makridakisforecasting}(pg. 464) it is stated that the behavior of economic and business series in particular can be characterized by a random walk model since they show so-called cycles or random fluctuations around a possible trend. 
+
+As it is impossible to accurately predict upcoming values or cycles of a random walk model by definition one of the most suitable prediction models is the ``naive forecast'' where the forecasted value of the upcoming timestamp is set equal to the last observed value (equation \ref{eq:naive_forecast}).
+
+\begin{equation} \label{eq:naive_forecast}
+\hat{Y}_{t+i} = Y_t
+\end{equation}
+
 
 
 \subsubsection{Forecasting benchmarks}
