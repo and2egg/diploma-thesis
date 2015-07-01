@@ -30,6 +30,8 @@ In day ahead markets bids are placed for each consecutive hour of the following 
 The real time market on the other hand is used to compensate demand variations during the day which may result in additional changes in energy prices. 
 Due to this characteristic the real time market prices exhibit an even greater volatility than those at the day-ahead market whereby the latter is generally used for reference. 
 
+TODO Explain difference of intraday - real time markets. Same? See \url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}. 
+
 TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
 
 
@@ -42,7 +44,34 @@ TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluat
 
 The NordPoolSpot market is the most mature power market to date and has been the first energy market that was established in Europe [c]. 
 
-The NordPoolSpot power market consists of four different markets. [c BEGIN]
+The NordPoolSpot power market consists of four different markets. (... relevant citations are found below)
+
+
+As discussed before some markets exhibit strong seasonalities, while others do not. Nord Pool Spot is an example of a power market with obvious seasonalities in the data which can be taken advantage of when creating forecasting models. 
+
+Below two hourly time series from two locations within Nord Pool Spot are displayed that show significant seasonal behavior. 
+See figures \ref{fig:hourly_prices_finland} and \ref{fig:hourly_prices_sweden}.
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{figures/methodology/hourly_prices_finland.PNG}
+	\caption{Finland hourly prices}
+	\label{fig:hourly_prices_finland}
+\end{figure}
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{figures/methodology/hourly_prices_sweden.PNG}
+	\caption{Sweden hourly prices}
+	\label{fig:hourly_prices_sweden}
+\end{figure}
+
+
+
+
+
+
+[c BEGIN]
 
 \begin{itemize}[-]
 
@@ -186,6 +215,8 @@ In any exchange, sellers prefer to part with their assets for the highest price 
 
 
 \subsubsection{Locational marginal price}
+
+See definition by ISO-NE\footnote{\url{http://www.iso-ne.com/participate/support/faq/lmp}}. 
 
 TODO explain LMP (-> see ISO New England energy data, smd hourly!)
 
@@ -342,6 +373,6 @@ A cost model is essential for evaluating the usefulness of the approach presente
 
 \section{power consumption}
 
-According to a study from the Borderstep Institute of Germany\footnote{\url{http://www.bitkom.org/files/documents/Kurzstudie__Borderstep_l_Rechenzentren.pdf}} the power consumption of servers in Germany alone amounted to 9.7 terawatt hours in 2011 which equalled to about 1.8\% of Germany's total power consumption. From 2008 there has already been a reduction in energy consumption by 1.4 terawatt hours but another 2.3 TWh would have been possible if a "`Green IT"' Scenario would have been applied. Green IT means that only latest technology should be used combined with energy aware hardware to reduce power consumption of servers. 
+According to a study from the Borderstep Institute of Germany\footnote{\url{http://www.bitkom.org/files/documents/Kurzstudie__Borderstep_l_Rechenzentren.pdf}} the power consumption of servers in Germany alone amounted to 9.7 terawatt hours in 2011 which equaled to about 1.8\% of Germany's total power consumption. From 2008 there has already been a reduction in energy consumption by 1.4 terawatt hours but another 2.3 TWh would have been possible if a "`Green IT"' Scenario would have been applied. Green IT means that only latest technology should be used combined with energy aware hardware to reduce power consumption of servers. 
 
 Another approach to reduce energy consumption is to reduce cooling costs, since they represent a significant part of the overall energy expenses[c]. This relates to the power usage effectiveness (PUE) which indicates the relation of energy expense caused by IT equipment to the overall energy expenses of a data center. It is commonly used as an indicator to show the level of energy efficiency of a data center. 
