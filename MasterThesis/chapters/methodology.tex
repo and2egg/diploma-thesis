@@ -4,20 +4,32 @@
 
 Energy markets have emerged steadily from the mid-eighties (Research history!!). 
 
-
+An outline of a possible implementation of a competitive energy market is depicted in \cite{hogan1993competitive} which is still valid as of today in many respects. A competitive market captures the advantage of market participants being able to actively shaping the clearing price applicable to both producers and consumers in the market. 
 
 
 
 
 \subsection{Types of energy markets}
 
-Two main models exist for the exchange and types of trading of energy prices in power markets which are bilateral trading and electricity pooling \cite{onaiwu2009does,hogan1997reshaping,barroso2005classification}.
+Two main models exist for the exchange and types of trading of energy prices in power markets which are bilateral trading and electricity pooling, also called loose pool and tight pool models \cite{onaiwu2009does,hogan1997reshaping,barroso2005classification,reston2012short}.
 
-In bilateral trading utility operators (producers) and energy consumers establish bilateral contracts to determine the terms and conditions applied for trading energy \cite{onaiwu2009does}. Generators or producers may also buy electricity from other suppliers in case their own electricity generation does not fit current demand. The exact amount, price and time when tradings take place are negotiated on the contract. Since electricity demand may vary from the negotiated terms the resulting imbalances have to be taken care of by the system operator. 
+\subsubsection{Loose pool models}
 
-Electricity pooling provides a way for utility operators to offer a certain amount of energy at a set price. Each generator places a bid containing the quantity and expected price \cite{barroso2005classification}. In return consumers place bids on how much they are willing to pay for a given amount of energy. The intersection of the aggregated demand and supply curves defines the energy price for that hour. 
+In bilateral trading or loose pool models utility operators (producers) and energy consumers establish bilateral contracts to determine the terms and conditions applied for trading energy \cite{onaiwu2009does,kalverboer2001electricity}. Generators or producers may also buy electricity from other suppliers in case their own electricity generation does not fit current demand. The exact amount, price and time when tradings take place are negotiated on the contract. Since electricity demand may vary from the negotiated terms the resulting imbalances have to be taken care of by the system operator. 
+
+\subsubsection{Tight pool models}
+
+Electricity pooling in tight pool models provide a way for utility operators to offer a certain amount of energy at a set price. Each generator places a bid containing the quantity and expected price \cite{barroso2005classification}. In return consumers place bids on how much they are willing to pay for a given amount of energy. The intersection of the aggregated demand and supply curves defines the energy price for that hour. 
 
 Still customers, brokers and aggregators have the choice to either establish long term contracts of electricity or rely on the short-term market \cite{hogan1997reshaping}.
+
+
+
+Google Search "`loose pool models"'
+
+See also paper "`Electricity Transmission Pricing and Technology"' and chapter "`Making bilateral competition work"'
+
+\url{https://books.google.at/books?id=ycLrCAAAQBAJ&pg=PA282&lpg=PA282&dq=Electricity+Transmission+Pricing+and+Technology&source=bl&ots=okH3qUKJwi&sig=MTrGTYJRV5_KmJP9mbdo6GexiPg&hl=de&sa=X&ved=0CDIQ6AEwAmoVChMI3ce_q_XmxgIVBD8UCh1ngQpT#v=onepage&q=Electricity\%20Transmission\%20Pricing\%20and\%20Technology&f=false}
 
 
 \subsubsection{Day ahead vs real time markets}
@@ -35,7 +47,7 @@ TODO Explain difference of intraday - real time markets. Same? See \url{http://w
 TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
 
 
-\subsection{Summary of selected energy markets}
+\subsection{Outline of selected energy markets}
 
 
 
@@ -187,6 +199,30 @@ Example:
 A summary of all data that is available is provided for day ahead as well as real time prices\footnote{\url{http://www.iso-ne.com/isoexpress/web/reports/pricing/-/tree/zone-info}}. It is described as ``zonal information'' on the website to emphasize the locational character of the prices. 
 
 
+\subsubsection{EEX}
+
+The European Energy Exchange (EEX) is a power market operating for the market area of France, Germany/Austria and Switzerland. Each of these regions exhibits a separate spot market where prices are traded for the respective country. 
+The actual trading takes place on EPEX SPOT, an organisation that drives the integration of power markets in Europe where EEX is a part of. It consists of an intraday (real time) and day ahead market for trading during the day and for the next day, respectively. 
+
+Several info products are available on the market for end-of-day data (EOD) that cover historical as well as current trading data from the spot and derivatives markets. 
+Data is available on subscription for all of the above mentioned regions. Available data formats include csv, excel and xml files, provided on demand on a ftp server. 
+Depending on the type of product and the time period available different fees apply and have to be paid in advance. 
+Access is granted to a vast amount of historical energy price data for the derivatives as well as the spot market for energy and other commodities like natural gas and coal where both prices and trading volumes are included. 
+
+Naming conventions designating the different areas of trading are defined as follows: 
+
+\begin{itemize}
+
+\item \emph{PHELIX} The Physical Electricity Index denotes the area of Germany and Austria
+
+\item \emph{SWISSIX} The Swiss Index denotes the area of Switzerland
+
+\item \emph{FRANCE} The index for France denotes the area of France
+
+\item \emph{ELIX} The European Electricity Index defines prices valid for all of Europe (?)
+
+\end{itemize}
+
 
 \subsubsection{PJM}
 
@@ -198,6 +234,11 @@ See at \url{http://www.pjm.com/}.
 OMIE represents the wholesale energy market for the iberian region. \footnote{\url{http://www.omel.com/en/inicio}}
 
 EDP (Energias de Portugal) is an energy company in cooperation with the wholesale electricity market for Spain, Portugal and is also responsible for delivery and transmission of energy to other countries. \footnote{\url{http://www.edp.pt/en/aedp/sectordeenergia/sistemaelectricoespanhol/Pages/SistElectES.aspx}}
+
+
+\subsubsection{Brazilian power market}
+
+The brazilian power market exhibits special conditions as it is heavily based on hydro power generation \cite{reston2012short}. In this market the tight pool model is applied where generation dispatch is centralized by an Independent System Operator (ISO). 
 
 
 
@@ -214,11 +255,38 @@ In any exchange, sellers prefer to part with their assets for the highest price 
 \end{quote}
 
 
+
+google Search : "`tight pool models electricity"'
+
+Google Books "`Making Competition Work in Electricity"'
+\url{https://books.google.at/books?id=Pki4tu3P8iIC&pg=PA286\&lpg=PA286\&dq=tight+pool+models+electricity\&source=bl\&ots=drkU0A9H3C\&sig=m_J7JCkGjf5ydml2fdbFQB50ojE\&hl=de\&sa=X\&ved=0CCQQ6AEwAGoVChMIgoLZjffmxgIVTLYUCh3DEQBT#v=onepage\&q=tight\%20pool\%20models\%20electricity\&f=false}
+
+Also see Figure 3.2 in the book on page 43. 
+
+Chapter 4: Requirements for competition- Demand side
+
+See Figure \ref{fig:market_demand_supply}
+
+
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics{figures/methodology/market_demand_supply.PNG}
+	\caption{Demand Supply Chart}
+	\label{fig:market_demand_supply}
+\end{figure}
+
+
+
 \subsubsection{Locational marginal price}
 
 See definition by ISO-NE\footnote{\url{http://www.iso-ne.com/participate/support/faq/lmp}}. 
 
-TODO explain LMP (-> see ISO New England energy data, smd hourly!)
+TODO explain LMP (-> see ISO New England energy data, \textbf{smd hourly}!)
+
+\subsubsection{System marginal price (SMP)}
+
+Used e.g.~in \cite{szkuta1999electricity}. 
 
 \subsubsection{System Load}
 
@@ -294,9 +362,6 @@ As it is impossible to accurately predict upcoming values or cycles of a random 
 
 
 
-\subsubsection{Forecasting benchmarks}
-
-
 
 \subsubsection{ARIMA models}
 
@@ -306,9 +371,25 @@ Box-Jenkins Methodology
 
 
 
+\subsubsection{Neural Network models}
+
+An approach of using artificial neural networks (ANN) as a model to forecast short term electricity prices is presented in \cite{szkuta1999electricity}. 
+
+
+\paragraph{Competition}
+
 Neural network forecasting competition (2008): 
 
 \url{http://www.neural-forecasting-competition.com/NN5/}
+
+
+
+
+\subsubsection{Forecasting benchmarks}
+
+
+
+
 
 
 \subsection{Accuracy measures}
