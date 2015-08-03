@@ -2,7 +2,7 @@
 
 \section{Energy markets}
 
-Energy markets have emerged steadily from the mid-eighties (Research history!!). 
+%Energy markets have emerged steadily from the mid-eighties. 
 
 An outline of a possible implementation of a competitive energy market is depicted in \cite{hogan1993competitive} which is still valid as of today in many respects. A competitive market captures the advantage of market participants being able to actively shaping the clearing price applicable to both producers and consumers in the market. 
 
@@ -25,11 +25,11 @@ Still customers, brokers and aggregators have the choice to either establish lon
 
 
 
-Google Search "`loose pool models"'
+%Google Search "`loose pool models"'
 
-See also paper "`Electricity Transmission Pricing and Technology"' and chapter "`Making bilateral competition work"'
+%See also paper "`Electricity Transmission Pricing and Technology"' and chapter "`Making bilateral competition work"'
 
-\url{https://books.google.at/books?id=ycLrCAAAQBAJ&pg=PA282&lpg=PA282&dq=Electricity+Transmission+Pricing+and+Technology&source=bl&ots=okH3qUKJwi&sig=MTrGTYJRV5_KmJP9mbdo6GexiPg&hl=de&sa=X&ved=0CDIQ6AEwAmoVChMI3ce_q_XmxgIVBD8UCh1ngQpT#v=onepage&q=Electricity\%20Transmission\%20Pricing\%20and\%20Technology&f=false}
+%\url{https://books.google.at/books?id=ycLrCAAAQBAJ&pg=PA282&lpg=PA282&dq=Electricity+Transmission+Pricing+and+Technology&source=bl&ots=okH3qUKJwi&sig=MTrGTYJRV5_KmJP9mbdo6GexiPg&hl=de&sa=X&ved=0CDIQ6AEwAmoVChMI3ce_q_XmxgIVBD8UCh1ngQpT#v=onepage&q=Electricity\%20Transmission\%20Pricing\%20and\%20Technology&f=false}
 
 
 \subsubsection{Day ahead vs real time markets}
@@ -42,9 +42,9 @@ In day ahead markets bids are placed for each consecutive hour of the following 
 The real time market on the other hand is used to compensate demand variations during the day which may result in additional changes in energy prices. 
 Due to this characteristic the real time market prices exhibit an even greater volatility than those at the day-ahead market whereby the latter is generally used for reference. 
 
-TODO Explain difference of intraday - real time markets. Same? See \url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}. 
+%TODO Explain difference of intraday - real time markets. Same? See \url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}. 
 
-TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
+%TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
 
 
 \subsection{Outline of selected energy markets}
@@ -56,7 +56,7 @@ TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluat
 
 The NordPoolSpot market is the most mature power market to date and has been the first energy market that was established in Europe [c]. 
 
-The NordPoolSpot power market consists of four different markets. (... relevant citations are found below)
+The NordPoolSpot power market consists of four different markets. %(... relevant citations are found below)
 
 
 As discussed before some markets exhibit strong seasonalities, while others do not. Nord Pool Spot is an example of a power market with obvious seasonalities in the data which can be taken advantage of when creating forecasting models. 
@@ -81,120 +81,120 @@ See figures \ref{fig:hourly_prices_finland} and \ref{fig:hourly_prices_sweden}.
 
 
 
-
-
-[c BEGIN]
-
-\begin{itemize}[-]
-
-\item Financial market (Nasdaq OMX)
-Used for managing risks. Cash settled futures,
-forwards and options. Contracts can be made for
-up to six years. The system price is used as
-reference price.
-
-\item Day-ahead market (Nord Pool Spot)
-Day-ahead auction of power for delivery the next
-day. Nord Pool Spot calculates power prices
-based on supply and demand for every hour the
-following day.
-
-\item Intraday market (Nord Pool Spot)
-Continuous trading up to 30 minutes before
-delivery to adjust power production or
-consumption plans.
-
-\item Balancing market (TSOs)
-Operated by the respective transmission system
-operators. Final adjustments are made to ensure
-the correct frequency in the grid and security of
-supply
-
-\end{itemize}
-
-\emph{The future is Europe}
-
-The future of power trading lies in the
-creation of a single, integrated
-European market and an integrated
-platform.
-This will be the most advanced power
-market yet, offering efficiency in:
-
-\begin{itemize}
-\item Membership
-\item Management of collateral
-\item Cost
-\end{itemize}
-
-[c END] - Nord Pool Spot - Europe's leading power market \url{http://www.nordpoolspot.com/globalassets/download-center/annual-report/nord-pool-spot_europes-leading-power-markets.pdf}
-
-
-
-
-Nord Pool Spot - Day ahead market
-
-[c BEGIN]
-
-The day-ahead market, Elspot , is the main arena for trading power in the Nordic and Baltic region. Here, contracts are made between seller and buyer for the delivery of power the following day, the price is set and the trade is agreed.
-
-Today there are around 360 buyers and sellers (called members) on Elspot. Most of them trade every day, placing a total of around 2000 orders for power contracts on a daily basis.
-
-\emph{Driven by planning}
-
-Daily trading is driven by the members’ planning. A buyer, typically a utility, needs to assess how much energy (‘volume’) it will need to meet demand the following day, and how much it is willing to pay for this volume, hour by hour. The seller, for example the owner of a hydroelectric power plant, needs to decide how much he can deliver and at what price, hour by hour. These needs are reflected through orders entered by buyers and sellers into the Elspot trading system.
-
-\emph{Setting the price and closing the deal}
-
-12:00 CET is the deadline for submitting bids for power which will be delivered the following day. Elspot feeds the information into a specialist computer system which calculates the price, based on an advanced algorithm. Put simply, the price is set where the curves for sell price and buy price meet.
-
-\emph{Supply and demand}
-
-Hourly prices are typically announced to the market at 12:42 CET or later. Once the market prices have been calculated, trades are settled. From 00:00 CET the next day, power contracts are physically delivered (meaning that the power is provided to the buyer) hour for hour according to the contracts agreed.
-
-\emph{The cost of transmission constraints}
-
-While supply and demand are the key factors determining the hourly market prices, transmission capacity also plays a role. Bottlenecks can occur where power connections are linked to each other, if large volumes need to be transmitted to meet demand. To relieve this congestion, different area prices are introduced. In other words, when transmission capacity gets constrained, the price is raised to reduce demand in the areas affected.
-
-[c END] - Nord pool Spot Elspot Market \url{http://www.nordpoolspot.com/How-does-it-work/Day-ahead-market-Elspot-/}
+%
+%
+%[c BEGIN]
+%
+%\begin{itemize}[-]
+%
+%\item Financial market (Nasdaq OMX)
+%Used for managing risks. Cash settled futures,
+%forwards and options. Contracts can be made for
+%up to six years. The system price is used as
+%reference price.
+%
+%\item Day-ahead market (Nord Pool Spot)
+%Day-ahead auction of power for delivery the next
+%day. Nord Pool Spot calculates power prices
+%based on supply and demand for every hour the
+%following day.
+%
+%\item Intraday market (Nord Pool Spot)
+%Continuous trading up to 30 minutes before
+%delivery to adjust power production or
+%consumption plans.
+%
+%\item Balancing market (TSOs)
+%Operated by the respective transmission system
+%operators. Final adjustments are made to ensure
+%the correct frequency in the grid and security of
+%supply
+%
+%\end{itemize}
+%
+%\emph{The future is Europe}
+%
+%The future of power trading lies in the
+%creation of a single, integrated
+%European market and an integrated
+%platform.
+%This will be the most advanced power
+%market yet, offering efficiency in:
+%
+%\begin{itemize}
+%\item Membership
+%\item Management of collateral
+%\item Cost
+%\end{itemize}
+%
+%[c END] - Nord Pool Spot - Europe's leading power market \url{http://www.nordpoolspot.com/globalassets/download-center/annual-report/nord-pool-spot_europes-leading-power-markets.pdf}
 
 
 
-Nord Pool Spot - Intraday market
 
-[c BEGIN]
+%Nord Pool Spot - Day ahead market
+%
+%[c BEGIN]
+%
+%The day-ahead market, Elspot , is the main arena for trading power in the Nordic and Baltic region. Here, contracts are made between seller and buyer for the delivery of power the following day, the price is set and the trade is agreed.
+%
+%Today there are around 360 buyers and sellers (called members) on Elspot. Most of them trade every day, placing a total of around 2000 orders for power contracts on a daily basis.
+%
+%\emph{Driven by planning}
+%
+%Daily trading is driven by the members’ planning. A buyer, typically a utility, needs to assess how much energy (‘volume’) it will need to meet demand the following day, and how much it is willing to pay for this volume, hour by hour. The seller, for example the owner of a hydroelectric power plant, needs to decide how much he can deliver and at what price, hour by hour. These needs are reflected through orders entered by buyers and sellers into the Elspot trading system.
+%
+%\emph{Setting the price and closing the deal}
+%
+%12:00 CET is the deadline for submitting bids for power which will be delivered the following day. Elspot feeds the information into a specialist computer system which calculates the price, based on an advanced algorithm. Put simply, the price is set where the curves for sell price and buy price meet.
+%
+%\emph{Supply and demand}
+%
+%Hourly prices are typically announced to the market at 12:42 CET or later. Once the market prices have been calculated, trades are settled. From 00:00 CET the next day, power contracts are physically delivered (meaning that the power is provided to the buyer) hour for hour according to the contracts agreed.
+%
+%\emph{The cost of transmission constraints}
+%
+%While supply and demand are the key factors determining the hourly market prices, transmission capacity also plays a role. Bottlenecks can occur where power connections are linked to each other, if large volumes need to be transmitted to meet demand. To relieve this congestion, different area prices are introduced. In other words, when transmission capacity gets constrained, the price is raised to reduce demand in the areas affected.
+%
+%[c END] - Nord pool Spot Elspot Market \url{http://www.nordpoolspot.com/How-does-it-work/Day-ahead-market-Elspot-/}
 
-Elbas  is an intraday market for trading power operated by Nord Pool Spot. Covering the Nordic and Baltic region as well as Germany and recently extended to include the UK, Elbas supplements Elspot and helps secure the necessary balance between supply and demand in the power market for Northern Europe.
 
-The majority of the volume handled by Nord Pool Spot is traded on the day-ahead market. For the most part, the balance between supply and demand is secured here. However, incidents may take place between the closing of Elspot at noon CET and delivery the next day. A nuclear power plant may stop operating in Sweden, or strong winds may cause higher power generation than planned at wind turbine plants in Germany. At Elbas, buyers and sellers can trade volumes close to real time to bring the market back in balance.
 
-Trading close to real time
-
-At 14:00 CET, capacities available for Elbas trading are published. Elbas is a continuous market, and trading takes place every day around the clock until one hour before delivery. Prices are set based on a first-come, first-served principle, where best prices come first – highest buy price and lowest sell price.
-
-Increasingly important
-
-The intraday market is becoming increasingly important as more wind power enters the grid. Wind power is unpredictable by nature, and imbalances between day-ahead contracts and produced volume often need to be offset. Elbas will play a key role in the development of intraday power trading in Europe. Future prospects indicate exponential growth, reaching 1.900 GW installed wind capacity worldwide in 2020 (Source: World Wind Energy Association). This type of market can be a key enabler to increase the share of renewable energy in the energy mix. 
-
-[c END] - Nord pool Spot Intraday Market \url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}
+%Nord Pool Spot - Intraday market
+%
+%[c BEGIN]
+%
+%Elbas  is an intraday market for trading power operated by Nord Pool Spot. Covering the Nordic and Baltic region as well as Germany and recently extended to include the UK, Elbas supplements Elspot and helps secure the necessary balance between supply and demand in the power market for Northern Europe.
+%
+%The majority of the volume handled by Nord Pool Spot is traded on the day-ahead market. For the most part, the balance between supply and demand is secured here. However, incidents may take place between the closing of Elspot at noon CET and delivery the next day. A nuclear power plant may stop operating in Sweden, or strong winds may cause higher power generation than planned at wind turbine plants in Germany. At Elbas, buyers and sellers can trade volumes close to real time to bring the market back in balance.
+%
+%Trading close to real time
+%
+%At 14:00 CET, capacities available for Elbas trading are published. Elbas is a continuous market, and trading takes place every day around the clock until one hour before delivery. Prices are set based on a first-come, first-served principle, where best prices come first – highest buy price and lowest sell price.
+%
+%Increasingly important
+%
+%The intraday market is becoming increasingly important as more wind power enters the grid. Wind power is unpredictable by nature, and imbalances between day-ahead contracts and produced volume often need to be offset. Elbas will play a key role in the development of intraday power trading in Europe. Future prospects indicate exponential growth, reaching 1.900 GW installed wind capacity worldwide in 2020 (Source: World Wind Energy Association). This type of market can be a key enabler to increase the share of renewable energy in the energy mix. 
+%
+%[c END] - Nord pool Spot Intraday Market \url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}
 
 
 
 
 \subsubsection{ISO New England}
 
-The market of ISO New England is located at \url{http://www.iso-ne.com/}. It offers day ahead as well as real time energy prices where day ahead prices are available at an hourly interval while (preliminary) real time prices are available both at hourly and five minute intervals. 
+The market of ISO New England offers day ahead as well as real time energy prices where day ahead prices are available at an hourly interval while (preliminary) real time prices are available both at hourly and five minute intervals\footnote{\url{http://www.iso-ne.com/}}. 
 
 Current locational marginal prices (LMPs) can be downloaded from a base url\footnote{\url{http://www.iso-ne.com/static-transform/csv/histRpts/da-lmp/}} and a specialized suffix depending on the file and date (e.g.~WW\_DALMP\_ISO\_20150414.csv). In this case, files are provided in csv format for better machine processing. 
 
-Example: 
-\begin{verbatim}
-	H,"Date","Hour Ending","Location ID","Location Name","Location Type","Locational Marginal Price",
-	"Energy Component","Congestion Component","Marginal Loss Component"
-	D,"04/14/2015","02","4006",".Z.SEMASS","LOAD ZONE",14.82,14.85,0.01,-0.04
-	D,"04/14/2015","02","4007",".Z.WCMASS","LOAD ZONE",14.94,14.85,0.01,0.08
-	D,"04/14/2015","02","4008",".Z.NEMASSBOST","LOAD ZONE",14.84,14.85,0.01,-0.02
-\end{verbatim}
+%Example: 
+%\begin{verbatim}
+	%H,"Date","Hour Ending","Location ID","Location Name","Location Type","Locational Marginal Price",
+	%"Energy Component","Congestion Component","Marginal Loss Component"
+	%D,"04/14/2015","02","4006",".Z.SEMASS","LOAD ZONE",14.82,14.85,0.01,-0.04
+	%D,"04/14/2015","02","4007",".Z.WCMASS","LOAD ZONE",14.94,14.85,0.01,0.08
+	%D,"04/14/2015","02","4008",".Z.NEMASSBOST","LOAD ZONE",14.84,14.85,0.01,-0.02
+%\end{verbatim}
 
 A summary of all data that is available is provided for day ahead as well as real time prices\footnote{\url{http://www.iso-ne.com/isoexpress/web/reports/pricing/-/tree/zone-info}}. It is described as ``zonal information'' on the website to emphasize the locational character of the prices. 
 
@@ -256,16 +256,16 @@ In any exchange, sellers prefer to part with their assets for the highest price 
 
 
 
-google Search : "`tight pool models electricity"'
+%google Search : "`tight pool models electricity"'
+%
+%Google Books "`Making Competition Work in Electricity"'
+%\url{https://books.google.at/books?id=Pki4tu3P8iIC&pg=PA286\&lpg=PA286\&dq=tight+pool+models+electricity\&source=bl\&ots=drkU0A9H3C\&sig=m_J7JCkGjf5ydml2fdbFQB50ojE\&hl=de\&sa=X\&ved=0CCQQ6AEwAGoVChMIgoLZjffmxgIVTLYUCh3DEQBT#v=onepage\&q=tight\%20pool\%20models\%20electricity\&f=false}
+%
+%Also see Figure 3.2 in the book on page 43. 
+%
+%Chapter 4: Requirements for competition- Demand side
 
-Google Books "`Making Competition Work in Electricity"'
-\url{https://books.google.at/books?id=Pki4tu3P8iIC&pg=PA286\&lpg=PA286\&dq=tight+pool+models+electricity\&source=bl\&ots=drkU0A9H3C\&sig=m_J7JCkGjf5ydml2fdbFQB50ojE\&hl=de\&sa=X\&ved=0CCQQ6AEwAGoVChMIgoLZjffmxgIVTLYUCh3DEQBT#v=onepage\&q=tight\%20pool\%20models\%20electricity\&f=false}
-
-Also see Figure 3.2 in the book on page 43. 
-
-Chapter 4: Requirements for competition- Demand side
-
-See Figure \ref{fig:market_demand_supply}
+The clearing price is set at the intersection of the demand and supply curves, see Figure \ref{fig:market_demand_supply}
 
 
 
@@ -282,15 +282,15 @@ See Figure \ref{fig:market_demand_supply}
 
 See definition by ISO-NE\footnote{\url{http://www.iso-ne.com/participate/support/faq/lmp}}. 
 
-TODO explain LMP (-> see ISO New England energy data, \textbf{smd hourly}!)
+%TODO explain LMP (-> see ISO New England energy data, \textbf{smd hourly}!)
 
 \subsubsection{System marginal price (SMP)}
 
-Used e.g.~in \cite{szkuta1999electricity}. 
+A price type described by \cite{szkuta1999electricity}. 
 
 \subsubsection{System Load}
 
-TODO
+%TODO
 
 Some energy markets provide the total system load as measured by metering. It is used for day-ahead and long term forecasting purposes and in addition it serves as important indicator in reports. The system load for the ISO New England energy market is calculated by $System Load = generation - pumping + net\_interchange$
 
@@ -306,9 +306,9 @@ This auction is carried out three years ahead of the related CCP to ensure that 
 
 At the FCM of ISO New England there is also the option of making a composite offer where different capacity resources may join their capacity offers (useful i.e.~in case of single season capacities) to result in a single resource offer at the market. 
 
-Capacity resources <-> energy suppliers/providers?
+%Capacity resources <-> energy suppliers/providers?
 
-See definition at the website of ISO NE\footnote{\url{http://www.iso-ne.com/markets-operations/markets/forward-capacity-market}}.
+%See definition at the website of ISO NE\footnote{\url{http://www.iso-ne.com/markets-operations/markets/forward-capacity-market}}.
 
 \subsubsection{Regulation market}
 
@@ -339,7 +339,8 @@ Since the occurrence of competitive energy markets forecasting of energy prices 
 
 \subsection{Forecasting models}
 
-TODO Discussion of suitable models for price series from energy markets
+%TODO
+Discussion of suitable models for price time series from various energy markets. 
 
 
 \subsubsection{Random walk}
@@ -368,8 +369,7 @@ As it is impossible to accurately predict upcoming values or cycles of a random 
 
 \emph{ARIMA model generation}
 
-Box-Jenkins Methodology
-
+See Box-Jenkins Methodology. 
 
 
 \subsubsection{Neural Network models}
@@ -379,9 +379,7 @@ An approach of using artificial neural networks (ANN) as a model to forecast sho
 
 \paragraph{Competition}
 
-Neural network forecasting competition (2008): 
-
-\url{http://www.neural-forecasting-competition.com/NN5/}
+Neural network forecasting competition available from 2008\footnote{\url{http://www.neural-forecasting-competition.com/NN5/}}. 
 
 
 
@@ -459,13 +457,16 @@ See \url{http://www.isixsigma.com/tools-templates/normality/making-data-normal-u
 
 \subsection{Functional requirements}
 
-TODO Discuss impact of evaluation of bandwidth costs. In \cite{rao2010minimizing} (page 7) bandwidth costs are deliberately neglected, but the option should be discussed at least. 
+%TODO 
+Discuss impact of evaluation of bandwidth costs. In \cite{rao2010minimizing} %(page 7) 
+bandwidth costs are deliberately neglected, but the option should be still taken into account. As these costs directly relate to costs of migrations it is vital to include and model them within the scenarios. 
 
 \subsection{Non-functional requirements}
 
 \subsection{Incorporating forecast models}
 
-As already discussed in (forecast chapter? TODO) forecasting is an integral component of the simulation as it should support in decision making when assigning workload and performing migrations. Since forecast errors can have a negative impact on workload allocation which may result in non-optimal workload distributions \cite{de2013study} it is of paramount importance that the forecast models are trained thoroughly and forecast errors are kept at a minimum. In order to reduce the impact of forecast errors in the simulation forecasting is done several hours into the future whereby the results are averaged to obtain a broader estimate of energy prices of the near future. 
+As already discussed in the introduction %TODO WHERE ?(forecast chapter? TODO) 
+forecasting is an integral component of the simulation as it should support in decision making when assigning workload and performing migrations. Since forecast errors can have a negative impact on workload allocation which may result in non-optimal workload distributions \cite{de2013study} it is of paramount importance that the forecast models are trained thoroughly and forecast errors are kept at a minimum. In order to reduce the impact of forecast errors in the simulation forecasting is done several hours into the future whereby the results are averaged to obtain a broader estimate of energy prices of the near future. 
 
 
 \subsection{Simulation runs}
