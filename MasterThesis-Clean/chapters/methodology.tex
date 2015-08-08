@@ -44,7 +44,19 @@ Due to this characteristic the real time market prices exhibit an even greater v
 
 %TODO Explain difference of intraday - real time markets. Same? See \url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}. 
 
+% Another resource (intraday market): https://www.next-kraftwerke.de/wissen/strommarkt/intraday-handel
+
+% EPEX Spot - Intraday
+
+%Der Intraday-Handel dient primär dazu, Fehlmengen oder Überschüsse des eigenen Bilanzkreises durch kurzfristige, untertägige Handelsaktivitäten so gering wie möglich zu halten, um den Prognoseverpflichtungen des Bilanzkreisvertrages nachzukommen und etwaige Ausgleichsenergiekosten zu reduzieren. Mit Hinblick auf immer flexibler werdende Anlagen lässt sich der kurzfristige Handel aber auch dafür nutzen, um den Strom von Anlagen kurzfristig bedarfsgerecht – und somit möglichst gewinnbringend und systemstabilisierend – zu produzieren.
+%
+%Der Intraday-Handel ist insbesondere von Bedeutung, um unvorhersehbare Änderungen in Stromproduktion und -nachfrage über marktliche Mechanismen aufzufangen, bevor der Einsatz von Regelenergie notwendig wird. So kann beispielsweise ein Kraftwerksbetreiber, in dessen Kraftwerk kurzfristig ein Block ausfällt, bei anderen Marktpartnern den seinem Bilanzkreis nun fehlenden Strom einkaufen. Dem Intraday-Handel kommt daher auch in der Direktvermarktung von Erneuerbaren Energien eine Schlüsselrolle zu, etwa wenn kurzfristig angepasste Wetterprognosen ein ungeplantes Mehr oder Weniger an Stromproduktion aus Solar- oder Windkraftanlagen verheißen.
+
 %TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
+
+% Negative Prices
+
+% See https://www.epexspot.com/en/company-info/basics_of_the_power_market/negative_prices
 
 
 \subsection{Outline of selected energy markets}
@@ -57,6 +69,13 @@ Due to this characteristic the real time market prices exhibit an even greater v
 The NordPoolSpot market is the most mature power market to date and has been the first energy market that was established in Europe [c]. 
 
 The NordPoolSpot power market consists of four different markets. %(... relevant citations are found below)
+
+% Definition Website
+
+% See http://www.nordpoolspot.com/How-does-it-work/
+
+% THE POWER MARKET, emerging european energy market
+
 
 
 As discussed before some markets exhibit strong seasonalities, while others do not. Nord Pool Spot is an example of a power market with obvious seasonalities in the data which can be taken advantage of when creating forecasting models. 
@@ -222,6 +241,12 @@ Naming conventions designating the different areas of trading are defined as fol
 \item \emph{ELIX} The European Electricity Index defines prices valid for all of Europe (?)
 
 \end{itemize}
+
+
+\subsubsection{APG}
+
+Austrian Power Grid\footnote{\url{http://www.apg.at/de/markt/strommarkt}}
+
 
 
 \subsubsection{PJM}
