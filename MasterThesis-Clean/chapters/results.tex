@@ -103,6 +103,18 @@ A cost model is essential for evaluating the usefulness of the approach presente
 
 \subsection{Cloud Scheduler}
 
+\subsubsection{Virtual Machine Migration}
+
+As stated in [x] the resources needed for executing VM migrations can be significantly reduced by implementing a two phase migration algorithm. 
+[Still the whole process might take several minutes, whereby [x] has shown that for each MB of user data a migration time of approximately 50 seconds is needed. ]
+
+The cloud scheduler takes into account migration time and costs. The bandwidth applicable to moving resources between data centers is set to 16MBit/s which indicates a fair amount of WAN bandwidth as of today. 
+
+Considering a virtual machine currently utilizing 2000 MB of RAM and the given bandwidth a full VM migration would take about 16 minutes which constitutes a significant amount of downtime for critical applications. 
+
+
+[x] "`Improving Virtual Machine Migration in Federated Cloud Environments"' 
+
 \subsection{Simulation scenarios}
 
 \subsection{Simulation results}
