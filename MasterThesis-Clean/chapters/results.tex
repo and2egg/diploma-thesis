@@ -1,10 +1,29 @@
 
 
+\section{Implementation Overview}
+
+In this work a cloud simulation framework has been established to be able to assess the outcome of different scenarios in a defined setting. The goal was to deliver a complete framework that can handle multiple data sources and is extendable for future work with possibly different data sets and an optional connection to a real cloud environment which could replace the simulated cloud environment that is connected to the framework in this implementation. 
+
+The implementation consists of three parts which will be presented separately below. The first part represents the data handling and management interfaces implemented on a Java Application Server connected to an Oracle database. The purpose of this platform is to have a generic means of parsing and fetching data from various sources that can be defined in advance. For example, data may be fetched from local files that were previously retrieved from energy markets or remote web services that provide energy data of that respective energy market. In addition parsers for different file formats may be defined to automatically parse data and put it into the database for later retrieval. From there arbitrary queries may be executed to retrieve and aggregate data in a specific fashion and execute further tasks based on that data. 
+
+The second part consists of a collection of statistical methods that should assist in making accurate forecasts based on the previously collected data. Through these methods sophisticated analysis can be executed to examine various datasets and apply customized models to each of these datasets. The purpose behind these statistical examinations is to provide meaningful and accurate forecasting models that can be utilized by the simulation framework. Eventually the performance of forecasts within the simulation should be examined and compared with approaches based solely on currently available data. It is expected that the application of accurate forecasts to energy price time series within the simulation improves overall performance and thus further energy cost savings are possible. 
+
+The third part constitutes the actual cloud simulation which is based on a previously existing and sophisticated cloud simulator written in Python that incorporates cost models for energy and cooling expenses and is easily extendable by integrating custom schedulers. In this work custom settings have been applied to allow for a simulation that meets the needs of the framework to integrate different scenarios. Various parts of the simulator needed to be extended and a completely new scheduler has been built to schedule both cost aware and non-cost aware scenarios. It works together well with other parts of the framework s.t.~it is possible that live retrieval of data and forecasts are made from the application server through well defined interfaces. The components are decoupled such that each of them may be replaced by other components easily provided that the same interfaces are offered. 
+
+This chapter is divided into an architectural section with an architectural outline followed by a section about statistical model selection and tools and a detailed presentation of the simulator and scheduler that actually run through the simulation scenarios. Then the results from the simulation runs based on different settings and data is presented and scenarios are compared to evaluate the most promising approach in the defined setting. Finally the results are discussed and evaluated to draw conclusions about the possible performance gains when running these scenarios, and how much they differ from the optimal solution. 
+
+
 \section{Architectural outline}
+
+The architectural outline provides an overview of all components involved in the presented simulation framework and how they work together. All components may interact with one another via defined interfaces s.t.~either component may be replaced by a similar component with possibly different implementation details but same interfaces. 
 
 \subsection{Application Server}
 
-\subsubsection{Datamanagement}
+Considering the need for easy and generic data handling when dealing with different energy markets and data formats an application server has been set up connected to a database to fetch and parse data at need. By this means it is possible to execute extended data analysis tasks and aggregate and combine data to get insights into possible relationships between different data sets. Scenarios based on different datasets are easily created to quickly run simulations under changing conditions. Thus it is a flexible way of data handling that also simplifies the whole simulation process. 
+
+\subsubsection{Data management}
+
+Interfaces for data management are defined within specialized Java classes that are responsible for the retrieval, import and data query handling. 
 
 \subsubsection{Web Services}
 
