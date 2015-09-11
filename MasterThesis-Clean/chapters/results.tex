@@ -48,13 +48,13 @@ In this section a more detailed view on the various components of the framework 
 	\label{fig:Component_Diagram}
 \end{figure}
 
-The diagram consists basically of two parts, the Cloud Framework and Data Processing and Forecasting. The Data Processing and Forecasting part consists of the Data Interface and Forecasting components that are responsible for data import and retrieval and forecast model generation. The Cloud Framework contains the cloud simulator and scheduler which are responsible for the actual simulation and application of scheduling algorithms. It is also used to generate the resulting time series, e.g.~cloud utilization and energy cost over time. 
+The diagram consists basically of two parts, the Cloud Framework and Data Processing and Forecasting components. The Cloud Framework contains the cloud simulator and scheduler which are responsible for the actual simulation and application of scheduling algorithms. It is also used to generate the resulting time series, e.g.~cloud utilization and energy cost over time. The Data Processing and Forecasting part consists of the Data Interface and Forecasting components which are responsible for data retrieval, data import and forecast model generation. 
 
-The Data Interface component retrieves data from previously registered energy markets as indicated by the dashed line connection to the external data source. The data imports are triggered by the scheduler which calls the respective services at the Data Handler. The Data Handler uses appropriate parsers to extract data into a common data format. When data processing is finished the Data Import for storing the data into the database is called from where it can be retrieved via DB Query components. The DB Queries are used by the Forecasting component to retrieve data for model evaluation and generation. 
+The Data Interface component retrieves data from previously registered energy markets as indicated by the dashed line connection to the external data source. The data imports are triggered by the scheduler which calls the respective services at the Data Handler. The Data Handler uses appropriate parsers to extract data into a common processable format. When the processing of data is finished the Data Import is triggered that is responsible for storing the collected information into the database. The DB Queries component can then be used by the Forecasting component to retrieve energy prices for model training and evaluation. 
 
-The Forecasting component fetches data from the database and does some data preprocessing that is used for forecasting. After the data has been processed and formatted appropriately it is then ready to be analyzed by statistical methods to determine which forecasting model suits best for the selected time series. Different models are trained and compared and the best model is chosen. It is then selected by the Forecast Module and the actual forecasts are calculated which can be queried via a provided public interface that is exposed to external systems. 
+The Forecasting component fetches data from the database and does some data preprocessing that is used for forecasting. After the data has been processed and formatted appropriately it is ready to be analyzed by statistical methods to determine which forecasting model suits best for the selected time series. Different models are trained and compared and the best model is chosen. It is then selected by the Forecast Module and the actual forecasts are calculated which can be queried via a provided public interface that is exposed to external systems. 
 
-The Cloud Framework uses the historical price data provided by the Data Interface component to run simulations for various scenarios. It is read into a local storage for further processing of the price data in simulations. Job requests are generated that reflect certain characteristics or requirements of tasks that should be processed by the Cloud Framework. Requests and energy prices are read by the Cloud Manager that keeps track of the cloud's current state. The state is retrieved and modified by the scheduler that handles requests and possible needs for migrations. At each step the Cloud Evaluator gets current request and migration demands and checks if load and SLA constraints are met. If that is the case the resources are moved to the respective server. Both scheduler and simulator components are configurable by a config file defined by the Cloud Configuration component. Thus new configuration options are easily added and can be changed at any time to adjust the output of simulations. 
+The Cloud Framework uses the historical price data provided by the Data Interface component to run simulations for various scenarios. It is read into a local storage for further processing of the price data in simulations. Job requests are generated that reflect certain characteristics or requirements of tasks that should be processed by the Cloud Framework. Requests and energy prices are read by the Cloud Manager that keeps track of the cloud's current state. The state is retrieved and modified by the scheduler that handles requests and determines needs for migrations. At each step the Cloud Evaluator gets current request and migration demands and checks if load and SLA constraints are met. If that is the case the resources are moved to the respective server. Both scheduler and simulator components are configurable by a config file defined by the Cloud Configuration component. Thus new configuration options are easily added and can be changed at any time to adjust the output of simulations. 
 
 
 \subsection{Application Server}
@@ -62,7 +62,7 @@ The Cloud Framework uses the historical price data provided by the Data Interfac
 Considering the need for easy and generic data handling when dealing with different energy markets and data formats the application server has been set up which is connected to a database to fetch and parse data for later processing. By this means it is possible to execute extended data analysis tasks and aggregate and combine data to get insights into possible relationships between different data sets. Scenarios based on different datasets are easily created to quickly run simulations under changing conditions. Thus it is a flexible way of data handling that also simplifies the whole simulation process. 
 
 Another benefit of providing an application server is the possibility to expose web service interfaces that can be called by any external component to utilize data and forecast interfaces. The architecture has been made extensible such that a new energy market location can be added without touching existing interfaces. 
-Data processing interfaces exist for different data formats which can be extended to provide implementations for different energy price data. 
+Data processing interfaces exist for different data formats which can be extended to provide implementations for different energy price data formats. 
 
 \subsubsection{Data management}
 
@@ -78,6 +78,18 @@ The application server also includes scheduling services where actions are trigg
 
 
 
+\subsection{R Server}
+
+R is a statistical tool with vast amounts of statistical methods for data analysis and model generation\footnote{\url{https://www.r-project.org/}}. It has been chosen as the statistics engine for this work since it does not require a commercial license and became the de-facto standard for statistical processing over the last decade. 
+
+\subsubsection{Forecast Models}
+
+\subsubsection{Assessment of Forecasts}
+
+\subsubsection{Forecast error evaluation}
+
+
+
 
 \subsection{Simulator and Scheduler}
 
@@ -88,17 +100,6 @@ The application server also includes scheduling services where actions are trigg
 \subsubsection{External interfaces}
 
 \subsubsection{Scheduler}
-
-
-\subsection{R Server}
-
-R is a statistical tool with vast amounts of statistical methods for data analysis and model generation\footnote{\url{https://www.r-project.org/}}. It has been chosen as the statistics engine for this work since it does not require a commercial license and became the de-facto standard for statistical processing over the last decade. 
-
-\subsubsection{Forecast Models}
-
-\subsubsection{Assessment of Forecasts}
-
-\subsubsection{Forecast error evaluation}
 
 
 \subsection{Database Server}
