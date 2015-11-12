@@ -51,6 +51,11 @@ Active research topics include electricity cost reduction in data centers \cite{
 
 The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
 
+
+\subsection{Power management}
+
+A well known problem in power management is how to accurately and efficiently model a server's power consumption over time. At \cite{horvath2008multi} Horvath et al.~exploit dynamic voltage scaling (DVS) and multiple sleep states to reduce power consumption of a server cluster of about 23\% without significantly impacting performance. They propose that CPU utilization and frequency are the variables that have the most significant impact on the power consumption of a machine. This assumption is also used in other studies, e.g.~\cite{rao2010minimizing, hammadi2014survey, kliazovich2012greencloud}. 
+
 \subsection{Time series forecasting}
 
 Time series analysis is an active research topic as it is important to find efficient algorithms that scale on very large amounts of data. A survey on machine learning models in time series forecasting is presented in \cite{ahmed2010empirical}, where the suitability of the models concerning forecasting is evaluated. Notably, some models did considerably better than others, therefore these models are good candidates for applications in time series forecasting. 

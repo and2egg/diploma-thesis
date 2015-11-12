@@ -4,6 +4,8 @@
 
 %Energy markets have emerged steadily from the mid-eighties. 
 
+Electricity wholesale markets are constantly developing. In Europe incentives exist to create an integrated EU energy market for secure and affordable electricity supplies\footnote{\url{https://ec.europa.eu/energy/en/topics/markets-and-consumers}}. Also concrete plans exist for creating a so called \emph{Energy Union} as a single energy market that aim to make energy more reliable and interchangable within the EU\footnote{\url{https://ec.europa.eu/energy/en/news/new-electricity-market-consumers}}. 
+
 An outline of a possible implementation of a competitive energy market is depicted in \cite{hogan1993competitive} which is still valid as of today in many respects. A competitive market captures the advantage of market participants being able to actively shaping the clearing price applicable to both producers and consumers in the market. 
 
 
@@ -21,7 +23,7 @@ In bilateral trading or loose pool models utility operators (producers) and ener
 
 Electricity pooling in tight pool models provide a way for utility operators to offer a certain amount of energy at a set price. Each generator places a bid containing the quantity and expected price \cite{barroso2005classification}. In return consumers place bids on how much they are willing to pay for a given amount of energy. The intersection of the aggregated demand and supply curves defines the energy price for that hour. 
 
-Still customers, brokers and aggregators have the choice to either establish long term contracts of electricity or rely on the short-term market \cite{hogan1997reshaping}.
+Still customers, brokers and aggregators have the choice to either establish long term contracts of electricity in bilateral contracts or rely on the short-term market \cite{hogan1997reshaping}.
 
 
 
@@ -478,6 +480,45 @@ See \url{http://www.isixsigma.com/tools-templates/normality/making-data-normal-u
 \subsection{Forecasting in cloud environments}
 
 
+\section{SLA management}
+
+As mentioned before the proposed approach relies on Virtual Machine migrations to shift load to data centers with currently cheaper energy prices. Each VM migration causes a temporary downtime depending on network bandwidth and VM memory [Performance and energy modeling for live migration of virtual machines] which has to be considered when applying this approach. 
+
+Big cloud providers such as Google or Amazon commonly offer high availability services with a guaranteed availability of 99\% or even 99.9\%\footnote{Google Service Level Agreements \url{https://cloud.google.com/storage/sla}}\footnote{Amazon Service Level Agreements \url{https://aws.amazon.com/de/ec2/sla/}}. However when applying geotemporal VM migrations within a cloud environment it is not possible to keep availability at these levels due to VM downtimes. Therefore an alternative approach considering flexible SLA offers needs to be applied to accommodate possible downtimes[Energy-Aware Cloud Management through Progressive SLA Specification]. 
+
+
+\section{Virtual Machine migration}
+
+
+\section{Cost models}
+
+As discussed in [x] virtual machine migration is vital to draw benefits from the proposed approach. The targeted benefits of this approach are overall cost reductions in a geographically dispersed cloud environment. 
+
+As energy prices are provided in e.g.~MegaWatt Hours (MWh) the amount of consumed energy per time is needed to calculate resulting costs. Typically several factors contribute to the overall energy consumption in a data center such as server power consumption or cooling infrastructure. One efficiency measure of data centers is the Power Usage Effectiveness (PUE) that indicates the power needed for auxiliary devices vs.~the power drawn solely from IT equipment (e.g.~servers or network hubs). 
+
+Even though cooling expenses play a significant part in the overall energy costs this work only considers servers' power consumption as a means to calculate energy costs as it is most significant to the proposed scenario. 
+
+A server's power consumption consists of a static and a dynamic part [Performance and Energy Modeling for Live Migration of Virtual Machines]. The static part is defined as the power drawn when a server is idle i.e.~it does not run any computations. The dynamic part varies according to the current data processing on the server which can be derived from the current utilization of hardware components. 
+
+
+\subsection{Cost of optimal assignments}
+
+
+In \cite{de2013study} it is shown that the cost of optimal assignment is further reduced by increasing the number of locations with data centers assigned to different energy markets and/or by increasing the variability of energy prices. 
+
+
+\section{Cloud Scenario}
+
+\subsection{Assumptions}
+
+\begin{itemize}
+
+\item Energy Elasticity
+
+One of the key assumptions for the cloud scenario is a reasonable level of server energy elasticity. It is defined as the difference between power values at idle and peak state regarding CPU utilization. 
+
+\end{itemize}
+
 
 \section{Data center characteristics}
 
@@ -491,9 +532,18 @@ See \url{http://www.isixsigma.com/tools-templates/normality/making-data-normal-u
 
 \section{Cloud Simulation}
 
+
+
+
+
 \subsection{Benefits and limitations}
 
 \subsection{Simulation assumptions}
+
+
+
+
+
 
 \subsection{Expected results}
 
