@@ -2,6 +2,12 @@
 
 \section{Literature studies}
 
+\subsection{Cost reduction in cloud environments}
+
+Active research topics in this field include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
+
+The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
+
 \subsection{Electricity markets and pricing}
 
 In wholesale energy markets different pricing and bidding models can be used. Currently the two most common price evaluation strategies are day-ahead and real-time pricing strategies. 
@@ -40,19 +46,13 @@ With different state of the art energy models and simulation constraints a summa
 
 
 %[TODO - move this paragraph to Introduction]
-In this thesis different energy markets have been chosen that exhibit a considerable degree of price volatility and are partly located in different timezones. Therefore different scenarios may show interesting characteristics due to time- and location based differences in energy prices. 
+%In this thesis different energy markets have been chosen that exhibit a considerable degree of price volatility and are partly located in different timezones. Therefore different scenarios may show interesting characteristics due to time- and location based differences in energy prices. 
 
 
 %A cost function is provided which calculates the total energy cost based on the energy price, the power used by a single server and the total number of running servers for each location. In addition constraints are defined s.t.~the workload assigned to a DC does not exceed its capacity and the total number of requests does not exceed a predefined threshold. 
 
-\subsection{Energy cost reduction in data centers}
 
-Active research topics include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
-
-The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
-
-
-\subsection{Power management}
+\subsection{Server power management}
 
 A well known problem in power management is how to accurately and efficiently model a server's power consumption over time. At \cite{horvath2008multi} Horvath et al.~exploit dynamic voltage scaling (DVS) and multiple sleep states to reduce power consumption of a server cluster of about 23\% without significantly impacting performance. They propose that CPU utilization and frequency are the variables that have the most significant impact on the power consumption of a machine. This assumption is also used in other studies, e.g.~\cite{rao2010minimizing, hammadi2014survey, kliazovich2012greencloud}. 
 
@@ -78,14 +78,14 @@ In another work \cite{malet2010resource} the placement of applications is dynami
 
 \subsection{Similar approaches existing in literature}
 
+\subsection{Benefits of this work}
+
 \subsection{Implications and conclusion}
 
 
 \section{Comparison and summary of existing approaches}
 
 \subsection{Comparison by topics}
-
-\subsection{Potential benefits of this work}
 
 \subsection{Summary of investigation}
 

@@ -70,134 +70,61 @@ Due to this characteristic the real time market prices exhibit an even greater v
 
 The NordPoolSpot market is the most mature power market to date and has been the first energy market that was established in Europe [c]. 
 
-The NordPoolSpot power market consists of four different markets. %(... relevant citations are found below)
+The NordPoolSpot power market consists of four different markets. 
 
-% Definition Website
 
-% See http://www.nordpoolspot.com/How-does-it-work/
+\begin{itemize}[-]
 
-% THE POWER MARKET, emerging european energy market
+\item Financial market (Nasdaq OMX)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Financial-market/}}
+
+Market for risk management, forwards futures and options. 
+This market generally includes long term contracts (up to six
+years) with different time horizons where contracts are made for 
+daily, weekly, monthly, quarterly and annual time spans. 
+
+\item Day-ahead market (Nord Pool Spot)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Day-ahead-market-Elspot-/}}
+
+Elspot, the main electricity spot market of Nord Pool, is used for day-ahead
+trading of energy prices in various regions. 
+Trades can be made until 12:00 CET of each day where the prices
+are fixed for the following day. Actual power delivery is done
+from the sellers to the buyers for each hour according to the defined contract. 
+
+\item Intraday market (Nord Pool Spot)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}}
+
+The intraday market Elbas provides the possibility of continuous trading up to 30 minutes before delivery. 
+This can be important in case of a sudden surge in power demands where additional power sources have to be
+activated to meet demand. Unstable wind conditions when operating wind turbines may also require changes of trades. 
+Short term bids can be used for compensation of too little or too much power delivery at a given area. 
+
+\item Balancing market (TSOs)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Transmission-system-operators-TSOs/}}
+
+At the balancing market corrective actions can be taken by transmission system operators (TSOs). 
+These are responsible for the security of supply and correct frequency of the grid. 
+
+\end{itemize}
+% other source: \url{http://www.nordpoolspot.com/globalassets/download-center/annual-report/nord-pool-spot_europes-leading-power-markets.pdf}
 
 
 
 As discussed before some markets exhibit strong seasonalities, while others do not. Nord Pool Spot is an example of a power market with obvious seasonalities in the data which can be taken advantage of when creating forecasting models. 
 
-Below two hourly time series from two locations within Nord Pool Spot are displayed that show significant seasonal behavior. 
-See figures \ref{fig:hourly_prices_finland} and \ref{fig:hourly_prices_sweden}.
+Two hourly time series from two locations within Nord Pool Spot are displayed that show significant seasonal behavior (figures \ref{fig:hourly_prices_finland} and \ref{fig:hourly_prices_sweden}).
 
 \begin{figure}[!h]
 	\centering
 		\includegraphics[width=1.00\textwidth]{figures/methodology/hourly_prices_finland.PNG}
-	\caption{Finland hourly prices}
+	\caption{Finland prices from June, 22nd until July, 1st 2015}
 	\label{fig:hourly_prices_finland}
 \end{figure}
 
 \begin{figure}[!h]
 	\centering
 		\includegraphics[width=1.00\textwidth]{figures/methodology/hourly_prices_sweden.PNG}
-	\caption{Sweden hourly prices}
+	\caption{Sweden prices from June, 22nd until July, 1st 2015}
 	\label{fig:hourly_prices_sweden}
 \end{figure}
 
-
-
-
-%
-%
-%[c BEGIN]
-%
-%\begin{itemize}[-]
-%
-%\item Financial market (Nasdaq OMX)
-%Used for managing risks. Cash settled futures,
-%forwards and options. Contracts can be made for
-%up to six years. The system price is used as
-%reference price.
-%
-%\item Day-ahead market (Nord Pool Spot)
-%Day-ahead auction of power for delivery the next
-%day. Nord Pool Spot calculates power prices
-%based on supply and demand for every hour the
-%following day.
-%
-%\item Intraday market (Nord Pool Spot)
-%Continuous trading up to 30 minutes before
-%delivery to adjust power production or
-%consumption plans.
-%
-%\item Balancing market (TSOs)
-%Operated by the respective transmission system
-%operators. Final adjustments are made to ensure
-%the correct frequency in the grid and security of
-%supply
-%
-%\end{itemize}
-%
-%\emph{The future is Europe}
-%
-%The future of power trading lies in the
-%creation of a single, integrated
-%European market and an integrated
-%platform.
-%This will be the most advanced power
-%market yet, offering efficiency in:
-%
-%\begin{itemize}
-%\item Membership
-%\item Management of collateral
-%\item Cost
-%\end{itemize}
-%
-%[c END] - Nord Pool Spot - Europe's leading power market \url{http://www.nordpoolspot.com/globalassets/download-center/annual-report/nord-pool-spot_europes-leading-power-markets.pdf}
-
-
-
-
-%Nord Pool Spot - Day ahead market
-%
-%[c BEGIN]
-%
-%The day-ahead market, Elspot , is the main arena for trading power in the Nordic and Baltic region. Here, contracts are made between seller and buyer for the delivery of power the following day, the price is set and the trade is agreed.
-%
-%Today there are around 360 buyers and sellers (called members) on Elspot. Most of them trade every day, placing a total of around 2000 orders for power contracts on a daily basis.
-%
-%\emph{Driven by planning}
-%
-%Daily trading is driven by the members’ planning. A buyer, typically a utility, needs to assess how much energy (‘volume’) it will need to meet demand the following day, and how much it is willing to pay for this volume, hour by hour. The seller, for example the owner of a hydroelectric power plant, needs to decide how much he can deliver and at what price, hour by hour. These needs are reflected through orders entered by buyers and sellers into the Elspot trading system.
-%
-%\emph{Setting the price and closing the deal}
-%
-%12:00 CET is the deadline for submitting bids for power which will be delivered the following day. Elspot feeds the information into a specialist computer system which calculates the price, based on an advanced algorithm. Put simply, the price is set where the curves for sell price and buy price meet.
-%
-%\emph{Supply and demand}
-%
-%Hourly prices are typically announced to the market at 12:42 CET or later. Once the market prices have been calculated, trades are settled. From 00:00 CET the next day, power contracts are physically delivered (meaning that the power is provided to the buyer) hour for hour according to the contracts agreed.
-%
-%\emph{The cost of transmission constraints}
-%
-%While supply and demand are the key factors determining the hourly market prices, transmission capacity also plays a role. Bottlenecks can occur where power connections are linked to each other, if large volumes need to be transmitted to meet demand. To relieve this congestion, different area prices are introduced. In other words, when transmission capacity gets constrained, the price is raised to reduce demand in the areas affected.
-%
-%[c END] - Nord pool Spot Elspot Market \url{http://www.nordpoolspot.com/How-does-it-work/Day-ahead-market-Elspot-/}
-
-
-
-%Nord Pool Spot - Intraday market
-%
-%[c BEGIN]
-%
-%Elbas  is an intraday market for trading power operated by Nord Pool Spot. Covering the Nordic and Baltic region as well as Germany and recently extended to include the UK, Elbas supplements Elspot and helps secure the necessary balance between supply and demand in the power market for Northern Europe.
-%
-%The majority of the volume handled by Nord Pool Spot is traded on the day-ahead market. For the most part, the balance between supply and demand is secured here. However, incidents may take place between the closing of Elspot at noon CET and delivery the next day. A nuclear power plant may stop operating in Sweden, or strong winds may cause higher power generation than planned at wind turbine plants in Germany. At Elbas, buyers and sellers can trade volumes close to real time to bring the market back in balance.
-%
-%Trading close to real time
-%
-%At 14:00 CET, capacities available for Elbas trading are published. Elbas is a continuous market, and trading takes place every day around the clock until one hour before delivery. Prices are set based on a first-come, first-served principle, where best prices come first – highest buy price and lowest sell price.
-%
-%Increasingly important
-%
-%The intraday market is becoming increasingly important as more wind power enters the grid. Wind power is unpredictable by nature, and imbalances between day-ahead contracts and produced volume often need to be offset. Elbas will play a key role in the development of intraday power trading in Europe. Future prospects indicate exponential growth, reaching 1.900 GW installed wind capacity worldwide in 2020 (Source: World Wind Energy Association). This type of market can be a key enabler to increase the share of renewable energy in the energy mix. 
-%
-%[c END] - Nord pool Spot Intraday Market \url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}
 
 
 
@@ -255,17 +182,6 @@ Austrian Power Grid\footnote{\url{http://www.apg.at/de/markt/strommarkt}}
 
 See at \url{http://www.pjm.com/}. 
 
-
-\subsubsection{OMIE - Spanish power market}
-
-OMIE represents the wholesale energy market for the iberian region. \footnote{\url{http://www.omel.com/en/inicio}}
-
-EDP (Energias de Portugal) is an energy company in cooperation with the wholesale electricity market for Spain, Portugal and is also responsible for delivery and transmission of energy to other countries. \footnote{\url{http://www.edp.pt/en/aedp/sectordeenergia/sistemaelectricoespanhol/Pages/SistElectES.aspx}}
-
-
-\subsubsection{Brazilian power market}
-
-The brazilian power market exhibits special conditions as it is heavily based on hydro power generation \cite{reston2012short}. In this market the tight pool model is applied where generation dispatch is centralized by an Independent System Operator (ISO). 
 
 
 
@@ -482,9 +398,9 @@ See \url{http://www.isixsigma.com/tools-templates/normality/making-data-normal-u
 
 \section{SLA management}
 
-As mentioned before the proposed approach relies on Virtual Machine migrations to shift load to data centers with currently cheaper energy prices. Each VM migration causes a temporary downtime depending on network bandwidth and VM memory [Performance and energy modeling for live migration of virtual machines] which has to be considered when applying this approach. 
+As mentioned before the proposed approach relies on Virtual Machine migrations to shift load to data centers with currently cheaper energy prices. Each VM migration causes a temporary downtime depending on network bandwidth and VM memory \cite{liu2013performance} which has to be considered when applying this approach. 
 
-Big cloud providers such as Google or Amazon commonly offer high availability services with a guaranteed availability of 99\% or even 99.9\%\footnote{Google Service Level Agreements \url{https://cloud.google.com/storage/sla}}\footnote{Amazon Service Level Agreements \url{https://aws.amazon.com/de/ec2/sla/}}. However when applying geotemporal VM migrations within a cloud environment it is not possible to keep availability at these levels due to VM downtimes. Therefore an alternative approach considering flexible SLA offers needs to be applied to accommodate possible downtimes[Energy-Aware Cloud Management through Progressive SLA Specification]. 
+Big cloud providers such as Google or Amazon commonly offer high availability services with a guaranteed availability of 99\% or even 99.9\%\footnote{Google Service Level Agreements \url{https://cloud.google.com/storage/sla}}\footnote{Amazon Service Level Agreements \url{https://aws.amazon.com/de/ec2/sla/}}. However when applying geotemporal VM migrations within a cloud environment it is not possible to keep availability at these levels due to VM downtimes. Therefore an alternative approach considering flexible SLA offers needs to be applied to accommodate possible downtimes \cite{luvcanin2014energy}. 
 
 
 \section{Virtual Machine migration}
@@ -496,9 +412,9 @@ As discussed in [x] virtual machine migration is vital to draw benefits from the
 
 As energy prices are provided in e.g.~MegaWatt Hours (MWh) the amount of consumed energy per time is needed to calculate resulting costs. Typically several factors contribute to the overall energy consumption in a data center such as server power consumption or cooling infrastructure. One efficiency measure of data centers is the Power Usage Effectiveness (PUE) that indicates the power needed for auxiliary devices vs.~the power drawn solely from IT equipment (e.g.~servers or network hubs). 
 
-Even though cooling expenses play a significant part in the overall energy costs this work only considers servers' power consumption as a means to calculate energy costs as it is most significant to the proposed scenario. 
+Even though cooling expenses play a significant part in the overall energy costs this work only considers servers' power consumption as it is most significant to the proposed scenario. 
 
-A server's power consumption consists of a static and a dynamic part [Performance and Energy Modeling for Live Migration of Virtual Machines]. The static part is defined as the power drawn when a server is idle i.e.~it does not run any computations. The dynamic part varies according to the current data processing on the server which can be derived from the current utilization of hardware components. 
+A server's power consumption consists of a static and a dynamic part \cite{liu2013performance}. The static part is defined as the power drawn when a server is idle i.e.~it does not run any computations. The dynamic part varies according to the current data processing on the server which can be derived from the current utilization of hardware components. 
 
 
 \subsection{Cost of optimal assignments}
