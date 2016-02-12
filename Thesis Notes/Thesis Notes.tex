@@ -1,0 +1,191 @@
+%% Based on a TeXnicCenter-Template, which was
+%% created by Christoph Börensen
+%% and slightly modified by Tino Weinkauf.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,12pt]{scrartcl} %This is a special class provided by the KOMA script, which does a lot of adjustments to adapt the standard LaTeX classes to european habits, change to [a4paper,12pt,twoside] for doublesided layout
+
+
+%########################### Preferences #################################
+
+
+% ********* Font definiton ************
+\usepackage{t1enc} % as usual
+\usepackage[latin1]{inputenc} % as usual
+\usepackage{times}		
+%\usepackage{mathptmx}  	%mathematical fonts for use with times, I encountered some problems using this package togather with pdftex, which I was not able to resolve
+
+% ********* Graphics definition *******
+\usepackage[pdftex]{graphicx} % required to import graphic files
+\usepackage{color} %allows to mark some entries in the tables with color
+\usepackage{eso-pic} % these two are required to add the little picture on top of every page
+\usepackage{everyshi} % these two are required to add the little picture on top of every page
+
+% ********* Defining citation styles *********
+\usepackage[backend=bibtex8,style=numeric]{biblatex}
+% Select the bibliography file
+\addbibresource{sources.bib}
+
+\renewcommand{\floatpagefraction}{0.7} %default:0.5 allows two big pictures on one page
+
+%********** Enybeling Hyperlinks *******
+\usepackage[pdfborder=000,pdftex=true]{hyperref}% this enables jumping from a reference and table of content in the pdf file to its target
+
+% ********* Table layout **************
+\usepackage{booktabs}	  	%design of table, has an excellent documentation
+%\usepackage{lscape}			%use this if you want to rotate the table together with the lines around the table
+
+% ********* Caption Layout ************
+\usepackage{ccaption} % allows special formating of the captions
+\captionnamefont{\bf\footnotesize\sffamily} % defines the font of the caption name (e.g. Figure: or Table:)
+\captiontitlefont{\footnotesize\sffamily} % defines the font of the caption text (same as above, but not bold)
+\setlength{\abovecaptionskip}{0mm} %lowers the distace of captions to the figure
+
+
+% ********* Header and Footer **********
+% This is something to play with forever. I use here the advanced settings of the KOMA script
+
+\usepackage{scrpage2} %header and footer using the options for the KOMA script
+\renewcommand{\headfont}{\footnotesize\sffamily} % font for the header
+\renewcommand{\pnumfont}{\footnotesize\sffamily} % font for the pagenumbers
+
+%the following lines define the pagestyle for the main document
+\defpagestyle{cb}{%
+(\textwidth,0pt)% sets the border line above the header
+{\pagemark\hfill\headmark\hfill}% doublesided, left page
+{\hfill\headmark\hfill\pagemark}% doublesided, right page
+{\hfill\headmark\hfill\pagemark}%  onesided
+(\textwidth,1pt)}% sets the border line below the header
+%
+{(\textwidth,1pt)% sets the border line above the footer
+{{\it Technical University of Vienna}\hfill Andreas Egger}% doublesided, left page
+{Andreas Egger\hfill{\it Technical University of Vienna}}% doublesided, right page
+{Andreas Egger\hfill{\it Technical University of Vienna}} % one sided printing
+(\textwidth,0pt)% sets the border line below the footer
+}
+
+%this defines the page style for the first pages: all empty
+\renewpagestyle{plain}%
+	{(\textwidth,0pt)%
+		{\hfill}{\hfill}{\hfill}%
+	(\textwidth,0pt)}%
+	{(\textwidth,0pt)%	
+		{\hfill}{\hfill}{\hfill}%
+	(\textwidth,0pt)}
+
+%********** Footnotes **********
+\renewcommand{\footnoterule}{\rule{5cm}{0.2mm} \vspace{0.3cm}} %increases the distance of footnotes from the text
+\deffootnote[1em]{1em}{1em}{\textsuperscript{\normalfont\thefootnotemark}} %some moe formattion on footnotes
+
+%################ End Preferences, Begin Document #####################
+
+\pagestyle{plain} % no headers or footers on the first page
+
+\begin{document}
+
+\begin{center}
+
+% There might be better solutions for the title page, giving all distances and sizes manually was simply the easiest solution
+
+{\Huge\bf\sf Thesis Notes }
+
+\vspace{4.5cm}
+
+{\Huge\bf\sf Cost aware resource management in }
+
+\vspace{0.5cm}
+
+{\Huge\bf\sf distributed cloud data centers}
+
+\vspace{6cm}
+
+{\Large\bf\sf Andreas Egger}%as this is an english text I didn't load the german package, this would ease the use of special characters
+
+\vspace{.5cm}
+
+{\Large\bf\sf 0626885}
+
+\vspace{2cm}
+
+%{\Large\bf\sf \today} %adds the current date
+
+\vspace{\fill}
+
+egger.andreas.1@gmail.com
+
+\end{center}
+\newpage
+
+%%The following loads the picture on top of every page, the numbers in \put() define the position on the page:
+%\AddToShipoutPicture{\setlength\unitlength{0.1mm}\put(604,2522){\includegraphics[width=1.5cm]{logo.jpg}}}
+
+\pagestyle{cb} % now we want to have headers and footers
+
+\tableofcontents
+
+\newpage
+
+
+
+
+\section{VM live migration}
+
+\subsection{Migration energy model}
+
+\[      \]
+
+\[      \]
+
+\[      \]
+
+\[  \lambda = \frac{D}{R}    \]
+
+\[  T_i = \frac{D\cdot T_{i-1}}{R} = \frac{V_{mem}\cdot D^i}{R^{i+1}}   \]
+
+\[  V_i = D \cdot \frac{V_{mem}}{R} \lambda^{i-1} = V_{mem} \cdot \lambda^i    \]
+
+\[  V_{mig} = \sum_{i=0}^{n} V_i = V_{mem} \cdot \frac{1-\lambda^{n+1}}{1-\lambda}   \]
+
+\[  T_{mig} = \sum_{i=0}^{n} T_i = \frac{V_{mem}}{R} \cdot \frac{1-\lambda^{n+1}}{1-\lambda}    \]
+
+
+\section{Methodology}
+
+
+\subsection{Forecasting}
+
+\subsubsection{Forecast error classification}
+
+\begin{itemize}
+
+\item Mean absolute error (MAE): \[ \frac{1}{n} \sum_{i=1}^{n} |\hat{y}_i - y_i| \] % \[\sum_{i=1}^{10} t_i\] %\sum(abs(predicted - actual)) / N
+
+\item Mean squared error (MSE): \[ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 \] %$sum((predicted - actual)^2) / N$
+
+\item Root mean squared error (RMSE): \[ \sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}\] % $sqrt(sum((predicted - actual)^2) / N)$
+
+\item Mean absolute percentage error (MAPE): \[ \frac{1}{n} \sum_{i=1}^{n} \left|\frac{\hat{y}_i - y_i}{y_i}\right| \] % $sum(abs((predicted - actual) / actual)) / N$
+
+\item Direction accuracy (DAC): \[ \frac{count(sign(y_i - y_{i-1}) = sign(\hat{y}_i - \hat{y}_{i-1}))}{n} \]
+% $count(sign(actual\_current - actual\_previous) == sign(pred\_current - pred\_previous)) / N$
+
+\item Relative absolute error (RAE): \[  \frac{ \sum_{i=1}^{n} |\hat{y}_i - y_i|}{ \sum_{i=1}^{n} |\hat{y}_{i-1} - y_i|}   \]
+ % $sum(abs(predicted - actual)) / sum(abs(previous\_target - actual))$
+
+\item Root relative squared error (RRSE): \[  \frac{ \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 }} { \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_{i-1} - y_i)^2 }} \]
+ % $sqrt(sum((predicted - actual)^2) / N) / sqrt(sum(previous\_target - actual)^2 / N)$
+
+\end{itemize}
+
+
+\subsubsection{White noise tests for residuals}
+
+To test if residuals can be regarded as white noise, its auto correlation functions is examined. In case auto correlations are present it means that some values within the series depend on one another. In theory a true white noise series should not exhibit any auto correlations but since we operate on finite time series there will always be a few correlations present in the data\cite{makridakisforecasting}. 
+
+It can be shown that the auto correlations of a white noise series have a sampling distribution similar to a gaussian distribution with zero mean and a standard deviation of $1/\sqrt{n}$ where $n$ denotes the total number of observations in the series\cite{makridakisforecasting}. 
+
+
+\printbibliography
+
+
+\end{document}

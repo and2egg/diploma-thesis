@@ -1,5 +1,50 @@
 
 
+\section{Cloud Scenario}
+
+%\subsection{Assumptions}
+%
+%\begin{itemize}
+%
+%\item Energy Elasticity
+%
+%One of the key assumptions for the cloud scenario is a reasonable level of server energy elasticity. It is defined as the difference between power values at idle and peak state regarding CPU utilization. 
+%
+%\end{itemize}
+
+
+\section{Cloud Simulation}
+
+\subsection{Benefits and limitations}
+
+\subsection{Simulation assumptions}
+
+\subsection{Expected results}
+
+
+
+
+\section{Cost models}
+
+%TODO reference section
+As discussed before virtual machine migration is vital to draw benefits from the proposed approach. The targeted benefits of this approach are overall cost reductions in a geographically dispersed cloud environment. 
+
+As energy prices are provided in e.g.~MegaWatt Hours (MWh) the amount of consumed energy per time is needed to calculate resulting costs. Typically several factors contribute to the overall energy consumption in a data center such as server power consumption or cooling infrastructure. One efficiency measure of data centers is the Power Usage Effectiveness (PUE) that indicates the power needed for auxiliary devices vs.~the power drawn solely from IT equipment (e.g.~servers or network hubs). 
+
+Even though cooling expenses play a significant part in the overall energy costs this work only considers servers' power consumption as it is most significant to the proposed scenario. 
+
+A server's power consumption consists of a static and a dynamic part \cite{liu2013performance}. The static part is defined as the power drawn when a server is idle i.e.~it does not run any computations. The dynamic part varies according to the current data processing on the server which can be derived from the current utilization of hardware components. 
+
+
+\subsection{Cost of optimal assignments}
+
+
+In \cite{de2013study} it is shown that the cost of optimal assignment is further reduced by increasing the number of locations with data centers assigned to different energy markets and/or by increasing the variability of energy prices. 
+
+
+
+
+
 \section{Energy markets}
 
 %Energy markets have emerged steadily from the mid-eighties. 
@@ -59,6 +104,41 @@ Due to this characteristic the real time market prices exhibit an even greater v
 % Negative Prices
 
 % See https://www.epexspot.com/en/company-info/basics_of_the_power_market/negative_prices
+
+
+\subsubsection{Two settlement system: Day ahead vs Balancing market}
+
+A two settlement system has been defined for the PJM power market (PJM standing for Pennsylvania, Jersey, Maryland)\cite{lambert2001creating}. 
+
+A two-settlement system in power markets is understood as a system comprising a day ahead as well as a real time (balancing) power market\cite{lambert2001creating}. 
+
+
+
+\subsubsection{Forward Capacity Market (FCM)} 
+
+A forward capacity market is used to ensure having enough capacity for a specific amount of time into the future. A capacity commitment period (CCP) ensures that a certain amount of capacity will be available during that period. For example, the CCP at ISO-NE is set as one year ranging from June 1st until May 31st. 
+
+The market has to ensure that the \emph{Installed Capacity Requirements (ICR)} for the corresponding region are met. These requirements are defined for each capacity commitment period and define the amount of capacity needed to meet estimated peak and reserve demands. Important measures to define the ICR are the local sourcing requirements (LSR) and maximum capacity limits (MCL) that define the constraints given by market participants. %(QUOTE)In addition the Hydro-Québec Interconnection Capability Credits (HQICCs), are a key input into the calculation of the ICR.
+
+The actual procurement of resources for each capacity commitment period is determined by a \emph{Forward Capacity Auction (FCA)} which aims to meet the defined ICRs for the given period.
+This auction is carried out three years ahead of the related CCP to ensure that enough resources will be available during that period. \emph{Reconfiguration Auctions (RA)} are then executed annually until the start of the CCP and continued monthly afterward. During an RA capacity resources may be amended to adapt to potential changes in capacity zones. 
+
+At the FCM of ISO New England there is also the option of making a composite offer where different capacity resources may join their capacity offers (useful i.e.~in case of single season capacities) to result in a single resource offer at the market. 
+
+%Capacity resources <-> energy suppliers/providers?
+
+%See definition at the website of ISO NE\footnote{\url{http://www.iso-ne.com/markets-operations/markets/forward-capacity-market}}.
+
+%\subsubsection{Regulation market}
+%
+%Definition by the ISO NE power market\footnote{\url{http://www.iso-ne.com/markets-operations/markets/regulation-market}}:
+%
+%\begin{quote}
+%The Regulation Market is the mechanism for selecting and compensating market participants to provide regulation—the capability of specially equipped generators and other energy sources to increase or decrease output or consumption every four seconds. Participants allow their Automatic Generation Control (AGC) resources to be controlled by the ISO using automated signals to balance both second-by-second variations in demand and the system frequency, which must be kept constant. This market helps ensure that the ISO meets the North American Electric Reliability Corporation Real Power Balancing Control Performance Standard (BAL-001-0). Two regulation clearing prices are calculated: one for capacity and one for actual service mileage.
+%\end{quote}
+
+
+
 
 
 \subsection{Outline of selected energy markets}
@@ -188,90 +268,60 @@ See at \url{http://www.pjm.com/}.
 \subsection{Relevance of markets to cloud environments}
 
 
-\subsection{[Terms and definitions]}
-
-\subsubsection{Definition of 'Clearing Price'}
-
-The following is a definition of clearing price from Investopedia\footnote{\url{http://www.investopedia.com/terms/c/clearingprice.asp}}. 
-
-\begin{quote}
-The specified monetary value assigned to a security or asset. This price is determined by the bid and ask process of buyers and sellers interested in trading the security.
-
-In any exchange, sellers prefer to part with their assets for the highest price possible while investors interested in buying the same asset desire the lowest purchase price possible. At some point, a mutually agreeable price is reached between buyers and sellers. It is at this point that economists say the market has "cleared" and transactions take place. Thus, the clearing price of an asset is the price at which it was most recently traded.
-\end{quote}
-
-
-
-%google Search : "`tight pool models electricity"'
+%\subsection{[Terms and definitions]}
 %
-%Google Books "`Making Competition Work in Electricity"'
-%\url{https://books.google.at/books?id=Pki4tu3P8iIC&pg=PA286\&lpg=PA286\&dq=tight+pool+models+electricity\&source=bl\&ots=drkU0A9H3C\&sig=m_J7JCkGjf5ydml2fdbFQB50ojE\&hl=de\&sa=X\&ved=0CCQQ6AEwAGoVChMIgoLZjffmxgIVTLYUCh3DEQBT#v=onepage\&q=tight\%20pool\%20models\%20electricity\&f=false}
+%\subsubsection{Definition of 'Clearing Price'}
 %
-%Also see Figure 3.2 in the book on page 43. 
+%The following is a definition of clearing price from Investopedia\footnote{\url{http://www.investopedia.com/terms/c/clearingprice.asp}}. 
 %
-%Chapter 4: Requirements for competition- Demand side
-
-The clearing price is set at the intersection of the demand and supply curves, see Figure \ref{fig:market_demand_supply}
-
-
-
-\begin{figure}[!h]
-	\centering
-		\includegraphics{figures/methodology/market_demand_supply.PNG}
-	\caption{Demand Supply Chart}
-	\label{fig:market_demand_supply}
-\end{figure}
-
-
-
-\subsubsection{Locational marginal price}
-
-See definition by ISO-NE\footnote{\url{http://www.iso-ne.com/participate/support/faq/lmp}}. 
-
-%TODO explain LMP (-> see ISO New England energy data, \textbf{smd hourly}!)
-
-\subsubsection{System marginal price (SMP)}
-
-A price type described by \cite{szkuta1999electricity}. 
-
-\subsubsection{System Load}
-
-%TODO
-
-Some energy markets provide the total system load as measured by metering. It is used for day-ahead and long term forecasting purposes and in addition it serves as important indicator in reports. The system load for the ISO New England energy market is calculated by $System Load = generation - pumping + net\_interchange$
-
-
-\subsubsection{Forward Capacity Market (FCM)} 
-
-A forward capacity market is used to ensure having enough capacity for a specific amount of time into the future. A capacity commitment period (CCP) ensures that a certain amount of capacity will be available during that period. For example, the CCP at ISO-NE is set as one year ranging from June 1st until May 31st. 
-
-The market has to ensure that the \emph{Installed Capacity Requirements (ICR)} for the corresponding region are met. These requirements are defined for each capacity commitment period and define the amount of capacity needed to meet estimated peak and reserve demands. Important measures to define the ICR are the local sourcing requirements (LSR) and maximum capacity limits (MCL) that define the constraints given by market participants. %(QUOTE)In addition the Hydro-Québec Interconnection Capability Credits (HQICCs), are a key input into the calculation of the ICR.
-
-The actual procurement of resources for each capacity commitment period is determined by a \emph{Forward Capacity Auction (FCA)} which aims to meet the defined ICRs for the given period.
-This auction is carried out three years ahead of the related CCP to ensure that enough resources will be available during that period. \emph{Reconfiguration Auctions (RA)} are then executed annually until the start of the CCP and continued monthly afterward. During an RA capacity resources may be amended to adapt to potential changes in capacity zones. 
-
-At the FCM of ISO New England there is also the option of making a composite offer where different capacity resources may join their capacity offers (useful i.e.~in case of single season capacities) to result in a single resource offer at the market. 
-
-%Capacity resources <-> energy suppliers/providers?
-
-%See definition at the website of ISO NE\footnote{\url{http://www.iso-ne.com/markets-operations/markets/forward-capacity-market}}.
-
-\subsubsection{Regulation market}
-
-Definition by the ISO NE power market\footnote{\url{http://www.iso-ne.com/markets-operations/markets/regulation-market}}:
-
-\begin{quote}
-The Regulation Market is the mechanism for selecting and compensating market participants to provide regulation—the capability of specially equipped generators and other energy sources to increase or decrease output or consumption every four seconds. Participants allow their Automatic Generation Control (AGC) resources to be controlled by the ISO using automated signals to balance both second-by-second variations in demand and the system frequency, which must be kept constant. This market helps ensure that the ISO meets the North American Electric Reliability Corporation Real Power Balancing Control Performance Standard (BAL-001-0). Two regulation clearing prices are calculated: one for capacity and one for actual service mileage.
-\end{quote}
-
-
-
-
-\subsubsection{Two settlement system: Day ahead vs Balancing market}
-
-A two settlement system has been defined for the PJM power market (PJM standing for Pennsylvania, Jersey, Maryland)\cite{lambert2001creating}. 
-
-A two-settlement system in power markets is understood as a system comprising a day ahead as well as a real time (balancing) power market\cite{lambert2001creating}. 
+%\begin{quote}
+%The specified monetary value assigned to a security or asset. This price is determined by the bid and ask process of buyers and sellers interested in trading the security.
+%
+%In any exchange, sellers prefer to part with their assets for the highest price possible while investors interested in buying the same asset desire the lowest purchase price possible. At some point, a mutually agreeable price is reached between buyers and sellers. It is at this point that economists say the market has "cleared" and transactions take place. Thus, the clearing price of an asset is the price at which it was most recently traded.
+%\end{quote}
+%
+%
+%
+%%google Search : "`tight pool models electricity"'
+%%
+%%Google Books "`Making Competition Work in Electricity"'
+%%\url{https://books.google.at/books?id=Pki4tu3P8iIC&pg=PA286\&lpg=PA286\&dq=tight+pool+models+electricity\&source=bl\&ots=drkU0A9H3C\&sig=m_J7JCkGjf5ydml2fdbFQB50ojE\&hl=de\&sa=X\&ved=0CCQQ6AEwAGoVChMIgoLZjffmxgIVTLYUCh3DEQBT#v=onepage\&q=tight\%20pool\%20models\%20electricity\&f=false}
+%%
+%%Also see Figure 3.2 in the book on page 43. 
+%%
+%%Chapter 4: Requirements for competition- Demand side
+%
+%The clearing price is set at the intersection of the demand and supply curves, see Figure \ref{fig:market_demand_supply}
+%
+%
+%
+%\begin{figure}[!h]
+	%\centering
+		%\includegraphics{figures/methodology/market_demand_supply.PNG}
+	%\caption{Demand Supply Chart}
+	%\label{fig:market_demand_supply}
+%\end{figure}
+%
+%
+%
+%\subsubsection{Locational marginal price}
+%
+%See definition by ISO-NE\footnote{\url{http://www.iso-ne.com/participate/support/faq/lmp}}. 
+%
+%%TODO explain LMP (-> see ISO New England energy data, \textbf{smd hourly}!)
+%
+%\subsubsection{System marginal price (SMP)}
+%
+%A price type described by \cite{szkuta1999electricity}. 
+%
+%\subsubsection{System Load}
+%
+%%TODO
+%
+%Some energy markets provide the total system load as measured by metering. It is used for day-ahead and long term forecasting purposes and in addition it serves as important indicator in reports. The system load for the ISO New England energy market is calculated by $System Load = generation - pumping + net\_interchange$
+%
+%
+%
 
 
 
@@ -284,6 +334,56 @@ Since the occurrence of competitive energy markets forecasting of energy prices 
 
 As it will be seen later the consideration of price forecasts in a multi electricity market environment can have beneficial side effects regarding energy costs. 
 
+
+\subsection{General forecasting procedure}
+
+\begin{itemize}
+
+\item Selection of data sets (location, frequency)
+
+\item Investigation of characteristics of the selected data sets (stationarity, variance)
+
+\item Making series stationary, on demand
+
+\item Evaluation of appropriate models to be applied to the given data sets
+
+\item Model generation based on evaluation
+
+\item Model evaluation and comparison (goodness of fit, accuracy, residual characteristics) 
+
+\item Tests on in-sample and out-of-sample data
+
+\item Testing different forecasting horizons
+
+\item Comparison of results for different time sets and locations
+
+\item Conclusion and model selection based on results
+
+\end{itemize}
+
+
+\subsection{Forecast types}
+
+%Forecasting can be done in different ways, each having their own drawbacks and benefits. 
+
+Forecasting methods can be classified into two categories: Qualitative and Quantitative forecasting. 
+
+\subsubsection{Qualitative forecasting}
+Qualitative forecasting methods assume that there is no or no relevant data that can be used to make forecasts. This is the case for forecasts that aim to predict i.e. the first year's sales of a new product line or the expected profit of a newly created startup company. In both examples there is no data available beforehand and the forecast has to be derived from already known conditions also called predictor variables. 
+
+\subsubsection{Quantitative forecasting}
+Quantitative forecasting methods are based on numerical historical data, from which forecasts are derived. It is assumed that the data's pattern over time stays the same or will behave in a similar way in the future. 
+
+Quantitative forecasting methods can again be classified roughly into two categories: Cross-sectional forecasting and Time Series forecasting.
+
+\begin{itemize}
+
+\item Cross-sectional forecasts collect data from a single point in time to predict a value for an item not in the dataset. For example, prices of real estates in a specific area and point in time are collected and the price for another real estate is estimated based on predictor variables (i.e., size of properties and number of floors). 
+
+\item Time series forecasts are solely based on historical data from the value to be predicted. No other variables are considered for the calculation, which on the one hand might miss some influential factors from external conditions but on the other hand appears to be more accurate regarding the output of the forecasts. 
+In case of energy price forecasts external variables that change energy price behavior might include bids in auctions of wholesale energy markets, the current oil price or availability of renewable energy sources. However, in time series forecasts these variables are neglected to set the focus on the time series of historical energy prices. 
+
+\end{itemize}
 
 
 \subsection{Outline of forecasting models}
@@ -326,7 +426,7 @@ See Box-Jenkins Methodology.
 An approach of using artificial neural networks (ANN) as a model to forecast short term electricity prices is presented in \cite{szkuta1999electricity}. 
 
 
-\paragraph{Competition}
+\paragraph{Forecast competition}
 
 Neural network forecasting competition available from 2008\footnote{\url{http://www.neural-forecasting-competition.com/NN5/}}. 
 
@@ -337,19 +437,10 @@ Neural network forecasting competition available from 2008\footnote{\url{http://
 
 
 
-
-
-
-\subsection{Forecast accuracy measures}
-
-
 \subsection{Model selection techniques}
 
 
-
 \subsubsection{Autocorrelation}
-
-
 
 The autocorrelation function determines the existence or non-existence of correlation between lagged variables within a time series. 
 
@@ -385,6 +476,14 @@ Explanation: The autocovariance function determines the (average) covariance bet
 See \url{http://www.itl.nist.gov/div898/handbook/eda/section3/autocopl.htm}
 
 
+\subsubsection{White noise tests for residuals}
+
+To test if residuals can be regarded as white noise, its auto correlation functions is examined. In case auto correlations are present it means that some values within the series depend on one another. In theory a true white noise series should not exhibit any auto correlations but since we operate on finite time series there will always be a few correlations present in the data\cite{makridakisforecasting}. 
+
+It can be shown that the auto correlations of a white noise series have a sampling distribution similar to a gaussian distribution with zero mean and a standard deviation of $1/\sqrt{n}$ where $n$ denotes the total number of observations in the series\cite{makridakisforecasting}. 
+
+
+
 \subsubsection{Box Cox transformation}
 
 The Box Cox transformation is used to transform a series based on a non-normal distribution to a normal distribution. This is done via log and exponential transformations. 
@@ -393,7 +492,61 @@ See \url{http://www.isixsigma.com/tools-templates/normality/making-data-normal-u
 
 
 
-\subsection{Forecasting in cloud environments}
+
+
+\subsection{Forecast accuracy measures}
+
+There are different kinds of accuracy measures that can be applied to forecasting methods. \footnote{https://www.otexts.org/fpp/2/5}
+
+\subsubsection{Scale-dependent error measures}
+
+Scale dependent errors are absolute error measures given in the same scale as the dataset that is examined. Thus they are most useful when testing fc methods on the same dataset or on the same scale, respectively. 
+
+\begin{itemize}
+\item Mean absolute error (MAE)
+The absolute error is defined by the value difference between a value of the dataset and its forecasted value. The mean absolute error returns the mean of all absolute errors on the dataset. [insert formula]
+
+\item Root mean squared error (RMSE)
+The root mean squared error takes the root of the sum of the squared forecast errors, and is scale dependent as well. [insert formula]
+
+\end{itemize}
+
+\subsubsection{Percentage error measures}
+
+The most common percentage error is the mean absolute percentage error (MAPE) which is defined as the mean of percentage errors of a dataset. A percentage error is defined as $p_i=e_i/y_i * 100$. The mean absolute percentage error is then $mean(|pi|)$. 
+
+The disadvantage of percentage error measures is that the value becomes infinite if there is some $y_i = 0$ on the dataset. Also, extreme values occur when the values on the dataset come close to zero. 
+
+
+\subsubsection{Forecast error classification}
+
+\begin{itemize}
+
+\item Mean absolute error (MAE): \[ \frac{1}{n} \sum_{i=1}^{n} |\hat{y}_i - y_i| \] % \[\sum_{i=1}^{10} t_i\] %\sum(abs(predicted - actual)) / N
+
+\item Mean squared error (MSE): \[ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 \] %$sum((predicted - actual)^2) / N$
+
+\item Root mean squared error (RMSE): \[ \sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}\] % $sqrt(sum((predicted - actual)^2) / N)$
+
+\item Mean absolute percentage error (MAPE): \[ \frac{1}{n} \sum_{i=1}^{n} \left|\frac{\hat{y}_i - y_i}{y_i}\right| \] % $sum(abs((predicted - actual) / actual)) / N$
+
+\item Direction accuracy (DAC): \[ \frac{count(sign(y_i - y_{i-1}) = sign(\hat{y}_i - \hat{y}_{i-1}))}{n} \]
+% $count(sign(actual\_current - actual\_previous) == sign(pred\_current - pred\_previous)) / N$
+
+\item Relative absolute error (RAE): \[  \frac{ \sum_{i=1}^{n} |\hat{y}_i - y_i|}{ \sum_{i=1}^{n} |\hat{y}_{i-1} - y_i|}   \]
+ % $sum(abs(predicted - actual)) / sum(abs(previous\_target - actual))$
+
+\item Root relative squared error (RRSE): \[  \frac{ \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 }} { \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_{i-1} - y_i)^2 }} \]
+ % $sqrt(sum((predicted - actual)^2) / N) / sqrt(sum(previous\_target - actual)^2 / N)$
+
+\end{itemize}
+
+
+
+
+
+
+%\subsection{Forecasting in cloud environments}
 
 
 \section{SLA management}
@@ -403,65 +556,21 @@ As mentioned before the proposed approach relies on Virtual Machine migrations t
 Big cloud providers such as Google or Amazon commonly offer high availability services with a guaranteed availability of 99\% or even 99.9\%\footnote{Google Service Level Agreements \url{https://cloud.google.com/storage/sla}}\footnote{Amazon Service Level Agreements \url{https://aws.amazon.com/de/ec2/sla/}}. However when applying geotemporal VM migrations within a cloud environment it is not possible to keep availability at these levels due to VM downtimes. Therefore an alternative approach considering flexible SLA offers needs to be applied to accommodate possible downtimes \cite{luvcanin2014energy}. 
 
 
-\section{Virtual Machine migration}
-
-
-\section{Cost models}
-
-As discussed in [x] virtual machine migration is vital to draw benefits from the proposed approach. The targeted benefits of this approach are overall cost reductions in a geographically dispersed cloud environment. 
-
-As energy prices are provided in e.g.~MegaWatt Hours (MWh) the amount of consumed energy per time is needed to calculate resulting costs. Typically several factors contribute to the overall energy consumption in a data center such as server power consumption or cooling infrastructure. One efficiency measure of data centers is the Power Usage Effectiveness (PUE) that indicates the power needed for auxiliary devices vs.~the power drawn solely from IT equipment (e.g.~servers or network hubs). 
-
-Even though cooling expenses play a significant part in the overall energy costs this work only considers servers' power consumption as it is most significant to the proposed scenario. 
-
-A server's power consumption consists of a static and a dynamic part \cite{liu2013performance}. The static part is defined as the power drawn when a server is idle i.e.~it does not run any computations. The dynamic part varies according to the current data processing on the server which can be derived from the current utilization of hardware components. 
-
-
-\subsection{Cost of optimal assignments}
-
-
-In \cite{de2013study} it is shown that the cost of optimal assignment is further reduced by increasing the number of locations with data centers assigned to different energy markets and/or by increasing the variability of energy prices. 
-
-
-\section{Cloud Scenario}
-
-\subsection{Assumptions}
-
-\begin{itemize}
-
-\item Energy Elasticity
-
-One of the key assumptions for the cloud scenario is a reasonable level of server energy elasticity. It is defined as the difference between power values at idle and peak state regarding CPU utilization. 
-
-\end{itemize}
-
-
-\section{Data center characteristics}
-
-\subsection{Key indicators in data centers}
-
-\subsection{Data management}
-
-\subsection{Best practices in federated cloud environments}
-
-
-
-\section{Cloud Simulation}
+%\section{Virtual Machine migration}
 
 
 
 
 
-\subsection{Benefits and limitations}
+%
+%\section{Data center characteristics}
+%
+%\subsection{Key indicators in data centers}
+%
+%\subsection{Data management}
+%
+%\subsection{Best practices in federated cloud environments}
 
-\subsection{Simulation assumptions}
-
-
-
-
-
-
-\subsection{Expected results}
 
 
 
