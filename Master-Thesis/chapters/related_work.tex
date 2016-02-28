@@ -2,11 +2,15 @@
 
 \section{Literature studies}
 
+\subsection{Cost reduction in cloud environments}
+
+Active research topics in this field include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
+
+The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
+
 \subsection{Electricity markets and pricing}
 
-In wholesale energy markets different pricing and bidding models can be used. 
-
-Currently the two most common price evaluation strategies are day-ahead and real-time pricing strategies. (references?)
+In wholesale energy markets different pricing and bidding models can be used. Currently the two most common price evaluation strategies are day-ahead and real-time pricing strategies. 
 
 \subsubsection{Bidding strategies}
 
@@ -24,7 +28,9 @@ In this paper the approaches of optimal and average workload assignments are vis
 
 The differences compared to this work is that in \cite{rao2010minimizing} they do not consider longer running jobs as used in scientific calculations or large optimization problems that may take several hours to complete. Thus the impact of migrations is not examined in this scenario. In addition the possibility of energy price forecasting is not considered which may result in even greater energy cost reductions. 
 
-Another study on cost reductions in Internet Data Centers has been done where different aspects of cost reductions including cost prediction schemes have been considered \cite{de2013study}. Since up to 15\% of total capital investment is spend on energy related costs (paper references \cite{greenberg2008cost} - old, from 2009!!) a special effort is invested to reduce the amount of energy costs through cost aware operations. (TODO: Move to introduction?)
+Another study on cost reductions in Internet Data Centers has been done where different aspects of cost reductions including cost prediction schemes have been considered \cite{de2013study}. Since up to 15\% of total capital investment is spend on energy related costs 
+%(paper references \cite{greenberg2008cost} - old, from 2009!!) 
+a special effort is invested to reduce the amount of energy costs through cost aware operations. %(TODO: Move to introduction?)
 
 In this paper cost optimization is seen as an assignment problem where an overall cost function is minimized through intelligent workload allocation. During the investigation different variables and their impact on resulting energy costs are considered which are price volatility, price predictions including variable prediction errors, time lag between locations and reconfiguration delays. 
 
@@ -39,23 +45,24 @@ With different state of the art energy models and simulation constraints a summa
 
 
 
-[TODO - move this paragraph to Introduction]
-In this thesis different energy markets have been chosen that exhibit a considerable degree of price volatility and are partly located in different timezones. Therefore different scenarios may show interesting characteristics due to time- and location based differences in energy prices. 
+%[TODO - move this paragraph to Introduction]
+%In this thesis different energy markets have been chosen that exhibit a considerable degree of price volatility and are partly located in different timezones. Therefore different scenarios may show interesting characteristics due to time- and location based differences in energy prices. 
 
 
 %A cost function is provided which calculates the total energy cost based on the energy price, the power used by a single server and the total number of running servers for each location. In addition constraints are defined s.t.~the workload assigned to a DC does not exceed its capacity and the total number of requests does not exceed a predefined threshold. 
 
-\subsection{Scheduling optimized for dynamic electricity prices}
 
-Active research topics include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
+\subsection{Server power management}
 
-The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
+A well known problem in power management is how to accurately and efficiently model a server's power consumption over time. At \cite{horvath2008multi} Horvath et al.~exploit dynamic voltage scaling (DVS) and multiple sleep states to reduce power consumption of a server cluster of about 23\% without significantly impacting performance. They propose that CPU utilization and frequency are the variables that have the most significant impact on the power consumption of a machine. This assumption is also used in other studies, e.g.~\cite{rao2010minimizing, hammadi2014survey, kliazovich2012greencloud}. 
 
 \subsection{Time series forecasting}
 
 Time series analysis is an active research topic as it is important to find efficient algorithms that scale on very large amounts of data. A survey on machine learning models in time series forecasting is presented in \cite{ahmed2010empirical}, where the suitability of the models concerning forecasting is evaluated. Notably, some models did considerably better than others, therefore these models are good candidates for applications in time series forecasting. 
 
 In \cite{lin2012pattern} a comprehensive benchmark on multivariate time series is described using similarity and distance measurement functions and pattern recognition techniques. In this work unsupervised / semi-supervised machine learning methods are investigated and a new similarity measure is introduced which exhibits a very high hit rate. 
+
+\subsection{Machine Learning approaches in forecasting}
 
 \subsection{Virtual machine migration in cloud environments}
 
@@ -67,6 +74,13 @@ In another work \cite{malet2010resource} the placement of applications is dynami
 
 \section{Analysis}
 
+\subsection{Relevance of topics}
 
-\section{Comparison and summary of existing approaches}
+\subsection{Similar approaches existing in literature}
+
+\subsection{Benefits of this work}
+
+\subsection{Implications and conclusion}
+
+
 

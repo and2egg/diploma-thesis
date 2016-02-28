@@ -3,8 +3,8 @@ Type=TeXnicCenterProjectInformation
 Version=4
 
 [ProjectInfo]
-MainFile=MasterThesis.tex
-UseBibTeX=1
+MainFile=Master-Thesis.tex
+UseBibTeX=0
 UseMakeIndex=0
 ActiveProfile=LaTeX ⇨ PDF
 ProjectLanguage=en
