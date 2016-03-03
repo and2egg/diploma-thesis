@@ -178,6 +178,24 @@
   organization={IEEE}
 }
 
+@inproceedings{le2011reducing,
+  title={Reducing electricity cost through virtual machine placement in high performance computing clouds},
+  author={Le, Kien and Bianchini, Ricardo and Zhang, Jingru and Jaluria, Yogesh and Meng, Jiandong and Nguyen, Thu D},
+  booktitle={Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and Analysis},
+  pages={22},
+  year={2011},
+  organization={ACM}
+}
+
+@inproceedings{lucanin2013take,
+  title={Take a break: cloud scheduling optimized for real-time electricity pricing},
+  author={Lucanin, Dra{\v{z}}en and Brandic, Ivona},
+  booktitle={Cloud and Green Computing (CGC), 2013 Third International Conference on},
+  pages={113--120},
+  year={2013},
+  organization={IEEE}
+}
+
 @incollection{luvcanin2014energy,
   title={Energy-aware cloud management through progressive sla specification},
   author={Lu{\v{c}}anin, Dra{\v{z}}en and Jrad, Foued and Brandic, Ivona and Streit, Achim},
@@ -368,11 +386,49 @@
 
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%				 Energy Markets			 %%%%%%%%%%%%
+%%%%%%%%%%				 Data Centers 			 %%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+@misc{bitcom2014study,
+  author = {bitcom},
+  title = {Rechenzentren in Deutschland: Wirtschaftliche Bedeutung und Wettbewerbssituation},
+  howpublished = {\url{https://www.bitkom.org/Bitkom/Publikationen/Rechenzentren-in-Deutschland-Wirtschaftliche-Bedeutung-und-Wettbewerbssituation.html}},
+  year = {2014}, 
+  note = {Online; accessed 28-February-2016}
+}
+
+@misc{google2015dc,
+  author = {Google},
+  title = {Google data center efficiency},
+  howpublished = {\url{http://www.google.com/about/datacenters/efficiency/internal/}},
+  note = {Online; accessed 28-February-2016}
+}
+
+@misc{dcw2013optimizing,
+  author = {Data Center World},
+  title = {Data Center Trends: Optimizing power markets},
+  howpublished = {\url{http://www.datacenterworld.com/fall2013/account/Uploader/uploader\_files/show/335/}},
+	year = {2013}, 
+  note = {Online; accessed 28-February-2016}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%				 Power Markets			 %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+@article{tierney2008uniform,
+  title={Uniform-Pricing versus Pay-as-Bid in Wholesale Electricity Markets: Does it Make a Difference?},
+  author={Tierney, Susan F and Schatzki, Todd and Mukerji, Rana},
+  journal={New York ISO},
+  year={2008},
+  publisher={Citeseer}
+}
 
 @book{lambert2001creating,
   title={Creating competitive power markets: the PJM model},
@@ -517,23 +573,6 @@
   publisher={Elsevier}
 }
 
-@inproceedings{le2011reducing,
-  title={Reducing electricity cost through virtual machine placement in high performance computing clouds},
-  author={Le, Kien and Bianchini, Ricardo and Zhang, Jingru and Jaluria, Yogesh and Meng, Jiandong and Nguyen, Thu D},
-  booktitle={Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and Analysis},
-  pages={22},
-  year={2011},
-  organization={ACM}
-}
-
-@inproceedings{lucanin2013take,
-  title={Take a break: cloud scheduling optimized for real-time electricity pricing},
-  author={Lucanin, Dra{\v{z}}en and Brandic, Ivona},
-  booktitle={Cloud and Green Computing (CGC), 2013 Third International Conference on},
-  pages={113--120},
-  year={2013},
-  organization={IEEE}
-}
 
 @inproceedings{alfeld2012toward,
   title={Toward an analytic framework for the electrical power grid},
@@ -542,14 +581,6 @@
   pages={9},
   year={2012},
   organization={ACM}
-}
-
-@article{tierney2008uniform,
-  title={Uniform-Pricing versus Pay-as-Bid in Wholesale Electricity Markets: Does it Make a Difference?},
-  author={Tierney, Susan F and Schatzki, Todd and Mukerji, Rana},
-  journal={New York ISO},
-  year={2008},
-  publisher={Citeseer}
 }
 
 @ONLINE{java96,
@@ -561,30 +592,6 @@
     sortname = {Sun},
     keywords = {www}
 }
-
-@misc{bitcom2014study,
-  author = {bitcom},
-  title = {Rechenzentren in Deutschland: Wirtschaftliche Bedeutung und Wettbewerbssituation},
-  howpublished = {\url{https://www.bitkom.org/Bitkom/Publikationen/Rechenzentren-in-Deutschland-Wirtschaftliche-Bedeutung-und-Wettbewerbssituation.html}},
-  year = {2014}, 
-  note = {Online; accessed 28-February-2016}
-}
-
-@misc{google2015dc,
-  author = {Google},
-  title = {Google data center efficiency},
-  howpublished = {\url{http://www.google.com/about/datacenters/efficiency/internal/}},
-  note = {Online; accessed 28-February-2016}
-}
-
-@misc{dcw2013optimizing,
-  author = {Data Center World},
-  title = {Data Center Trends: Optimizing power markets},
-  howpublished = {\url{http://www.datacenterworld.com/fall2013/account/Uploader/uploader\_files/show/335/}},
-	year = {2013}, 
-  note = {Online; accessed 28-February-2016}
-}
-
 
 
 
@@ -612,6 +619,101 @@
   publisher={Tinbergen Institute Discussion Paper 13-068/III}
 }
 
+@book{weron2007modeling,
+  title={Modeling and forecasting electricity loads and prices: a statistical approach},
+  author={Weron, Rafal},
+  volume={403},
+  year={2007},
+  publisher={John Wiley \& Sons}
+}
+
+@article{lora2007electricity,
+  title={Electricity market price forecasting based on weighted nearest neighbors techniques},
+  author={Lora, Alicia T and Santos, Jes{\'u}s M Riquelme and Exposito, Antonio G and Ramos, Jos{\'e} L Mart{\'l}nez and Santos, Jos{\'e} C Riquelme},
+  journal={Power Systems, IEEE Transactions on},
+  volume={22},
+  number={3},
+  pages={1294--1301},
+  year={2007},
+  publisher={IEEE}
+}
+
+@article{contreras2003arima,
+  title={ARIMA models to predict next-day electricity prices},
+  author={Contreras, Javier and Espinola, Rosario and Nogales, Francisco J and Conejo, Antonio J},
+  journal={Power Systems, IEEE Transactions on},
+  volume={18},
+  number={3},
+  pages={1014--1020},
+  year={2003},
+  publisher={IEEE}
+}
+
+@article{hibon1997arma,
+  title={ARMA models and the Box--Jenkins methodology},
+  author={Hibon, Michael and Makridakis, Spyros},
+  year={1997},
+  publisher={John Wiley \& Sons, Ltd.}
+}
+
+
+%%%%%%%%%%%%  Forecasting with Neural Network models   %%%%%%%%%%%%%%%%%%%%%%%%%
+
+@article{vahidinasab2008day,
+  title={Day-ahead price forecasting in restructured power systems using artificial neural networks},
+  author={Vahidinasab, V and Jadid, S and Kazemi, A},
+  journal={Electric Power Systems Research},
+  volume={78},
+  number={8},
+  pages={1332--1342},
+  year={2008},
+  publisher={Elsevier}
+}
+
+@article{singhal2011electricity,
+  title={Electricity price forecasting using artificial neural networks},
+  author={Singhal, Deepak and Swarup, KS},
+  journal={International Journal of Electrical Power \& Energy Systems},
+  volume={33},
+  number={3},
+  pages={550--555},
+  year={2011},
+  publisher={Elsevier}
+}
+
+@article{pao2007forecasting,
+  title={Forecasting electricity market pricing using artificial neural networks},
+  author={Pao, Hsiao-Tien},
+  journal={Energy Conversion and Management},
+  volume={48},
+  number={3},
+  pages={907--912},
+  year={2007},
+  publisher={Elsevier}
+}
+
+@article{amjady2006day,
+  title={Day-ahead price forecasting of electricity markets by a new fuzzy neural network},
+  author={Amjady, Nima},
+  journal={Power Systems, IEEE Transactions on},
+  volume={21},
+  number={2},
+  pages={887--896},
+  year={2006},
+  publisher={IEEE}
+}
+
+@article{catalao2007short,
+  title={Short-term electricity prices forecasting in a competitive market: a neural network approach},
+  author={Catal{\~a}o, JPSa and Mariano, SJPS and Mendes, VMF and Ferreira, LAFM},
+  journal={Electric Power Systems Research},
+  volume={77},
+  number={10},
+  pages={1297--1304},
+  year={2007},
+  publisher={Elsevier}
+}
+
 @article{gareta2006forecasting,
   title={Forecasting of electricity prices with neural networks},
   author={Gareta, Raquel and Romeo, Luis M and Gil, Antonia},
@@ -621,6 +723,11 @@
   pages={1770--1778},
   year={2006},
   publisher={Elsevier}
+}
+
+@article{duanelectricity,
+  title={Electricity Price Forecasting by Autoregressive Model and Artificial Neutral Network},
+  author={Duan, Jinrui}
 }
 
 @article{szkuta1999electricity,
@@ -638,6 +745,17 @@
   title={Forecasting: methods and applications. 1998},
   author={Makridakis, Spyros and Wheelwright, Steven C and Hyndman, Rob J},
   publisher={Wiley, New York}
+}
+
+@article{bunn2000forecasting,
+  title={Forecasting loads and prices in competitive power markets: The technology of power system competition},
+  author={Bunn, Derek W},
+  journal={Proceedings of the IEEE},
+  volume={88},
+  number={2},
+  pages={163--169},
+  year={2000},
+  publisher={Institute of Electrical and Electronics Engineers}
 }
 
 @inproceedings{weron2005forecasting,
@@ -677,17 +795,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-
-@article{ahmed2010empirical,
-  title={An empirical comparison of machine learning models for time series forecasting},
-  author={Ahmed, Nesreen K and Atiya, Amir F and Gayar, Neamat El and El-Shishiny, Hisham},
-  journal={Econometric Reviews},
-  volume={29},
-  number={5-6},
-  pages={594--621},
-  year={2010},
-  publisher={Taylor \& Francis}
-}
 
 @incollection{bontempi2013machine,
   title={Machine learning strategies for time series forecasting},

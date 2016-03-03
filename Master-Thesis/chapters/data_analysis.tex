@@ -1,0 +1,43 @@
+
+\section{Power markets}
+
+In this section different studies of power market characteristics are presented to distinguish features that may be used in building forecasting models. 
+
+\subsection{Stable Modeling of different European Power Markets}
+
+In this paper different European power markets have been investigated to reveal major differences in energy price behaviour \cite{mugele2005stable}. The EEX, Nord Pool Spot and Polish power markets have been evaluated whereby the markets are responsible for the Mid-Europe, Northern Europe and Polish regions respectively. 
+
+As in general electricity prices depend on energy demand \cite{weron2005forecasting} which changes due to climate conditions (temperature and number of daylight hours) electricity prices exhibit a seasonal component as well (Figure \ref{fig:seasonal_behaviour_of_eex_prices}). 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{figures/state_of_the_art/seasonal_behaviour_of_eex_prices.PNG}
+	\caption{EEX - hourly spot prices \cite{mugele2005stable}}
+	\label{fig:seasonal_behaviour_of_eex_prices}
+\end{figure}
+
+The main differences between electricity power markets and other financial markets are price volatility, mean reversion and price jumps or "`spikes"'. Volatility is high as generated electricity cannot be stored but has to be delivered at once which might lead to high prices on transmission congestion or surges in demand. It's impact can be reduced by applying logarithmic transformations of input data \cite{weron2005forecasting}. 
+
+Energy prices experience strong mean reversion which denotes the characteristic that prices return to their mean levels after an increase in prices. In addition price spikes may appear where prices can increase tenfold from one hour to the next. To mitigate these spikes they may be averaged out in a data preprocessing step. 
+
+Even though price seasonality and trend seem to be stable over a short time range (Figure \ref{fig:seasonal_behaviour_of_eex_prices}) they can show significant fluctuations over a longer time range. In \cite{mugele2005stable} data related to each examined energy market was fitted to a stable Paretian distribution as well as a normal distribution. The result showed that mature markets as EEX or Nord Pool Spot exhibit high volatility, heavy tails, high kurtosis and asymmetrics in the energy price data which was best modeled by the Paretian distribution. In contrast the Gielda Energii SA market in Poland shows a much more stable energy price behavior which can be modeled by a Gaussian distribution. 
+
+The variation in energy price levels for the two power markets EEX and Nord Pool Spot are shown in Figures \ref{fig:EEX_levels} and \ref{fig:NordPool_levels}.
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/state_of_the_art/EEX_levels.PNG}
+    \caption{EEX levels \cite{mugele2005stable}}
+		\label{fig:EEX_levels}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{figures/state_of_the_art/NordPool_levels.PNG}
+    \caption{Nord Pool levels \cite{mugele2005stable}}
+		\label{fig:NordPool_levels}
+  \end{minipage}
+\end{figure}
+
+This shows that it is important to investigate energy price characteristics from power markets to accurately model market prices. 
+
