@@ -59,48 +59,6 @@ This process is taken from the Box Jenkins methodology for forecast model genera
 Interestingly only five hour training periods are needed to model forecasts for the next consecutive hour for Spanish power prices, only two hour training periods are needed for modeling Californian energy prices. 
 Through outlier detection the resulting forecasts could have been slightly improved but as stated in \cite{contreras2003arima} this would result in significantly increased computation time. 
 
-
-\subsection{Energy price forecasting approaches in wholesale power markets}
-
-According to \cite{lora2007electricity} electricity price models in general can be classified in two different sets of models, production cost models and statistical models. 
-
-Production cost models retrieve all available information to accurately model system behavior while statistical models are trained on historical data and have little information about the underlying system. An advantage of statistical models is that the amount of information needed to build models is significantly less than that needed for production cost models. 
-
-Statistical time series models can in turn be classified in classical time series models and models based on machine learning approaches \cite{lora2007electricity}. Classical time series models have the benefit to exhibit a simpler structure than machine learning models, however it is hard to obtain accurate forecasts for non-linear time series such as energy prices. 
-
-Regarding machine learning approaches, artificial neural networks (ANN) have been studied extensively in relation to electricity price forecasting \cite{vahidinasab2008day, singhal2011electricity, pao2007forecasting, amjady2006day, catalao2007short, 
-gareta2006forecasting, duanelectricity, szkuta1999electricity}. Neural network models are trained to model non-linear relationships between applicable input variables and historical energy prices. 
-
-Results show that ANN models have the potential to significantly outperform statistical models such as Autoregressive (AR) or ARIMA models \cite{pao2007forecasting, catalao2007short}. This may be due to their ability to more accurately model the underlying system behavior while they excel at modeling non-linear relationships in the dataset. 
-
-However, in order to successfully apply forecasting based on neural network models a set of requirements have to be met \cite{catalao2007short}: Availability of sufficient amounts of data, adequate selection of input/output samples, an appropriate number of hidden units and sufficient computational resources. In case these requirements can not be met or it is not possible to appropriately parametrize the model statistical models provide a good alternative for modeling energy prices. 
-
-
-%Different methods have been proposed for applying load and energy price forecasting in wholesale power markets. Two basic types of models can be discerned: time series based models and computationally intensive machine learning approaches \cite{bunn2000forecasting, weron2007modeling}. 
-%
-%Price and load forecasting is evaluated in \cite{bunn2000forecasting} by investigating the England and Wales energy markets. 
-%Forecasting daily loads is discussed based on computationally intensive methods where three types of approaches are considered:
-%variable segmentation, combination of forecasts and load forecasting with neural networks.
-
-%They point out that load forecasting is inherently different from price forecasting despite the fact that price movements are based on variations in load. Additionally research in the area of price forecasting has been still immature and needs to be investigated in depth. 
-
-%\subsection{Forecasting Loads and Prices in Competitive Power Markets}
-
-
-
-
-\subsection{Forecasting next day electricity prices by computationally intensive methods}
-
-Some approaches were taken to provide forecast models for next day electricity prices in wholesale power markets. Basically there are two different approaches for energy price forecasting. 
-
-
-
-
-\subsection{Electricity Market Price Forecasting Based on Weighted Nearest Neighbors Techniques}
-
-\cite{lora2007electricity}
-
-
 %The first step (0) consists of determining a suitable class of models that can be applied to the time series based on observed characteristics, e.g.~high frequency, nonconstant mean and variance, and multiple seasonality. The hypothesis of the model at this step assumes a forecast error term with a normal distribution having a zero mean and constant variance. 
 %
 %In step 1) a trial model has to be selected for which data has to be made stationary. Through application of a logarithmic transformation a more stable variance can be achieved whereas (seasonal) differencing of data may result in a more stable mean. In order to find appropriate autoregressive and moving average coefficients for the resulting ARIMA model autocorrelation (ACF) and partial autocorrelation (PACF) plots may be consulted to retrieve a first fit of the model. 
@@ -113,9 +71,160 @@ Some approaches were taken to provide forecast models for next day electricity p
 
 
 
+
+\subsection{Energy price forecasting approaches in wholesale power markets}
+
+According to \cite{lora2007electricity} electricity price models in general can be classified in two different sets of models, production cost models and statistical models. 
+
+Production cost models retrieve all available information to accurately model system behavior while statistical models are trained on historical data and have little information about the underlying system. An advantage of statistical models is that the amount of information needed to build models is significantly less than that needed for production cost models. 
+
+A taxonomy of electricity price forecasting models is presented in \cite{aggarwal2009electricity} (Figure \ref{fig:classification_of_price_forecasting_models}). 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{figures/state_of_the_art/classification_of_price_forecasting_models.PNG}
+	\caption{Classification of price forecasting models \cite{aggarwal2009electricity}}
+	\label{fig:classification_of_price_forecasting_models}
+\end{figure}
+
+In the above taxonomy production cost models are all but parsimonious stochastic models and regression or casual models. Statistical time series models can thus be classified in classical time series models and models based on machine learning approaches \cite{lora2007electricity, duanelectricity}. Classical time series models have the benefit to exhibit a simpler structure than machine learning models, however it is hard to obtain accurate forecasts for non-linear time series such as energy prices. 
+
+Regarding machine learning approaches, artificial neural networks (ANN) have been studied extensively in relation to electricity price forecasting \cite{vahidinasab2008day, singhal2011electricity, pao2007forecasting, amjady2006day, catalao2007short, 
+gareta2006forecasting, duanelectricity, szkuta1999electricity}. Neural network models are trained to model non-linear relationships between applicable input variables and historical energy prices. 
+
+Extensive research has been made regarding stochastic time series models as well whereby models may be applied to single \cite{garcia2005garch, weron2008forecastingWh, weron2008forecasting, nogales2002forecasting, cuaresma2004forecasting, tan2010day, conejo2005day} or complex multiple seasonality patterns \cite{de2011forecasting, gould2008forecasting, zivot2003vector}. 
+Studies show that univariate time series models may be improved significantly by modeling each hour of the day separately \cite{cuaresma2004forecasting, weron2008forecasting}. However this requires model building separately for each hour which increases the amount of effort needed especially in dynamic forecasting environments. 
+It is also stated that including modeling of non-linear phenomena would drastically increase computation time for time series models \cite{cuaresma2004forecasting}. 
+
+%models may be classified in two types: univariate and multivariate time series models. 
+
+Results show that ANN models have the potential to outperform statistical models such as Autoregressive (AR) or Autoregressive Integrated Moving Average (ARIMA) models \cite{pao2007forecasting, catalao2007short}. This may be due to their ability to more accurately model the underlying system behavior while they excel at modeling non-linear relationships in the dataset. 
+
+However, in order to successfully apply forecasting based on neural network models a set of requirements have to be met \cite{catalao2007short}: Availability of sufficient amounts of data, adequate selection of input/output samples, an appropriate number of hidden units and sufficient computational resources. In case these requirements can not be met or it is not possible to appropriately parametrize the model statistical models provide a good alternative for modeling energy prices. 
+
+
+
+
 \section{Optimize resource scheduling in geo distributed data centers}
 
+Different scheduling algorithms have been developed for distributing resources in geographically dispersed data centers. 
+
+\subsection{A Study of Electricity Price Features on Distributed Internet Data Centers}
+
+A comprehensive study about optimization of energy costs under different operational and energy cost prediction regimes is presented in \cite{de2013study}. 
+
+The focus of this work is to leverage price differences across different energy markets in a network of geo distributed data centers to minimize energy costs by migrating resources to currently cheaper locations. It takes into account the impact of several metrics including the level of price variability, time lag between locations, reconfiguration delay and accuracy of energy price predictions. 
+
+To provide a forecasting model based on the given data the Box-Jenkins method is used to build an ARIMA model characterizing the underlying electricity price data:
+
+\[ ARMA(p,q) : P_t = \epsilon_t + \sum_{i=1}^{p}{\phi_i P_{t-i}} + \sum_{j=1}^{q}{\theta_j \epsilon_{t-j}}\] 
+
+where $p$ and $q$ are the number of autoregressive and moving average terms, $\phi_i$ and $\theta_j$ denote the model coefficients and $\epsilon_t$ denotes the error term at time $t$. To accurately model seasonality in the data an $SARIMA(p,d,q)(P,D,Q)[s]$ model has been used which includes the number of terms $p,q$ and $P,Q$ as non-seasonal and seasonal parameters and $d$ and $D$ for non-seasonal and seasonal differencing, respectively. 
+
+Price time series have been generated with different levels of variability $\sigma_{Price}^{2} \in \{50, 126.6, \ab 300, 500\}$. In addition, prediction errors have been used to simulate different forecast accuracy levels, $\sigma_{pred} \in \{2.0, 5.0, 10.0\}$. 
+
+Thus, $P = \{p_1,\ldots,p_T \}$ denotes a price time series and $\hat{P} = \{\hat{p_1},\ldots,\hat{p_T}\}$ a simulation of forecast values such that 
+$\hat{P_t} = \mathcal{N}(P_t, \sigma_{pred}), \forall t \in T$. As a measure of accuracy the mean squared error (MSE) has been used: 
+$MSE(P,\hat{P}) = \frac{1}{T} \sum_{t \in T}{(P_t - \hat{P_t})^2}$. 
+
+The decision of workload assignment at a particular time $t$ is based on the number of active servers at location $i$ and the corresponding forecast prices $\hat{P_i}(t)$. The total cost at any given moment is defined by $\hat{C_t} = \sum_{i=1}^{N}{m_i \times \hat{P_i}(t) \times Po_i}$ where $Po_i$ denotes the power used by a server running at location $i$ and $m_i$ defines the number of running servers at location $i$. 
+
+Results for different metrics achieved different cost savings \cite{de2013study}. When the number of locations involved in the simulation is increased, cost savings up to 10\% have been reported when going from 1 up to 20 locations. The more locations are considered the greater benefit can be drawn from price differences and time lags between different locations. 
+
+Price variability has been simulated with $\sigma_{price}^{2} \in \{0,5,\ldots,500\}$ and resulting costs have been estimated. It was shown that up to 15\% of savings could be achieved when comparing the maximum and minimum simulated price variabilities. 
+
+Concerning time lags it is stated that the most benefit could be drawn from locations in timezones that are sufficiently distant from each other due to the daily seasonality observed in energy prices. For this scenario up to 15\% cost savings have been achieved for locations that were perfectly "`out of phase"'. 
+
+Finally results show that forecast errors have a major impact on resulting costs. In order to quantitatively measure the impact of forecast deviations $\sigma_{pred}$ has been increased stepwise in the range $0,\ldots,5$ by steps of $0.1$.
+The resulting MSE is quadratically rising with the level of $\sigma_{pred}$, thus when errors are at maximum a 10\% revenue loss is expected. 
+Therefore accurate forecasts are very important to achieve major cost savings in a multi cloud environment. 
+
+
+\subsection{A task scheduling algorithm based on load balancing in cloud computing}
+
+In \cite{fang2010task} a two level scheduling model has been implemented (Figure \ref{fig:two_level_resource_scheduling}). 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.7\textwidth]{figures/state_of_the_art/two_level_resource_scheduling.PNG}
+	\caption{Two level scheduling model \cite{fang2010task}}
+	\label{fig:two_level_resource_scheduling}
+\end{figure}
+
+A two stage process is described where the first scheduler creates the task description of a virtual machine s.t.~the task will have a perfect fit on a virtual machine whereas the second scheduler is responsible to find appropriate resources (hosts) for the provisioned virtual machine. Thus an optimized resource scheduling is presented with focus on load balancing among different clouds. 
+
+Tasks have a defined structure where task $t_i$ out of the set of all Tasks $T$ is defined as 
+
+\[t_i = \{tId, tRr, tSta, tData, tVmch, tVm\}\]
+
+\begin{itemize}
+	\item $tId$ is the task identification
+	\item $tRr$ denotes the required resources
+	\item $tSta$ describes the state of the task where $tSta = \{tFree,tAllo,tSche,tWait,tExec,tComp\}$
+	\item $tData$ defines the relative data of the task (computational load, input and output data)
+	\item $tVmch$ denotes the virtual machine specification where $tVmch = \{tId,tRr,tData\}$
+	\item $tVm$ defines the assigned virtual machine of the task where $tVm = \{tId,thId\}$
+\end{itemize}
+
+Hosts on the other hand are defined as $h_j = \{hId, hTcap, hFcap, hData\}$, where
+
+\begin{itemize}
+	\item $hId$ denotes the host identification
+	\item $hTcap$ is the total host capacity (set of resource capacities)
+	\item $hFcap$ is the freely available host capacity
+	\item $hData$ denotes the relative data of the host (including input and output bandwidth)
+\end{itemize}
+
+%Concerning the scheduling algorithm, the predicted task resource usage is defined as $VL_i$. 
+
+The scheduling algorithm is based on the following equations: 
+
+\[ HL_i = \frac{\sum_{j=1}^{n}{VL_j}}{n} \]
+
+\[ avgl = \frac{\sum_{i=1}^{m}{HL_i}}{m} \]
+
+\[ B = \frac{\sqrt{\sum_{i=1}^{m}{(HL_i - avgl)^2}}}{m} \]
+
+where $VL_j$ is the predicted resource load for VM $j$, $HL_i$ is the average load for host $i$, $avgl$ denotes the average
+load across all running hosts and $B$ denotes a metric for load balancing. 
+
+The scheduler iterates over the set of hosts in each timestamp and determines the value of the load balancing metric $B$. In case the value of 
+$B$ exceeds a predefined threshold $B_0$ or the predicted resource requirements for a virtual machine exceed the currently allocated resources 
+the VM is migrated to a host occupying the least resources for optimal load balancing. 
+
+Results show that considering dynamic resource requirements load is distributed across all machines leading to stable level of cloud utilization. 
+
+
+
+
+%"`A Study of Electricity Price Features
+%on Distributed Internet Data Centers"' -> see impact of inaccurate forecasts
+
+
+
+\subsection{Studies for schedule optimizations in multi-electricity-market environments}
+
+Different studies have been developed for optimizing resource scheduling in multi market environments. 
+
+In \cite{buchbinder2011online} the basic tradeoff between energy and bandwidth costs is discussed for migrating virtual machines between geographically distributed data centers. 
+Three different algorithms have been evaluated on a set of 30 US locations covering three years of next day electricity data. Out of the two greedy algorithms and the online migration algorithm the latter provided the best results with only 4 to 6 \% off the optimal offline solution. 
+
+The authors in \cite{rao2010minimizing} aim to minimize energy costs while guaranteeing quality of service by referring to a constrained mixed integer programming model. The approximated linear programming model is converted to a minimum cost flow problem which can be solved fast and efficiently. With five frontend web portal servers targeting three internet data centers cost reductions up to 30\% are achieved within the simulation. 
+
+An extensive study on electricity price features and its implications for existing cloud systems is given in \cite{qureshi2009cutting}. While taking into account server energy elasticity and bandwidth constraints a maximum cost savings of 45\% could be achieved when running a simulation over 39 months including 29 locations. However, in order to achieve these results bandwidth constraints are relaxed and large distances to clients have to be permitted. 
+
+A different approach is examined by \cite{simarro2011dynamic} where dynamic pricing schemes of different cloud providers are taken advantage of to reduce investment of users. The assumption is that prices for each cloud provider change according to demand and thus virtual cluster placements can be optimized across different cloud providers. As infrastructure is dynamically distributed without notice of the user it provides an efficient and convenient way of reducing costs for cloud users. 
+
+Cost based multi cloud schedulers have been investigated in \cite{guler2013cutting}, \cite{le2009cost} and \cite{tordsson2012cloud}. 
+A cloud scheduler for simplified management of virtual machines has been developed in \cite{armstrong2010cloud}. 
+Also, schedulers based on genetic algorithms were proposed by \cite{dutta2011genetic} for cost based multi QoS optimizations and \cite{ge2010ga} for improving delay scheduling policy. 
+
+
 \section{Cost optimization in data centers}
+
+
+See folder "`power load"' for relevant papers
+
 
 Active research topics in this field include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
 
