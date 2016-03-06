@@ -105,9 +105,9 @@ However, in order to successfully apply forecasting based on neural network mode
 
 
 
-\section{Optimize resource scheduling in geo distributed data centers}
+\section{Cost optimization in geo distributed data centers}
 
-Different scheduling algorithms have been developed for distributing resources in geographically dispersed data centers. 
+Different cost optimization approaches have been developed for distributing resources in geographically dispersed data centers. 
 
 \subsection{A Study of Electricity Price Features on Distributed Internet Data Centers}
 
@@ -139,6 +139,54 @@ Finally results show that forecast errors have a major impact on resulting costs
 The resulting MSE is quadratically rising with the level of $\sigma_{pred}$, thus when errors are at maximum a 10\% revenue loss is expected. 
 Therefore accurate forecasts are very important to achieve major cost savings in a multi cloud environment. 
 
+
+
+
+\subsection{Cutting Down the Energy Cost of Geographically Distributed Cloud Data Centers}
+
+This paper aims to minimize energy costs in geographically distributed data centers by taking into account spatio-temporal variation in electricity prices and the outside weather temperature \cite{guler2013cutting}. The scenario is modeled as a linear programming problem which is solved by presenting various heuristic solutions to the problem. 
+
+While providing algorithms for minizing energy costs resulting SLA penalties as well as cooling related costs are taken into account. 
+For each data center a performance coefficient (CoP) is calculated which is based on outside weather temperature where the coefficient increases linearly with rising temperature. A data center may have different types of servers exhibiting different performance metrics and capacities. 
+
+Energy costs are calculated as the sum of server power consumption over a specific time range multiplied by the applicable energy prices during that time. 
+The total costs for data center $i$ are defined as $E_{i}^{total} = E_{i}^{IT} \times CoP(T_i)$ where $T_i$ denotes the temperature at location $i$. 
+
+The actual time a job $j$ needs when running on a type $k$ server $s$ is defined as 
+\[  T_{j,s} = \frac{c_j \times f_j \times l_j}{c_k \times f_k}  \] 
+where $c$ and $f$ denote the number of cores and frequency available / needed by a server / job and $l$ denotes the expected runtime of job $j$. 
+A penalty occurs if the total runtime of a job exceeds the expected runtime when running on server $s$. 
+
+The goal is to minimize the sum of total energy and penalty costs over all data centers 
+\[ \min \sum_{i=1}^{N}{E_{i}^{total} + Pen_i} \]
+where $Pen_i$ denotes the total penalty cost for data center $i$. 
+
+Based on the proposed linear optimization problem two types of scheduling algorithms are introduced, immediate and delayed. Immediate scheduling algorithms are defined as CheapestDC and CheapestS where the former places resources randomly on hosts located at the currently cheapest data center while the latter includes outside weather temperature as well in the calculation. Delayed scheduling algorithms additionally consider historical energy prices to decide whether jobs should be delayed to a future time stamp. 
+
+Simulation runs over six data centers at different locations handling three types of workloads were conducted to evaluate different scheduling algorithms.
+Results show that delayed scheduling techniques on light workloads achieve over 5\% on overall cost savings compared to the baseline random scheduler. Also, spatial electricity price variations have the most impact on cost savings followed by temporal electricity price changes and reduced cooling costs due to outside weather temperature. 
+
+
+\subsection{Studies for cost optimizations in multi-electricity-market environments}
+
+Different studies have been developed for optimizing energy costs in multi market environments. 
+
+In \cite{buchbinder2011online} the basic tradeoff between energy and bandwidth costs is discussed for migrating virtual machines between geographically distributed data centers. 
+Three different algorithms have been evaluated on a set of 30 US locations covering three years of next day electricity data. Out of the two greedy algorithms and the online migration algorithm the latter provided the best results with only 4 to 6 \% off the optimal offline solution. 
+
+The authors in \cite{rao2010minimizing} aim to minimize energy costs while guaranteeing quality of service by referring to a constrained mixed integer programming model. The approximated linear programming model is converted to a minimum cost flow problem which can be solved fast and efficiently. With five frontend web portal servers targeting three internet data centers cost reductions up to 30\% are achieved within the simulation. 
+
+An extensive study on electricity price features and its implications for existing cloud systems is given in \cite{qureshi2009cutting}. While taking into account server energy elasticity and bandwidth constraints a maximum cost savings of 45\% could be achieved when running a simulation over 39 months including 29 locations. However, in order to achieve these results bandwidth constraints are relaxed and large distances to clients have to be permitted. 
+
+A different approach is examined by \cite{simarro2011dynamic} where dynamic pricing schemes of different cloud providers are taken advantage of to reduce investment of users. The assumption is that prices for each cloud provider change according to demand and thus virtual cluster placements can be optimized across different cloud providers. As infrastructure is dynamically distributed without notice of the user it provides an efficient and convenient way of reducing costs for cloud users. 
+
+Cost based multi cloud schedulers have been investigated in \cite{le2009cost} and \cite{tordsson2012cloud}. 
+A cloud scheduler for simplified management of virtual machines has been developed in \cite{armstrong2010cloud}, a green cloud scheduler in \cite{lucanin2013take}. 
+Also, schedulers based on genetic algorithms were proposed by \cite{dutta2011genetic} for cost based multi QoS optimizations and \cite{ge2010ga} for improving delay scheduling policy. 
+
+
+
+\section{Optimize resource scheduling in data centers}
 
 \subsection{A task scheduling algorithm based on load balancing in cloud computing}
 
@@ -196,71 +244,70 @@ Results show that considering dynamic resource requirements load is distributed 
 
 
 
+\subsection{Efficient resource management for cloud computing environments}
 
-%"`A Study of Electricity Price Features
-%on Distributed Internet Data Centers"' -> see impact of inaccurate forecasts
+In \cite{younge2010efficient} power aware and live migration scheduling techniques are proposed as a green cloud approach to increase overall system efficiency with minimal performance overhead. 
 
+A new greedy based algorithm is presented to minimize power consumption. It is based on the findings that power consumption of a server does not increase linearly with the number of cores utilized. Instead, most power is drawn by one utilized core whereas power increases only slightly when comparing a server utilizing 7 to 8 cores. Thus a new VM scheduling algorithm is proposed that minimizes resulting power consumption within a data center. 
 
+Hosts are assigned to a pool of resources where a pool can be initialized by a priority based evaluations system to either maximize performance or further minimize power consumption \cite{younge2010efficient}. Each VM request is checked against its resource requirements and available capacities in the pool and assigned to a host to maximize utilization and therefore minimize overall power consumption. 
 
-\subsection{Studies for schedule optimizations in multi-electricity-market environments}
+In addition, live migration of virtual machines is applied to further optimize power consumption by shifting load away from under utilized hosts (Figure \ref{fig:server_power_consumption}). When load increases, Wake on Lan (WOL) technology is used to power servers back up again. Furthermore, a focus has been to reduce VM image size and boot time to optimize virtual machines for a server environment. 
 
-Different studies have been developed for optimizing resource scheduling in multi market environments. 
+%\begin{figure}[htbp]
+	%\centering
+		%\includegraphics{figures/state_of_the_art/vm_migration_for_host_consolidation.PNG}
+	%\caption{Virtual machine management dynamic shutdown technique \cite{younge2010efficient}}
+	%\label{fig:vm_migration_for_host_consolidation}
+%\end{figure}
 
-In \cite{buchbinder2011online} the basic tradeoff between energy and bandwidth costs is discussed for migrating virtual machines between geographically distributed data centers. 
-Three different algorithms have been evaluated on a set of 30 US locations covering three years of next day electricity data. Out of the two greedy algorithms and the online migration algorithm the latter provided the best results with only 4 to 6 \% off the optimal offline solution. 
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{figures/state_of_the_art/server_power_consumption.PNG}
+	\caption{Illustration of scheduling power savings \cite{younge2010efficient}}
+	\label{fig:server_power_consumption}
+\end{figure}
 
-The authors in \cite{rao2010minimizing} aim to minimize energy costs while guaranteeing quality of service by referring to a constrained mixed integer programming model. The approximated linear programming model is converted to a minimum cost flow problem which can be solved fast and efficiently. With five frontend web portal servers targeting three internet data centers cost reductions up to 30\% are achieved within the simulation. 
+Power aware resource scheduling has been simulated on an OpenNebula \cite{fontan2008opennebula} pool of 4 servers, equipped with 8 cores each. Power elasticity (power range from idle to peak power of a server) for this type of server is 61\% where a total reduction in power consumption of 12\% could be achieved. As the results are scalable also to large clusters significant power and cost savings are possible using the proposed approach. 
 
-An extensive study on electricity price features and its implications for existing cloud systems is given in \cite{qureshi2009cutting}. While taking into account server energy elasticity and bandwidth constraints a maximum cost savings of 45\% could be achieved when running a simulation over 39 months including 29 locations. However, in order to achieve these results bandwidth constraints are relaxed and large distances to clients have to be permitted. 
+%See folder "`power load"' for relevant papers
 
-A different approach is examined by \cite{simarro2011dynamic} where dynamic pricing schemes of different cloud providers are taken advantage of to reduce investment of users. The assumption is that prices for each cloud provider change according to demand and thus virtual cluster placements can be optimized across different cloud providers. As infrastructure is dynamically distributed without notice of the user it provides an efficient and convenient way of reducing costs for cloud users. 
-
-Cost based multi cloud schedulers have been investigated in \cite{guler2013cutting}, \cite{le2009cost} and \cite{tordsson2012cloud}. 
-A cloud scheduler for simplified management of virtual machines has been developed in \cite{armstrong2010cloud}. 
-Also, schedulers based on genetic algorithms were proposed by \cite{dutta2011genetic} for cost based multi QoS optimizations and \cite{ge2010ga} for improving delay scheduling policy. 
-
-
-\section{Cost optimization in data centers}
-
-
-See folder "`power load"' for relevant papers
-
-
-Active research topics in this field include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
-
-The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
-
-
-
-In \cite{rao2010minimizing} a cloud consisting of several Internet Data Centers (IDC) is examined with regard to cost optimization which is done by intelligently assigning workload to data centers based on current energy prices. Two of these data centers in the scenario are connected to deregulated wholesale energy markets whereas the other one is connected to a regulated utility region charged by a fixed pricing scheme. Since price change differences in deregulated energy markets can be considerable energy cost reductions may be achieved by assigning workload based on changing energy prices.  %For the purpose of the simulation five front-end Web portal servers process a total workload of about $10^5$ requests per second. 
-
-In this paper the approaches of optimal and average workload assignments are visually and formally compared to gain insights into the total electricity cost reduction. The optimal workload assignment is calculated with respect to workload and delay constraints that are considered in a minimum cost flow problem based on a linear programming model. Thus the goal is to minimize costs without compromising quality of service constraints. 
-%The proposed cost reductions amount up to 30 percent for a single hour test within the given time range. 
-%The results measured at two timestamps at a specific day seem promising, since total cost reductions could be achieved by 30\% and 17\% respectively. 
-
-The differences compared to this work is that in \cite{rao2010minimizing} they do not consider longer running jobs as used in scientific calculations or large optimization problems that may take several hours to complete. Thus the impact of migrations is not examined in this scenario. In addition the possibility of energy price forecasting is not considered which may result in even greater energy cost reductions. 
-
-Another study on cost reductions in Internet Data Centers has been done where different aspects of cost reductions including cost prediction schemes have been considered \cite{de2013study}. Since up to 15\% of total capital investment is spend on energy related costs 
-%(paper references \cite{greenberg2008cost} - old, from 2009!!) 
-a special effort is invested to reduce the amount of energy costs through cost aware operations. %(TODO: Move to introduction?)
-
-In this paper cost optimization is seen as an assignment problem where an overall cost function is minimized through intelligent workload allocation. During the investigation different variables and their impact on resulting energy costs are considered which are price volatility, price predictions including variable prediction errors, time lag between locations and reconfiguration delays. 
-
-Similar to this work the simulation is run with the same set of fixed parameters to evaluate the impact of the various scenarios. It is observed that prediction errors greatly impact workload allocation where cost penalties due to non-optimal assignments increase quadratically with an increase of forecast errors \cite{de2013study}. Also with increasing number of locations the minimum cost of optimal assignments can be greatly reduced. Greater price volatility is beneficial as well since then price aware assignments will have greater impacts. 
-
-A comprehensive study on cost reductions and energy market characteristics in an environment where data centers are placed within the reach of different energy markets is presented at \cite{qureshi2009cutting}. Based on geotemporal variations of energy prices the maximum cost reductions under different scenarios are evaluated. Energy expenses are estimated for various large scale companies like Google and Yahoo to state the actual savings and the amount of reductions in energy costs that would be possible. 
-They also discuss the impact of considering bandwith constraints and maximum client server distances on cost reductions. 
-
-Interestingly enough long term seasonalities in the energy price data has been discovered that spanned multiple energy markets. This is an important fact when training forecasting models since predictions can become a lot more accurate. An important fact that was revealed about energy markets was that data from different energy markets was much less correlated than data from the same area. Thus to take full advantage of energy price differences data centers located at different energy markets should be combined \cite{qureshi2009cutting}. 
-
-With different state of the art energy models and simulation constraints a summary of possible cost reduction schemes was presented. However no migration or forecasting of energy price data has been done which could further improve scenarios with longer running jobs. In addition these cost reductions are only valid under specific assumptions that large cloud providers would need to implement such as connection to wholesale energy markets and reasonable server energy elasticity. 
-
-
-
-
-\subsection{Server power management}
-
-A well known problem in power management is how to accurately and efficiently model a server's power consumption over time. At \cite{horvath2008multi} Horvath et al.~exploit dynamic voltage scaling (DVS) and multiple sleep states to reduce power consumption of a server cluster of about 23\% without significantly impacting performance. They propose that CPU utilization and frequency are the variables that have the most significant impact on the power consumption of a machine. This assumption is also used in other studies, e.g.~\cite{rao2010minimizing, hammadi2014survey, kliazovich2012greencloud}. 
+%
+%Active research topics in this field include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
+%
+%The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
+%
+%
+%
+%In \cite{rao2010minimizing} a cloud consisting of several Internet Data Centers (IDC) is examined with regard to cost optimization which is done by intelligently assigning workload to data centers based on current energy prices. Two of these data centers in the scenario are connected to deregulated wholesale energy markets whereas the other one is connected to a regulated utility region charged by a fixed pricing scheme. Since price change differences in deregulated energy markets can be considerable energy cost reductions may be achieved by assigning workload based on changing energy prices.  %For the purpose of the simulation five front-end Web portal servers process a total workload of about $10^5$ requests per second. 
+%
+%In this paper the approaches of optimal and average workload assignments are visually and formally compared to gain insights into the total electricity cost reduction. The optimal workload assignment is calculated with respect to workload and delay constraints that are considered in a minimum cost flow problem based on a linear programming model. Thus the goal is to minimize costs without compromising quality of service constraints. 
+%%The proposed cost reductions amount up to 30 percent for a single hour test within the given time range. 
+%%The results measured at two timestamps at a specific day seem promising, since total cost reductions could be achieved by 30\% and 17\% respectively. 
+%
+%The differences compared to this work is that in \cite{rao2010minimizing} they do not consider longer running jobs as used in scientific calculations or large optimization problems that may take several hours to complete. Thus the impact of migrations is not examined in this scenario. In addition the possibility of energy price forecasting is not considered which may result in even greater energy cost reductions. 
+%
+%Another study on cost reductions in Internet Data Centers has been done where different aspects of cost reductions including cost prediction schemes have been considered \cite{de2013study}. Since up to 15\% of total capital investment is spend on energy related costs 
+%%(paper references \cite{greenberg2008cost} - old, from 2009!!) 
+%a special effort is invested to reduce the amount of energy costs through cost aware operations. %(TODO: Move to introduction?)
+%
+%In this paper cost optimization is seen as an assignment problem where an overall cost function is minimized through intelligent workload allocation. During the investigation different variables and their impact on resulting energy costs are considered which are price volatility, price predictions including variable prediction errors, time lag between locations and reconfiguration delays. 
+%
+%Similar to this work the simulation is run with the same set of fixed parameters to evaluate the impact of the various scenarios. It is observed that prediction errors greatly impact workload allocation where cost penalties due to non-optimal assignments increase quadratically with an increase of forecast errors \cite{de2013study}. Also with increasing number of locations the minimum cost of optimal assignments can be greatly reduced. Greater price volatility is beneficial as well since then price aware assignments will have greater impacts. 
+%
+%A comprehensive study on cost reductions and energy market characteristics in an environment where data centers are placed within the reach of different energy markets is presented at \cite{qureshi2009cutting}. Based on geotemporal variations of energy prices the maximum cost reductions under different scenarios are evaluated. Energy expenses are estimated for various large scale companies like Google and Yahoo to state the actual savings and the amount of reductions in energy costs that would be possible. 
+%They also discuss the impact of considering bandwith constraints and maximum client server distances on cost reductions. 
+%
+%Interestingly enough long term seasonalities in the energy price data has been discovered that spanned multiple energy markets. This is an important fact when training forecasting models since predictions can become a lot more accurate. An important fact that was revealed about energy markets was that data from different energy markets was much less correlated than data from the same area. Thus to take full advantage of energy price differences data centers located at different energy markets should be combined \cite{qureshi2009cutting}. 
+%
+%With different state of the art energy models and simulation constraints a summary of possible cost reduction schemes was presented. However no migration or forecasting of energy price data has been done which could further improve scenarios with longer running jobs. In addition these cost reductions are only valid under specific assumptions that large cloud providers would need to implement such as connection to wholesale energy markets and reasonable server energy elasticity. 
+%
+%
+%
+%
+%\subsection{Server power management}
+%
+%A well known problem in power management is how to accurately and efficiently model a server's power consumption over time. At \cite{horvath2008multi} Horvath et al.~exploit dynamic voltage scaling (DVS) and multiple sleep states to reduce power consumption of a server cluster of about 23\% without significantly impacting performance. They propose that CPU utilization and frequency are the variables that have the most significant impact on the power consumption of a machine. This assumption is also used in other studies, e.g.~\cite{rao2010minimizing, hammadi2014survey, kliazovich2012greencloud}. 
 
 
 \section{Virtual machine migration}
