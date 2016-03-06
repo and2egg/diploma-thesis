@@ -107,7 +107,7 @@ However, in order to successfully apply forecasting based on neural network mode
 
 \section{Cost optimization in geo distributed data centers}
 
-Different cost optimization approaches have been developed for distributing resources in geographically dispersed data centers. 
+%Different cost optimization approaches have been developed for distributing resources in geographically dispersed data centers. 
 
 \subsection{A Study of Electricity Price Features on Distributed Internet Data Centers}
 
@@ -270,7 +270,6 @@ In addition, live migration of virtual machines is applied to further optimize p
 
 Power aware resource scheduling has been simulated on an OpenNebula \cite{fontan2008opennebula} pool of 4 servers, equipped with 8 cores each. Power elasticity (power range from idle to peak power of a server) for this type of server is 61\% where a total reduction in power consumption of 12\% could be achieved. As the results are scalable also to large clusters significant power and cost savings are possible using the proposed approach. 
 
-%See folder "`power load"' for relevant papers
 
 %
 %Active research topics in this field include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
@@ -313,35 +312,124 @@ Power aware resource scheduling has been simulated on an OpenNebula \cite{fontan
 \section{Virtual machine migration}
 %\subsection{Virtual machine migration in cloud environments}
 
-There are different proposed approaches related to virtual machine migration in distributed cloud environments \cite{celesti2010improving, malet2010resource}. In \cite{celesti2010improving} the so-called Composed Image Cloning (CIC) methodology designed for migration of VMs across federated clouds is introduced. This work aims to reduce the needed bandwidth and migration time by setting up a new virtual machine in the destination cloud and transferring only user data instead of relocating the whole VM disc image. 
 
-In another work \cite{malet2010resource} the placement of applications is dynamically adjusted across distributed data centers according to the location of the currently highest request rate. Agarwal et al.~\cite{agarwal2010volley} provide a framework to minimize inter-data center traffic and user perceived latency by analyzing log files and thus determine the best placement and migration strategy. 
+Live Virtual machine migration is defined as follows:
+\begin{quote}
+A source virtual machine (VM) hosted on a source server is
+migrated to a destination VM on a destination server without
+first powering down the source VM \cite{nelson2009virtual}.
+\end{quote}
 
-
-
-%\section{Literature studies}
+Thus efficient methods for transferring VM memory pages from the source to the destination host are needed which will be evaluated in the following sections. 
+%One method is defined by resuming the destination VM before all memory pages from the source VM are transferred. This can be done by paging in any remaining VM memory pages from the source to the destination on demand. A second approach executes a pre-copy phase where memory is transferred in several rounds from the source to the destination host before launching the destination VM. Dirtied memory pages are re-transferred which have been dirtied during previous transfers of memory to ensure a consistent VM memory image at the destination. 
 %
-%\subsection{Cost reduction in cloud environments}
+%The non-memory state of the VM is preferably available in a shared storage arrangement accessible by both the source and destination VMs such that it is only required to re-map the source VM's virtual disk to the destination VM. In case no shared storage is available, the source VM's non-memory state has to be transferred to the destination VM before or after the migration depending on the implementation. 
+
+
+\subsection{Live migration of virtual machines}
+
+In \cite{clark2005live} an efficient approach for live migration of virtual machines is presented. This paper targets the migration of entire OS within a virtual machine without noticeable service interruption. 
+
+The applied method for migration should minimize both downtime and total migration time for the virtual machine. The first metric denotes the actual downtime of the VM where it is completely suspended and unaccessible to users. The second metric is defined by the total time between the start of the migration process until its end \cite{clark2005live}. 
+
+Three methods have been identified that have been used previously. The \textit{pure stop-and-copy} approach halts the source VM, copies all memory pages to the destination host and resumes execution at the destination. Both downtime and total migration time are proportional to the amount of memory to be transferred which can lead to unacceptable downtimes. 
+
+The \textit{pure demand migration} method is defined where essential data for running the VM is transferred to the destination host after which the destination VM is booted. Any missing memory pages create page faults and trigger a synchronous transfer from the source host on first use. This leads to poor performance until a sufficient amount of memory pages have been transferred. 
+
+The \textit{pre-copy} approach combines an iterative push-phase with a very short stop-and-copy phase to minimize downtime. Any pages dirtied during a transfer of memory are re-sent in the next iteration until a sufficient amount of memory pages have been transferred to the destination host. In a final stop-and-copy phase the VM is suspended on the source host, remaining memory pages are copied to the destination and the VM is resumed at the destination. 
+
+An important efficiency measure for VM migrations has been identified as the writable working set (WWS) \cite{clark2005live}. It is defined as a set of memory pages that are updated very frequently such that it is not worth keeping them consistent at the source and destination hosts. These set of pages should be copied only in the final stop-and-copy phase. An accurate measure of the WWS for the SPEC CINT2000 benchmark is depicted in Figure \ref{fig:tracking_writable_working_set}. 
+
+In this graph the number of 4KB pages of memory dirtied within a corresponding 8 second interval are shown for each of the programs run in the benchmark. 
+It is clearly visible that the number of pages contained within a WWS depends greatly on the behavior of the selected program. Workloads exhibiting a high amount of frequently updated pages such as \textit{gap} will provide only a small number of pages sensible for inclusion in a pre-copying phase. 
+Thus the downtime and cost resulting from a VM migration depends to a great extent on the type of workload being migrated and the exact moment of the start of the migration. 
+
+%Thus the source virtual machine does not hold any dependencies related to the destination VM after migration has finished. The in-memory state of the VM is transferred efficiently such that a seamless live migration becomes possible. 
+
+
+\begin{figure}
+	\centering
+		\includegraphics[width=1.0\textwidth]{figures/state_of_the_art/tracking_writable_working_set.PNG}
+	\caption{WWS curve for a complete run of SPEC CINT2000 (512MB VM) \cite{clark2005live}}
+	\label{fig:tracking_writable_working_set}
+\end{figure}
+
+
+
+Results for different kind of workloads indicate that even in the worst case the pre-copy approach significantly reduces downtime compared to the stop-and-copy method. As bandwidth has a direct impact on migration downtime performance can be further increased by raising the bandwidth assigned to the VM migration. 
+
+Migration downtimes have been evaluated for different sized VMs running various kinds of workloads. Resulting downtimes range from only 60 ms for small sized VMs (64 MB) and low dirty page rate to 3.5 seconds for large VMs (512 MB) with frequently updated dirty page rates. It is stated that realistic workloads can be migrated with a downtime as low as 210 ms in a virtualized cluster environment. 
+
+
+\subsection{Performance and energy modeling for live Migration of Virtual Machines}
+
+A thorough evaluation of migration performance and resulting migration costs is given by \cite{liu2013performance}. 
+
+The authors provide methods to quantitatively predict migration performance and resulting energy cost. A refined pre-copy approach is used to efficiently transfer memory pages in iterative rounds where in each round the memory pages dirtied in the previous round are re-sent (Figure \ref{fig:VM_migration_precopy}). 
+The pre-copying phase is terminated when any of the following conditions are satisfied:
+
+\begin{enumerate}
+	\item [1)] memory dirtying rate exceeds memory transmission rate
+	\item [2)] the remaining dirty memory falls below a predefined threshold
+	\item [3)] the number of pre-copying iterations exceeds a defined maximum
+	\item [4)] total network traffic exceeds a multiple of the VM memory size
+\end{enumerate}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.7\textwidth]{figures/state_of_the_art/VM_migration_precopy.PNG}
+	\caption{Live migration algorithm performs pre-copying in iterative rounds \cite{liu2013performance}}
+	\label{fig:VM_migration_precopy}
+\end{figure}
+
+Findings in this work include that with incremental data transmission rate (bandwidth) the power consumption progressively increases while the migration latency decreases. Also, power consumption during migrations increase for both source and destination hosts from which the resulting migration energy can be derived. In addition the migration load and time needed for each pre-copy iteration as well as the total migration load and latency are calculated. 
+
+Besides the defined base model a refined migration model is specified which takes into account the size of a workload's writable working set, that is the number of pages dirtied most frequently. The latter model has been empirically evaluated by measuring the WWS on a Xen virtual machine and deriving the maximum sensible pre-copy iteration while continuously checking termination conditions. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{figures/state_of_the_art/vm_migration_normalized_cost.PNG}
+	\caption{Migration cost savings by using proposed models \cite{liu2013performance}}
+	\label{fig:vm_migration_normalized_cost}
+\end{figure}
+
+Workloads with different sizes for writable working sets have been evaluated in simulations including two hosts running 8 virtual machines. 
+The resulting migration downtime, migration latency, network traffic and energy consumption could be reduced by 72.9\%, 93.5\%, 74.5\% and 73.6\% compared to a random selection technique, respectively (Figure \ref{fig:vm_migration_normalized_cost}). 
+
+
+
+
+
+%Migration costs and downtime may vary significantly depending on the type of workload and VM configuration parameters. The authors leverage cost prediction schemes to yield expected costs for specific VM migrations. 
+
+
+
+
+
+
+
+
+
+%See "`Live Virtual Machine Migration via Asynchronous Replication and State Synchronization"'
 %
+%\begin{figure}[htbp]
+	%\centering
+		%\includegraphics{figures/state_of_the_art/virtual_machine_precopy.PNG}
+	%\caption{Migration process ideal case}
+	%\label{fig:virtual_machine_precopy}
+%\end{figure}
 
 %
-%\subsection{Electricity markets and pricing}
+%\begin{figure}[htbp]
+	%\centering
+		%\includegraphics{figures/state_of_the_art/virtual_machine_migration.PNG}
+	%\caption{Virtual machine migration}
+	%\label{fig:virtual_machine_migration}
+%\end{figure}
+
+
+%There are different proposed approaches related to virtual machine migration in distributed cloud environments \cite{celesti2010improving, malet2010resource}. In \cite{celesti2010improving} the so-called Composed Image Cloning (CIC) methodology designed for migration of VMs across federated clouds is introduced. This work aims to reduce the needed bandwidth and migration time by setting up a new virtual machine in the destination cloud and transferring only user data instead of relocating the whole VM disc image. 
 %
-%In wholesale energy markets different pricing and bidding models can be used. Currently the two most common price evaluation strategies are day-ahead and real-time pricing strategies. 
-%
-%\subsubsection{Bidding strategies}
-%
-%In \cite{tierney2008uniform} two different bidding strategies are discussed, uniform pricing and pay-as-bid auctions. In the uniform pricing model the market clearing price is determined by collecting the marginal prices from all suppliers and taking the maximum price from this collection. Conversely, in pay-as-bid auctions a supplier gets paid based on its actual bid. 
-%The second approach may seem beneficial from the customer's point of view since suppliers may set individual prices which enables competition within the market. 
-%However studies show that in this pricing scheme suppliers set their prices at the maximum possible level to be comparable to other suppliers and keep their customers. On the other hand the uniform pricing model provides a uniform clearing price which is valid for all participants in the market and customers may trust that suppliers set prices to just satisfy their needs. 
-
-
-
-
-%[TODO - move this paragraph to Simulation]
-
-%In this thesis different energy markets have been chosen that exhibit a considerable degree of price volatility and are partly located in different timezones. Therefore different scenarios may show interesting characteristics due to time- and location based differences in energy prices. 
-
-%A cost function is provided which calculates the total energy cost based on the energy price, the power used by a single server and the total number of running servers for each location. In addition constraints are defined s.t.~the workload assigned to a DC does not exceed its capacity and the total number of requests does not exceed a predefined threshold. 
+%In another work \cite{malet2010resource} the placement of applications is dynamically adjusted across distributed data centers according to the location of the currently highest request rate. 
 
 
