@@ -4,6 +4,7 @@
 \usepackage{TUINFDA}
 
 \usepackage{hyperref}					% links in pdf
+%\usepackage[all]{hypcap}			 % for going to the top of an image when a figure reference is clicked
 \usepackage{cleveref}
 \usepackage{graphicx}            			% Figures
 \usepackage{verbatim}            			% Code-Environment
@@ -111,6 +112,9 @@
 \pagestyle{numberCorner}
 \tableofcontents*
 
+\listoffigures    %Abbildungsverzeichnis
+\listoftables     % Tabellenverzeichnis
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%   MAINMATTER    %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -159,6 +163,20 @@
 \input{chapters/forecasting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Simulation Framework}
+\label{ch:simulation_framework}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{chapters/simulation_framework}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Evaluation and Results}
+\label{ch:evaluation_and_results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{chapters/evaluation_and_results}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Methodology}
 \label{ch:methodology}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -180,17 +198,36 @@
 \input{chapters/discussion}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Conclusion}
+\chapter{Conclusion and Future Work}
 \label{ch:conclusion}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{chapters/conclusion}
 
+
+\appendix
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Forecast Evaluation Results}
+\label{ch:appendix_forecast_results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{chapters/appendix_forecast_results}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Simulation Results}
+\label{ch:appendix_simulation_results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{chapters/appendix_simulation_results}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% BACKMATTER %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\appendix
+\backmatter
 
 \bibliographystyle{plain}
 \bibliography{references}
