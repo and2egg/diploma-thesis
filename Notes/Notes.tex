@@ -205,13 +205,23 @@ A colocation provider denotes a facility manager that provides space and server 
 
 \item Server Power Consumption
 
-In an german article of the PrimeEnergyIT Consortium\footnote{\label{primeenergyit}\url{http://www.efficient-datacenter.eu/fileadmin/docs/dam/brochures/primeenergyit_de_FInal.pdf}} it is stated that the server infrastructure is responsible for 30\% - 40\% of the total energy consumption of a data center. Therefore this represents a good entry point for improvements in energy efficiency. 
+In an article of the PrimeEnergyIT Consortium \cite{PrimeEnergyIT}
+it is stated that the server infrastructure is responsible for 30\% - 40\% of the total energy consumption of a data center. Therefore this represents a good entry point for improvements in energy efficiency. 
 
-The power consumption of a server is determined through its installed parts, CPU is responsible for most of the server's power consumption\footnote{See footnote \ref{primeenergyit}}. 
+The power consumption of a server is determined through its installed parts, CPU is responsible for most of the server's power consumption \cite{PrimeEnergyIT}.
 
 Power consumption can be decreased through dynamic voltage and frequency scaling (decrease CPU cycles) or suspend unused CPU cores or hard disks. Another measure of efficiency specifically for CPUs is the Thermal Design Power (TDP) which measures the maximum thermal power dissipation that can be an indicator of cooling power needs. 
 
-The \emph{SPECpower\_ssj2008} is a reference benchmark for measuring energy efficiency of servers and multi node servers\footnote{\url{https://www.spec.org/power_ssj2008/}}. This is a handy tool to effectively evaluate a server's energy consumption in different scenarios. It can also be shown that there is a significant increase in power consumption with increasing load which is related to energy elasticity. 
+The \emph{SPECpower\_ssj2008} is a reference benchmark for measuring energy efficiency of servers and multi node servers \cite{powerssj2008}.
+This is a comprehensive tool to effectively evaluate a server's energy consumption in different scenarios. It can also be shown that there is a significant increase in power consumption with increasing load which is related to energy elasticity. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.8\textwidth]{figures/server_power_consumption.PNG}
+	\caption{Server power consumption}
+	\label{fig:server_power_consumption}
+\end{figure}
+
 
 \end{itemize}
 
