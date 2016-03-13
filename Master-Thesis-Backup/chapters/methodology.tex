@@ -1,0 +1,589 @@
+
+
+\section{Cloud Scenario}
+
+%\subsection{Assumptions}
+%
+%\begin{itemize}
+%
+%\item Energy Elasticity
+%
+%One of the key assumptions for the cloud scenario is a reasonable level of server energy elasticity. It is defined as the difference between power values at idle and peak state regarding CPU utilization. 
+%
+%\end{itemize}
+
+
+\section{Cloud Simulation}
+
+\subsection{Benefits and limitations}
+
+\subsection{Simulation assumptions}
+
+\subsection{Expected results}
+
+
+
+
+\section{Cost models}
+
+%TODO reference section
+As discussed before virtual machine migration is vital to draw benefits from the proposed approach. The targeted benefits of this approach are overall cost reductions in a geographically dispersed cloud environment. 
+
+As energy prices are provided in e.g.~MegaWatt Hours (MWh) the amount of consumed energy per time is needed to calculate resulting costs. Typically several factors contribute to the overall energy consumption in a data center such as server power consumption or cooling infrastructure. One efficiency measure of data centers is the Power Usage Effectiveness (PUE) that indicates the power needed for auxiliary devices vs.~the power drawn solely from IT equipment (e.g.~servers or network hubs). 
+
+Even though cooling expenses play a significant part in the overall energy costs this work only considers servers' power consumption as it is most significant to the proposed scenario. 
+
+A server's power consumption consists of a static and a dynamic part \cite{liu2013performance}. The static part is defined as the power drawn when a server is idle i.e.~it does not run any computations. The dynamic part varies according to the current data processing on the server which can be derived from the current utilization of hardware components. 
+
+
+\subsection{Cost of optimal assignments}
+
+
+In \cite{de2013study} it is shown that the cost of optimal assignment is further reduced by increasing the number of locations with data centers assigned to different energy markets and/or by increasing the variability of energy prices. 
+
+
+
+
+
+\section{Energy markets}
+
+%Energy markets have emerged steadily from the mid-eighties. 
+
+Electricity wholesale markets are constantly developing. In Europe incentives exist to create an integrated EU energy market for secure and affordable electricity supplies\footnote{\url{https://ec.europa.eu/energy/en/topics/markets-and-consumers}}. Also concrete plans exist for creating a so called \emph{Energy Union} as a single energy market that aim to make energy more reliable and interchangable within the EU\footnote{\url{https://ec.europa.eu/energy/en/news/new-electricity-market-consumers}}. 
+
+An outline of a possible implementation of a competitive energy market is depicted in \cite{hogan1993competitive} which is still valid as of today in many respects. A competitive market captures the advantage of market participants being able to actively shaping the clearing price applicable to both producers and consumers in the market. 
+
+
+
+
+\subsection{Characteristics of energy markets}
+
+Two main models exist for the exchange and types of trading of energy prices in power markets which are bilateral trading and electricity pooling, also called loose pool and tight pool models \cite{onaiwu2009does,hogan1997reshaping,barroso2005classification,reston2012short}.
+
+\subsubsection{Loose pool models}
+
+In bilateral trading or loose pool models utility operators (producers) and energy consumers establish bilateral contracts to determine the terms and conditions applied for trading energy \cite{onaiwu2009does,kalverboer2001electricity}. Generators or producers may also buy electricity from other suppliers in case their own electricity generation does not fit current demand. The exact amount, price and time when tradings take place are negotiated on the contract. Since electricity demand may vary from the negotiated terms the resulting imbalances have to be taken care of by the system operator. 
+
+\subsubsection{Tight pool models}
+
+Electricity pooling in tight pool models provide a way for utility operators to offer a certain amount of energy at a set price. Each generator places a bid containing the quantity and expected price \cite{barroso2005classification}. In return consumers place bids on how much they are willing to pay for a given amount of energy. The intersection of the aggregated demand and supply curves defines the energy price for that hour. 
+
+Still customers, brokers and aggregators have the choice to either establish long term contracts of electricity in bilateral contracts or rely on the short-term market \cite{hogan1997reshaping}.
+
+
+
+%Google Search "`loose pool models"'
+
+%See also paper "`Electricity Transmission Pricing and Technology"' and chapter "`Making bilateral competition work"'
+
+%\url{https://books.google.at/books?id=ycLrCAAAQBAJ&pg=PA282&lpg=PA282&dq=Electricity+Transmission+Pricing+and+Technology&source=bl&ots=okH3qUKJwi&sig=MTrGTYJRV5_KmJP9mbdo6GexiPg&hl=de&sa=X&ved=0CDIQ6AEwAmoVChMI3ce_q_XmxgIVBD8UCh1ngQpT#v=onepage&q=Electricity\%20Transmission\%20Pricing\%20and\%20Technology&f=false}
+
+
+\subsubsection{Day ahead vs real time markets}
+
+Both day ahead and real time markets exist within the scope of a deregulated wholesale power market. As discussed above, electricity pooling is a flexible way of determining energy prices for a short period of time in the future \cite{hogan1997reshaping}. Prices are set based on current demand and supply and are fixed for a particular point in time. This price is then valid for all market participants during that time period. 
+
+In day ahead markets bids are placed for each consecutive hour of the following day. Thus prices are determined on a very short timescale and may exhibit significant volatility. Prices may change substantially from one hour to the next, up to a factor of ten \cite{huisman2007hourly}. Therefore market operators need to apply profound risk management techniques to alleviate such price spikes. 
+%it is hard to predict
+
+The real time market on the other hand is used to compensate demand variations during the day which may result in additional changes in energy prices. 
+Due to this characteristic the real time market prices exhibit an even greater volatility than those at the day-ahead market whereby the latter is generally used for reference. 
+
+%TODO Explain difference of intraday - real time markets. Same? See \url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}. 
+
+% Another resource (intraday market): https://www.next-kraftwerke.de/wissen/strommarkt/intraday-handel
+
+% EPEX Spot - Intraday
+
+%Der Intraday-Handel dient primär dazu, Fehlmengen oder Überschüsse des eigenen Bilanzkreises durch kurzfristige, untertägige Handelsaktivitäten so gering wie möglich zu halten, um den Prognoseverpflichtungen des Bilanzkreisvertrages nachzukommen und etwaige Ausgleichsenergiekosten zu reduzieren. Mit Hinblick auf immer flexibler werdende Anlagen lässt sich der kurzfristige Handel aber auch dafür nutzen, um den Strom von Anlagen kurzfristig bedarfsgerecht – und somit möglichst gewinnbringend und systemstabilisierend – zu produzieren.
+%
+%Der Intraday-Handel ist insbesondere von Bedeutung, um unvorhersehbare Änderungen in Stromproduktion und -nachfrage über marktliche Mechanismen aufzufangen, bevor der Einsatz von Regelenergie notwendig wird. So kann beispielsweise ein Kraftwerksbetreiber, in dessen Kraftwerk kurzfristig ein Block ausfällt, bei anderen Marktpartnern den seinem Bilanzkreis nun fehlenden Strom einkaufen. Dem Intraday-Handel kommt daher auch in der Direktvermarktung von Erneuerbaren Energien eine Schlüsselrolle zu, etwa wenn kurzfristig angepasste Wetterprognosen ein ungeplantes Mehr oder Weniger an Stromproduktion aus Solar- oder Windkraftanlagen verheißen.
+
+%TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
+
+% Negative Prices
+
+% See https://www.epexspot.com/en/company-info/basics_of_the_power_market/negative_prices
+
+
+\subsubsection{Two settlement system: Day ahead vs Balancing market}
+
+A two settlement system has been defined for the PJM power market (PJM standing for Pennsylvania, Jersey, Maryland)\cite{lambert2001creating}. 
+
+A two-settlement system in power markets is understood as a system comprising a day ahead as well as a real time (balancing) power market\cite{lambert2001creating}. 
+
+
+
+\subsubsection{Forward Capacity Market (FCM)} 
+
+A forward capacity market is used to ensure having enough capacity for a specific amount of time into the future. A capacity commitment period (CCP) ensures that a certain amount of capacity will be available during that period. For example, the CCP at ISO-NE is set as one year ranging from June 1st until May 31st. 
+
+The market has to ensure that the \emph{Installed Capacity Requirements (ICR)} for the corresponding region are met. These requirements are defined for each capacity commitment period and define the amount of capacity needed to meet estimated peak and reserve demands. Important measures to define the ICR are the local sourcing requirements (LSR) and maximum capacity limits (MCL) that define the constraints given by market participants. %(QUOTE)In addition the Hydro-Québec Interconnection Capability Credits (HQICCs), are a key input into the calculation of the ICR.
+
+The actual procurement of resources for each capacity commitment period is determined by a \emph{Forward Capacity Auction (FCA)} which aims to meet the defined ICRs for the given period.
+This auction is carried out three years ahead of the related CCP to ensure that enough resources will be available during that period. \emph{Reconfiguration Auctions (RA)} are then executed annually until the start of the CCP and continued monthly afterward. During an RA capacity resources may be amended to adapt to potential changes in capacity zones. 
+
+At the FCM of ISO New England there is also the option of making a composite offer where different capacity resources may join their capacity offers (useful i.e.~in case of single season capacities) to result in a single resource offer at the market. 
+
+%Capacity resources <-> energy suppliers/providers?
+
+%See definition at the website of ISO NE\footnote{\url{http://www.iso-ne.com/markets-operations/markets/forward-capacity-market}}.
+
+%\subsubsection{Regulation market}
+%
+%Definition by the ISO NE power market\footnote{\url{http://www.iso-ne.com/markets-operations/markets/regulation-market}}:
+%
+%\begin{quote}
+%The Regulation Market is the mechanism for selecting and compensating market participants to provide regulation—the capability of specially equipped generators and other energy sources to increase or decrease output or consumption every four seconds. Participants allow their Automatic Generation Control (AGC) resources to be controlled by the ISO using automated signals to balance both second-by-second variations in demand and the system frequency, which must be kept constant. This market helps ensure that the ISO meets the North American Electric Reliability Corporation Real Power Balancing Control Performance Standard (BAL-001-0). Two regulation clearing prices are calculated: one for capacity and one for actual service mileage.
+%\end{quote}
+
+
+
+
+
+\subsection{Outline of selected energy markets}
+
+
+
+\subsubsection{Nord Pool Spot}
+
+
+The NordPoolSpot market is the most mature power market to date and has been the first energy market that was established in Europe [c]. 
+
+The NordPoolSpot power market consists of four different markets. 
+
+
+\begin{itemize}[-]
+
+\item Financial market (Nasdaq OMX)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Financial-market/}}
+
+Market for risk management, forwards futures and options. 
+This market generally includes long term contracts (up to six
+years) with different time horizons where contracts are made for 
+daily, weekly, monthly, quarterly and annual time spans. 
+
+\item Day-ahead market (Nord Pool Spot)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Day-ahead-market-Elspot-/}}
+
+Elspot, the main electricity spot market of Nord Pool, is used for day-ahead
+trading of energy prices in various regions. 
+Trades can be made until 12:00 CET of each day where the prices
+are fixed for the following day. Actual power delivery is done
+from the sellers to the buyers for each hour according to the defined contract. 
+
+\item Intraday market (Nord Pool Spot)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}}
+
+The intraday market Elbas provides the possibility of continuous trading up to 30 minutes before delivery. 
+This can be important in case of a sudden surge in power demands where additional power sources have to be
+activated to meet demand. Unstable wind conditions when operating wind turbines may also require changes of trades. 
+Short term bids can be used for compensation of too little or too much power delivery at a given area. 
+
+\item Balancing market (TSOs)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Transmission-system-operators-TSOs/}}
+
+At the balancing market corrective actions can be taken by transmission system operators (TSOs). 
+These are responsible for the security of supply and correct frequency of the grid. 
+
+\end{itemize}
+% other source: \url{http://www.nordpoolspot.com/globalassets/download-center/annual-report/nord-pool-spot_europes-leading-power-markets.pdf}
+
+
+
+As discussed before some markets exhibit strong seasonalities, while others do not. Nord Pool Spot is an example of a power market with obvious seasonalities in the data which can be taken advantage of when creating forecasting models. 
+
+Two hourly time series from two locations within Nord Pool Spot are displayed that show significant seasonal behavior (figures \ref{fig:hourly_prices_finland} and \ref{fig:hourly_prices_sweden}).
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{figures/methodology/hourly_prices_finland.PNG}
+	\caption{Finland prices from June, 22nd until July, 1st 2015}
+	\label{fig:hourly_prices_finland}
+\end{figure}
+
+\begin{figure}[!h]
+	\centering
+		\includegraphics[width=1.00\textwidth]{figures/methodology/hourly_prices_sweden.PNG}
+	\caption{Sweden prices from June, 22nd until July, 1st 2015}
+	\label{fig:hourly_prices_sweden}
+\end{figure}
+
+
+
+
+
+\subsubsection{ISO New England}
+
+The market of ISO New England offers day ahead as well as real time energy prices where day ahead prices are available at an hourly interval while (preliminary) real time prices are available both at hourly and five minute intervals\footnote{\url{http://www.iso-ne.com/}}. 
+
+Current locational marginal prices (LMPs) can be downloaded from a base url\footnote{\url{http://www.iso-ne.com/static-transform/csv/histRpts/da-lmp/}} and a specialized suffix depending on the file and date (e.g.~WW\_DALMP\_ISO\_20150414.csv). In this case, files are provided in csv format for better machine processing. 
+
+%Example: 
+%\begin{verbatim}
+	%H,"Date","Hour Ending","Location ID","Location Name","Location Type","Locational Marginal Price",
+	%"Energy Component","Congestion Component","Marginal Loss Component"
+	%D,"04/14/2015","02","4006",".Z.SEMASS","LOAD ZONE",14.82,14.85,0.01,-0.04
+	%D,"04/14/2015","02","4007",".Z.WCMASS","LOAD ZONE",14.94,14.85,0.01,0.08
+	%D,"04/14/2015","02","4008",".Z.NEMASSBOST","LOAD ZONE",14.84,14.85,0.01,-0.02
+%\end{verbatim}
+
+A summary of all data that is available is provided for day ahead as well as real time prices\footnote{\url{http://www.iso-ne.com/isoexpress/web/reports/pricing/-/tree/zone-info}}. It is described as ``zonal information'' on the website to emphasize the locational character of the prices. 
+
+
+\subsubsection{EEX}
+
+The European Energy Exchange (EEX) is a power market operating for the market area of France, Germany/Austria and Switzerland. Each of these regions exhibits a separate spot market where prices are traded for the respective country. 
+The actual trading takes place on EPEX SPOT, an organisation that drives the integration of power markets in Europe where EEX is a part of. It consists of an intraday (real time) and day ahead market for trading during the day and for the next day, respectively. 
+
+Several info products are available on the market for end-of-day data (EOD) that cover historical as well as current trading data from the spot and derivatives markets. 
+Data is available on subscription for all of the above mentioned regions. Available data formats include csv, excel and xml files, provided on demand on a ftp server. 
+Depending on the type of product and the time period available different fees apply and have to be paid in advance. 
+Access is granted to a vast amount of historical energy price data for the derivatives as well as the spot market for energy and other commodities like natural gas and coal where both prices and trading volumes are included. 
+
+Naming conventions designating the different areas of trading are defined as follows: 
+
+\begin{itemize}
+
+\item \emph{PHELIX} The Physical Electricity Index denotes the area of Germany and Austria
+
+\item \emph{SWISSIX} The Swiss Index denotes the area of Switzerland
+
+\item \emph{FRANCE} The index for France denotes the area of France
+
+\item \emph{ELIX} The European Electricity Index defines prices valid for all of Europe (?)
+
+\end{itemize}
+
+
+\subsubsection{APG}
+
+Austrian Power Grid\footnote{\url{http://www.apg.at/de/markt/strommarkt}}
+
+
+
+\subsubsection{PJM}
+
+See at \url{http://www.pjm.com/}. 
+
+
+
+
+\subsection{Relevance of markets to cloud environments}
+
+
+%\subsection{[Terms and definitions]}
+%
+%\subsubsection{Definition of 'Clearing Price'}
+%
+%The following is a definition of clearing price from Investopedia\footnote{\url{http://www.investopedia.com/terms/c/clearingprice.asp}}. 
+%
+%\begin{quote}
+%The specified monetary value assigned to a security or asset. This price is determined by the bid and ask process of buyers and sellers interested in trading the security.
+%
+%In any exchange, sellers prefer to part with their assets for the highest price possible while investors interested in buying the same asset desire the lowest purchase price possible. At some point, a mutually agreeable price is reached between buyers and sellers. It is at this point that economists say the market has "cleared" and transactions take place. Thus, the clearing price of an asset is the price at which it was most recently traded.
+%\end{quote}
+%
+%
+%
+%%google Search : "`tight pool models electricity"'
+%%
+%%Google Books "`Making Competition Work in Electricity"'
+%%\url{https://books.google.at/books?id=Pki4tu3P8iIC&pg=PA286\&lpg=PA286\&dq=tight+pool+models+electricity\&source=bl\&ots=drkU0A9H3C\&sig=m_J7JCkGjf5ydml2fdbFQB50ojE\&hl=de\&sa=X\&ved=0CCQQ6AEwAGoVChMIgoLZjffmxgIVTLYUCh3DEQBT#v=onepage\&q=tight\%20pool\%20models\%20electricity\&f=false}
+%%
+%%Also see Figure 3.2 in the book on page 43. 
+%%
+%%Chapter 4: Requirements for competition- Demand side
+%
+%The clearing price is set at the intersection of the demand and supply curves, see Figure \ref{fig:market_demand_supply}
+%
+%
+%
+%\begin{figure}[!h]
+	%\centering
+		%\includegraphics{figures/methodology/market_demand_supply.PNG}
+	%\caption{Demand Supply Chart}
+	%\label{fig:market_demand_supply}
+%\end{figure}
+%
+%
+%
+%\subsubsection{Locational marginal price}
+%
+%See definition by ISO-NE\footnote{\url{http://www.iso-ne.com/participate/support/faq/lmp}}. 
+%
+%%TODO explain LMP (-> see ISO New England energy data, \textbf{smd hourly}!)
+%
+%\subsubsection{System marginal price (SMP)}
+%
+%A price type described by \cite{szkuta1999electricity}. 
+%
+%\subsubsection{System Load}
+%
+%%TODO
+%
+%Some energy markets provide the total system load as measured by metering. It is used for day-ahead and long term forecasting purposes and in addition it serves as important indicator in reports. The system load for the ISO New England energy market is calculated by $System Load = generation - pumping + net\_interchange$
+%
+%
+%
+
+
+
+
+\section{Forecasting}
+
+\subsection{Forecasting of electricity prices}
+
+Since the occurrence of competitive energy markets forecasting of energy prices has been vital to utility operators. 
+
+As it will be seen later the consideration of price forecasts in a multi electricity market environment can have beneficial side effects regarding energy costs. 
+
+
+\subsection{General forecasting procedure}
+
+\begin{itemize}
+
+\item Selection of data sets (location, frequency)
+
+\item Investigation of characteristics of the selected data sets (stationarity, variance)
+
+\item Making series stationary, on demand
+
+\item Evaluation of appropriate models to be applied to the given data sets
+
+\item Model generation based on evaluation
+
+\item Model evaluation and comparison (goodness of fit, accuracy, residual characteristics) 
+
+\item Tests on in-sample and out-of-sample data
+
+\item Testing different forecasting horizons
+
+\item Comparison of results for different time sets and locations
+
+\item Conclusion and model selection based on results
+
+\end{itemize}
+
+
+\subsection{Forecast types}
+
+%Forecasting can be done in different ways, each having their own drawbacks and benefits. 
+
+Forecasting methods can be classified into two categories: Qualitative and Quantitative forecasting. 
+
+\subsubsection{Qualitative forecasting}
+Qualitative forecasting methods assume that there is no or no relevant data that can be used to make forecasts. This is the case for forecasts that aim to predict i.e. the first year's sales of a new product line or the expected profit of a newly created startup company. In both examples there is no data available beforehand and the forecast has to be derived from already known conditions also called predictor variables. 
+
+\subsubsection{Quantitative forecasting}
+Quantitative forecasting methods are based on numerical historical data, from which forecasts are derived. It is assumed that the data's pattern over time stays the same or will behave in a similar way in the future. 
+
+Quantitative forecasting methods can again be classified roughly into two categories: Cross-sectional forecasting and Time Series forecasting.
+
+\begin{itemize}
+
+\item Cross-sectional forecasts collect data from a single point in time to predict a value for an item not in the dataset. For example, prices of real estates in a specific area and point in time are collected and the price for another real estate is estimated based on predictor variables (i.e., size of properties and number of floors). 
+
+\item Time series forecasts are solely based on historical data from the value to be predicted. No other variables are considered for the calculation, which on the one hand might miss some influential factors from external conditions but on the other hand appears to be more accurate regarding the output of the forecasts. 
+In case of energy price forecasts external variables that change energy price behavior might include bids in auctions of wholesale energy markets, the current oil price or availability of renewable energy sources. However, in time series forecasts these variables are neglected to set the focus on the time series of historical energy prices. 
+
+\end{itemize}
+
+
+\subsection{Outline of forecasting models}
+
+%TODO
+Discussion of suitable models for price time series from various energy markets. 
+
+
+\subsubsection{Random walk}
+
+A random walk model is best suited for series that exhibit major fluctuations on a short term and where no apparent trend can be recognized \cite{makridakisforecasting}(pg. 461). Thus this model can be described by an accumulation of a random error over time (equation \ref{eq:random_walk}). 
+
+\begin{equation}
+Y_t = \sum e_t
+\label{eq:random_walk}
+\end{equation}
+
+$Y_t$ denotes the value of the time series at time point $t$ whereas $e_t$ is a timeseries of random errors where the errors exhibit no correlation and are normally distributed \cite{makridakisforecasting}(pg. 461). 
+
+In \cite{makridakisforecasting}(pg. 464) it is stated that the behavior of economic and business series in particular can be characterized by a random walk model since they show so-called cycles or random fluctuations around a possible trend. 
+
+As it is impossible to accurately predict upcoming values or cycles of a random walk model by definition one of the most suitable prediction models is the ``naive forecast'' where the forecasted value of the upcoming timestamp is set equal to the last observed value (equation \ref{eq:naive_forecast}).
+
+\begin{equation}
+\hat{Y}_{t+i} = Y_t
+\label{eq:naive_forecast}
+\end{equation}
+
+
+
+\subsubsection{ARIMA models}
+
+\emph{ARIMA model generation}
+
+See Box-Jenkins Methodology. 
+
+
+\subsubsection{Neural Network models}
+
+An approach of using artificial neural networks (ANN) as a model to forecast short term electricity prices is presented in \cite{szkuta1999electricity}. 
+
+
+\paragraph{Forecast competition}
+
+Neural network forecasting competition available from 2008\footnote{\url{http://www.neural-forecasting-competition.com/NN5/}}. 
+
+
+
+
+\subsubsection{Forecasting benchmarks}
+
+
+
+\subsection{Model selection techniques}
+
+
+\subsubsection{Autocorrelation}
+
+The autocorrelation function determines the existence or non-existence of correlation between lagged variables within a time series. 
+
+That is, the correlation between a point in the time series to another point in the same time series is calculated where the gap between the two points is fixed by the given lag. 
+
+The autocorrelation is calculated as an autocorrelation coefficient in equation \ref{eq:autocorr_coeff}
+
+\begin{equation}
+R_h = \frac{C_h}{C_0}
+\label{eq:autocorr_coeff}
+\end{equation}
+
+
+where $C_h$ denotes the autocovariance function and $C_0$ the variance function 
+(see equations \ref{eq:autocov_func} and \ref{eq:variance_func}). 
+
+
+\begin{equation}
+C_h = \frac{1}{N} \sum\limits_{t=1}^{N-h} (Y_t - \bar{Y}) (Y_{t+h} - \bar{Y})
+\label{eq:autocov_func}
+\end{equation}
+
+
+\begin{equation}
+C_0 = \frac{1}{N} \sum\limits_{t=1}^{N} (Y_t - \bar{Y})^2
+\label{eq:variance_func}
+\end{equation}
+
+
+Explanation: The autocovariance function determines the (average) covariance between variables with the given lag while the variance function determines the maximum (average) variance over all timestamps (t=1 to N). 
+
+
+See \url{http://www.itl.nist.gov/div898/handbook/eda/section3/autocopl.htm}
+
+
+\subsubsection{White noise tests for residuals}
+
+To test if residuals can be regarded as white noise, its auto correlation functions is examined. In case auto correlations are present it means that some values within the series depend on one another. In theory a true white noise series should not exhibit any auto correlations but since we operate on finite time series there will always be a few correlations present in the data\cite{makridakisforecasting}. 
+
+It can be shown that the auto correlations of a white noise series have a sampling distribution similar to a gaussian distribution with zero mean and a standard deviation of $1/\sqrt{n}$ where $n$ denotes the total number of observations in the series\cite{makridakisforecasting}. 
+
+
+
+\subsubsection{Box Cox transformation}
+
+The Box Cox transformation is used to transform a series based on a non-normal distribution to a normal distribution. This is done via log and exponential transformations. 
+
+See \url{http://www.isixsigma.com/tools-templates/normality/making-data-normal-using-box-cox-power-transformation/}
+
+
+
+
+
+\subsection{Forecast accuracy measures}
+
+There are different kinds of accuracy measures that can be applied to forecasting methods. \footnote{https://www.otexts.org/fpp/2/5}
+
+\subsubsection{Scale-dependent error measures}
+
+Scale dependent errors are absolute error measures given in the same scale as the dataset that is examined. Thus they are most useful when testing fc methods on the same dataset or on the same scale, respectively. 
+
+\begin{itemize}
+\item Mean absolute error (MAE)
+The absolute error is defined by the value difference between a value of the dataset and its forecasted value. The mean absolute error returns the mean of all absolute errors on the dataset. [insert formula]
+
+\item Root mean squared error (RMSE)
+The root mean squared error takes the root of the sum of the squared forecast errors, and is scale dependent as well. [insert formula]
+
+\end{itemize}
+
+\subsubsection{Percentage error measures}
+
+The most common percentage error is the mean absolute percentage error (MAPE) which is defined as the mean of percentage errors of a dataset. A percentage error is defined as $p_i=e_i/y_i * 100$. The mean absolute percentage error is then $mean(|pi|)$. 
+
+The disadvantage of percentage error measures is that the value becomes infinite if there is some $y_i = 0$ on the dataset. Also, extreme values occur when the values on the dataset come close to zero. 
+
+
+\subsubsection{Forecast error classification}
+
+\begin{itemize}
+
+\item Mean absolute error (MAE): \[ \frac{1}{n} \sum_{i=1}^{n} |\hat{y}_i - y_i| \] % \[\sum_{i=1}^{10} t_i\] %\sum(abs(predicted - actual)) / N
+
+\item Mean squared error (MSE): \[ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 \] %$sum((predicted - actual)^2) / N$
+
+\item Root mean squared error (RMSE): \[ \sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}\] % $sqrt(sum((predicted - actual)^2) / N)$
+
+\item Mean absolute percentage error (MAPE): \[ \frac{1}{n} \sum_{i=1}^{n} \left|\frac{\hat{y}_i - y_i}{y_i}\right| \] % $sum(abs((predicted - actual) / actual)) / N$
+
+\item Direction accuracy (DAC): \[ \frac{count(sign(y_i - y_{i-1}) = sign(\hat{y}_i - \hat{y}_{i-1}))}{n} \]
+% $count(sign(actual\_current - actual\_previous) == sign(pred\_current - pred\_previous)) / N$
+
+\item Relative absolute error (RAE): \[  \frac{ \sum_{i=1}^{n} |\hat{y}_i - y_i|}{ \sum_{i=1}^{n} |\hat{y}_{i-1} - y_i|}   \]
+ % $sum(abs(predicted - actual)) / sum(abs(previous\_target - actual))$
+
+\item Root relative squared error (RRSE): \[  \frac{ \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 }} { \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_{i-1} - y_i)^2 }} \]
+ % $sqrt(sum((predicted - actual)^2) / N) / sqrt(sum(previous\_target - actual)^2 / N)$
+
+\end{itemize}
+
+
+
+
+
+
+%\subsection{Forecasting in cloud environments}
+
+
+\section{SLA management}
+
+As mentioned before the proposed approach relies on Virtual Machine migrations to shift load to data centers with currently cheaper energy prices. Each VM migration causes a temporary downtime depending on network bandwidth and VM memory \cite{liu2013performance} which has to be considered when applying this approach. 
+
+Big cloud providers such as Google or Amazon commonly offer high availability services with a guaranteed availability of 99\% or even 99.9\%\footnote{Google Service Level Agreements \url{https://cloud.google.com/storage/sla}}\footnote{Amazon Service Level Agreements \url{https://aws.amazon.com/de/ec2/sla/}}. However when applying geotemporal VM migrations within a cloud environment it is not possible to keep availability at these levels due to VM downtimes. Therefore an alternative approach considering flexible SLA offers needs to be applied to accommodate possible downtimes \cite{luvcanin2014energy}. 
+
+
+%\section{Virtual Machine migration}
+
+
+
+
+
+
+%[TODO - move this paragraph to Simulation]
+
+%In this thesis different energy markets have been chosen that exhibit a considerable degree of price volatility and are partly located in different timezones. Therefore different scenarios may show interesting characteristics due to time- and location based differences in energy prices. 
+
+%A cost function is provided which calculates the total energy cost based on the energy price, the power used by a single server and the total number of running servers for each location. In addition constraints are defined s.t.~the workload assigned to a DC does not exceed its capacity and the total number of requests does not exceed a predefined threshold. 
+
+
+
+%
+%\section{Data center characteristics}
+%
+%\subsection{Key indicators in data centers}
+%
+%\subsection{Data management}
+%
+%\subsection{Best practices in federated cloud environments}
+
+
+
+
+\section{Summary}
+
+
+
