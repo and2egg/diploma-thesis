@@ -2,28 +2,27 @@
 \contentsline {figure}{\numberline {1.1}{\ignorespaces Data center lifetime costs as function of PUE \cite {dcw2013optimizing}}}{2}{figure.1.1}
 \addvspace {10pt}
 \contentsline {figure}{\numberline {2.1}{\ignorespaces The dependence between the hourly log prices and hourly log system loads in California for the period January 1 \IeC {\textendash } July 2, 2000. \cite {weron2005forecasting}}}{8}{figure.2.1}
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Classification of price forecasting models \cite {aggarwal2009electricity}}}{9}{figure.2.2}
-\contentsline {figure}{\numberline {2.3}{\ignorespaces Two level scheduling model \cite {fang2010task}}}{13}{figure.2.3}
-\contentsline {figure}{\numberline {2.4}{\ignorespaces Illustration of scheduling power savings \cite {younge2010efficient}}}{15}{figure.2.4}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Taxonomy of price forecasting models \cite {aggarwal2009electricity}}}{9}{figure.2.2}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Two level scheduling model \cite {fang2010task}}}{14}{figure.2.3}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Illustration of scheduling power savings \cite {younge2010efficient}}}{16}{figure.2.4}
 \contentsline {figure}{\numberline {2.5}{\ignorespaces WWS curve for a complete run of SPEC CINT2000 (512MB VM) \cite {clark2005live}}}{17}{figure.2.5}
-\contentsline {figure}{\numberline {2.6}{\ignorespaces Live migration algorithm performs pre-copying in iterative rounds \cite {liu2013performance}}}{17}{figure.2.6}
-\contentsline {figure}{\numberline {2.7}{\ignorespaces Migration cost savings by using proposed models \cite {liu2013performance}}}{18}{figure.2.7}
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Live migration algorithm performs pre-copying in iterative rounds \cite {liu2013performance}}}{18}{figure.2.6}
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Migration cost savings by using proposed models \cite {liu2013performance}}}{19}{figure.2.7}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Intersection between supply and demand \cite {nord2014supply}}}{19}{figure.3.1}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces EEX - hourly spot prices \cite {mugele2005stable}}}{20}{figure.3.2}
-\contentsline {figure}{\numberline {3.3}{\ignorespaces EEX levels \cite {mugele2005stable}}}{21}{figure.3.3}
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Nord Pool levels \cite {mugele2005stable}}}{21}{figure.3.4}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Intersection between supply and demand \cite {nord2014supply}}}{21}{figure.3.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces EEX - hourly spot prices \cite {mugele2005stable}}}{22}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces EEX levels \cite {mugele2005stable}}}{23}{figure.3.3}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Nord Pool levels \cite {mugele2005stable}}}{23}{figure.3.4}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Classification of price forecasting models \cite {aggarwal2009electricity}}}{23}{figure.4.1}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Periodogram of hourly day ahead prices in July 2014}}{25}{figure.4.2}
-\addvspace {10pt}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Periodogram of hourly day ahead prices in July 2014}}{26}{figure.4.1}
 \addvspace {10pt}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Finland prices from June, 22nd until July, 1st 2015}}{35}{figure.7.1}
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Sweden prices from June, 22nd until July, 1st 2015}}{35}{figure.7.2}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {8.1}{\ignorespaces Architecture Block Diagram}}{45}{figure.8.1}
-\contentsline {figure}{\numberline {8.2}{\ignorespaces Component Diagram}}{47}{figure.8.2}
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Finland prices from June, 22nd until July, 1st 2015}}{37}{figure.7.1}
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Sweden prices from June, 22nd until July, 1st 2015}}{37}{figure.7.2}
+\addvspace {10pt}
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Architecture Block Diagram}}{47}{figure.8.1}
+\contentsline {figure}{\numberline {8.2}{\ignorespaces Component Diagram}}{49}{figure.8.2}
 \addvspace {10pt}
 \addvspace {10pt}
 \addvspace {10pt}
