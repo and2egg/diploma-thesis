@@ -17,42 +17,7 @@ Ideas:
 	\item Show periodogram over extended time period
 \end{itemize}
 
-%
-%Active research topics in this field include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
-%
-%The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
-%
-%
-%
-%In \cite{rao2010minimizing} a cloud consisting of several Internet Data Centers (IDC) is examined with regard to cost optimization which is done by intelligently assigning workload to data centers based on current energy prices. Two of these data centers in the scenario are connected to deregulated wholesale energy markets whereas the other one is connected to a regulated utility region charged by a fixed pricing scheme. Since price change differences in deregulated energy markets can be considerable energy cost reductions may be achieved by assigning workload based on changing energy prices.  %For the purpose of the simulation five front-end Web portal servers process a total workload of about $10^5$ requests per second. 
-%
-%In this paper the approaches of optimal and average workload assignments are visually and formally compared to gain insights into the total electricity cost reduction. The optimal workload assignment is calculated with respect to workload and delay constraints that are considered in a minimum cost flow problem based on a linear programming model. Thus the goal is to minimize costs without compromising quality of service constraints. 
-%%The proposed cost reductions amount up to 30 percent for a single hour test within the given time range. 
-%%The results measured at two timestamps at a specific day seem promising, since total cost reductions could be achieved by 30\% and 17\% respectively. 
-%
-%The differences compared to this work is that in \cite{rao2010minimizing} they do not consider longer running jobs as used in scientific calculations or large optimization problems that may take several hours to complete. Thus the impact of migrations is not examined in this scenario. In addition the possibility of energy price forecasting is not considered which may result in even greater energy cost reductions. 
-%
-%Another study on cost reductions in Internet Data Centers has been done where different aspects of cost reductions including cost prediction schemes have been considered \cite{de2013study}. Since up to 15\% of total capital investment is spend on energy related costs 
-%%(paper references \cite{greenberg2008cost} - old, from 2009!!) 
-%a special effort is invested to reduce the amount of energy costs through cost aware operations. %(TODO: Move to introduction?)
-%
-%In this paper cost optimization is seen as an assignment problem where an overall cost function is minimized through intelligent workload allocation. During the investigation different variables and their impact on resulting energy costs are considered which are price volatility, price predictions including variable prediction errors, time lag between locations and reconfiguration delays. 
-%
-%Similar to this work the simulation is run with the same set of fixed parameters to evaluate the impact of the various scenarios. It is observed that prediction errors greatly impact workload allocation where cost penalties due to non-optimal assignments increase quadratically with an increase of forecast errors \cite{de2013study}. Also with increasing number of locations the minimum cost of optimal assignments can be greatly reduced. Greater price volatility is beneficial as well since then price aware assignments will have greater impacts. 
-%
-%A comprehensive study on cost reductions and energy market characteristics in an environment where data centers are placed within the reach of different energy markets is presented at \cite{qureshi2009cutting}. Based on geotemporal variations of energy prices the maximum cost reductions under different scenarios are evaluated. Energy expenses are estimated for various large scale companies like Google and Yahoo to state the actual savings and the amount of reductions in energy costs that would be possible. 
-%They also discuss the impact of considering bandwith constraints and maximum client server distances on cost reductions. 
-%
-%Interestingly enough long term seasonalities in the energy price data has been discovered that spanned multiple energy markets. This is an important fact when training forecasting models since predictions can become a lot more accurate. An important fact that was revealed about energy markets was that data from different energy markets was much less correlated than data from the same area. Thus to take full advantage of energy price differences data centers located at different energy markets should be combined \cite{qureshi2009cutting}. 
-%
-%With different state of the art energy models and simulation constraints a summary of possible cost reduction schemes was presented. However no migration or forecasting of energy price data has been done which could further improve scenarios with longer running jobs. In addition these cost reductions are only valid under specific assumptions that large cloud providers would need to implement such as connection to wholesale energy markets and reasonable server energy elasticity. 
-%
-%
-%
-%
-%\subsection{Server power management}
-%
-%A well known problem in power management is how to accurately and efficiently model a server's power consumption over time. At \cite{horvath2008multi} Horvath et al.~exploit dynamic voltage scaling (DVS) and multiple sleep states to reduce power consumption of a server cluster of about 23\% without significantly impacting performance. They propose that CPU utilization and frequency are the variables that have the most significant impact on the power consumption of a machine. This assumption is also used in other studies, e.g.~\cite{rao2010minimizing, hammadi2014survey, kliazovich2012greencloud}. 
+
 
 
 See folders "`Electricity pricing"' and "`power markets"'
@@ -71,9 +36,9 @@ In this section different studies of power market characteristics are presented 
 
 \subsection{Stable Modeling of different European Power Markets}
 
-In this paper different European power markets have been investigated to reveal major differences in energy price behaviour \cite{mugele2005stable}. The EEX, Nord Pool Spot and Polish power markets have been evaluated whereby the markets are responsible for the Mid-Europe, Northern Europe and Polish regions respectively. 
+In \cite{mugele2005stable} different European power markets have been investigated to reveal major differences in energy price behaviour. The EEX, Nord Pool Spot and Polish power markets have been evaluated whereby the markets are responsible for the Mid-Europe, Northern Europe and Polish regions respectively. 
 
-As in general electricity prices depend on energy demand \cite{weron2005forecasting} which changes due to climate conditions (temperature and number of daylight hours) electricity prices exhibit a seasonal component as well (Figure \ref{fig:seasonal_behaviour_of_eex_prices}). 
+As electricity prices depend on energy demand \cite{weron2005forecasting} which changes due to climate conditions (temperature and number of daylight hours) electricity prices exhibit a seasonal component as well (Figure \ref{fig:seasonal_behaviour_of_eex_prices}). 
 
 \begin{figure}[htbp]
 	\centering
@@ -82,7 +47,10 @@ As in general electricity prices depend on energy demand \cite{weron2005forecast
 	\label{fig:seasonal_behaviour_of_eex_prices}
 \end{figure}
 
-The main differences between electricity power markets and other financial markets are price volatility, mean reversion and price jumps or "`spikes"'. Volatility is high as generated electricity cannot be stored but has to be delivered at once which might lead to high prices on transmission congestion or surges in demand. It's impact can be reduced by applying logarithmic transformations of input data \cite{weron2005forecasting}. 
+The daily seasonality for hourly spot prices at EEX (Figure \ref{fig:seasonal_behaviour_of_eex_prices}) can be clearly spotted where prices 
+start rising at 6 a.m.~to 8 a.m.~and begin to fall at 6 p.m.~to 8 p.m. Daily variations of prices are caused by reduced electricity demand and power consumption at nights. 
+
+The main differences between electricity power markets and other financial markets are price volatility, mean reversion and price jumps or "`spikes"'. Volatility is high as generated electricity cannot be stored but has to be delivered at once which might lead to high prices due to transmission congestion or surges in demand. It's impact can be reduced by applying logarithmic transformations to input data \cite{weron2005forecasting}. 
 
 Energy prices experience strong mean reversion which denotes the characteristic that prices return to their mean levels after an increase in prices. In addition price spikes may appear where prices can increase tenfold from one hour to the next. To mitigate these spikes they may be averaged out in a data preprocessing step. 
 
@@ -105,7 +73,9 @@ The variation in energy price levels for the two power markets EEX and Nord Pool
   \end{minipage}
 \end{figure}
 
-This shows that it is important to investigate energy price characteristics from power markets to accurately model market prices. 
+Even though the figures above show neither the same time ranges nor the same scale (150 NOK equal to about 20 Euros in 2002) it is clearly visible that both energy price levels and amount of price variation can be very different across power markets. 
+
+%This shows that it is important to investigate energy price characteristics from power markets to accurately model market prices. 
 
 
 
@@ -122,6 +92,120 @@ This shows that it is important to investigate energy price characteristics from
 
 
 \section{Energy price case study}
+
+In this section the aforementioned characteristics of electricity prices in power markets will be investigated for both day ahead and real time energy price data within a time range of three years. 
+
+
+\subsection{Electricity market price characteristics}
+
+Through display of energy price time series over an extended time range the general behavior of different energy markets can be observed. Day ahead and real time energy price time series have been collected for the years 2012 to 2014 which are displayed in figures \ref{fig:da_energy_markets_2012_2014} and \ref{fig:rt_energy_markets_2012_2014}. 
+
+The title displays the name of the energy market followed by the country abbreviation and an indicator whether this market is a day ahead or real time market (DA or RT). Strongest price variations are experienced in real time markets (figure \ref{fig:rt_energy_markets_2012_2014}) where price spikes of almost 2000 \$/MWh occur. 
+
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.8\textwidth]{figures/data_analysis/da_energy_markets_2012_2014.png}
+	\caption{Day ahead energy market prices}
+	\label{fig:da_energy_markets_2012_2014}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.8\textwidth]{figures/data_analysis/rt_energy_markets_2012_2014.png}
+	\caption{Real time energy market prices}
+	\label{fig:rt_energy_markets_2012_2014}
+\end{figure}
+
+What can be noted is that markets Belpex and EPEXSpot appear to be the most stable in terms of energy price level and variations except some occasional negative spikes throughout the dataset. The aggregated statistics for each market are outlined in tables \ref{table:day_ahead_market_summary} and \ref{table:real_time_market_summary}. 
+
+The inter quartile range (range between 1st quartile and 3rd quartile) of the market prices lies between 20 \$/MWh and 60 \$/MWh whereas the minimum and maximum values tend to lie far outside this range. Real time markets exhibit significantly greater values for skewness and kurtosis which indicates a higher probability of extreme price spikes. When comparing maximum price values of real time markets to those of day ahead markets this fact is supported as well. 
+The stable variability of Belpex and EPEXSpot is also emphasized through a low absolute value for the skewness which indicates an almost symmetrical distribution. In contrast, other markets are heavy tailed and experience far more "`outliers"' indicated by a higher value for skewness. 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Skewness and kurtosis explanation %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Skewness quantifies how symmetrical the distribution is.
+%
+%•	A symmetrical distribution has a skewness of zero.
+%•	An asymmetrical distribution with a long tail to the right (higher values) has a positive skew.
+%•	An asymmetrical distribution with a long tail to the left (lower values) has a negative skew.
+%•	The skewness is unitless.
+%•	Any threshold or rule of thumb is arbitrary, but here is one: If the skewness is greater than 1.0 (or less than -1.0), the skewness is substantial and the distribution is far from symmetrical.
+%Kurtosis quantifies whether the shape of the data distribution matches the Gaussian distribution.
+%
+%•	A Gaussian distribution has a kurtosis of 0.
+%•	A flatter distribution has a negative kurtosis,
+%•	A distribution more peaked than a Gaussian distribution has a positive kurtosis.
+%•	Kurtosis has no units.
+%•	The value that Prism reports is sometimes called the excess kurtosis since the expected kurtosis for a Gaussian distribution is 0.0.
+%•	An alternative definition of kurtosis is computed by adding 3 to the value reported by Prism. With this definition, a Gaussian distribution is expected to have a kurtosis of 3.0.
+%
+%http://www.graphpad.com/guides/prism/6/statistics/index.htm?stat_skewness_and_kurtosis.htm
+
+
+%> xtable(da_statistics)
+% latex table generated in R 3.1.1 by xtable 1.8-2 package
+% Mon Mar 14 05:40:05 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrr}
+  \hline
+ & Min & 1st Qu. & Median & Mean & 3rd Qu. & Max & Skew. & Kurt. \\ 
+  \hline
+NPS, FI (DA) & 1.49 & 33.08 & 39.18 & 40.91 & 46.33 & 324.00 & 3.60 & 40.02 \\ 
+  Belpex, BE (DA) & -216.00 & 37.14 & 48.60 & 48.66 & 59.49 & 270.00 & 0.08 & 13.35 \\ 
+  EPEXSpot, DE (DA) & -239.70 & 31.20 & 39.34 & 40.73 & 51.16 & 226.80 & -1.06 & 25.29 \\ 
+  ISO NE, ME (DA) & 3.00 & 28.94 & 37.18 & 50.78 & 50.41 & 817.70 & 3.62 & 23.62 \\ 
+   \hline
+\end{tabular}
+\caption{Day ahead energy market summary statistics}
+\label{table:day_ahead_market_summary}
+\end{table}
+%> xtable(rt_statistics)
+% latex table generated in R 3.1.1 by xtable 1.8-2 package
+% Mon Mar 14 05:40:06 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrr}
+  \hline
+ & Min & 1st Qu. & Median & Mean & 3rd Qu. & Max & Skew. & Kurt. \\ 
+  \hline
+ISO NE, ME (RT) & -147.00 & 26.42 & 34.83 & 49.21 & 48.90 & 1257.00 & 4.24 & 42.21 \\ 
+  ISO NE, MA (RT) & -153.90 & 27.24 & 35.99 & 52.23 & 50.92 & 1310.00 & 4.76 & 48.87 \\ 
+  PJM, VA (RT) & -118.60 & 26.33 & 30.34 & 35.85 & 36.93 & 1789.00 & 24.53 & 996.02 \\ 
+  PJM, MI (RT) & -120.80 & 27.76 & 32.82 & 43.83 & 41.52 & 1913.00 & 14.12 & 316.98 \\ 
+   \hline
+\end{tabular}
+\caption{Real time energy market summary statistics}
+\label{table:real_time_market_summary}
+\end{table}
+
+
+In order to visualize the aforementioned statistical properties histograms have been generated for each market over the whole time range \ref{fig:Histograms_da_2012_2014}, \ref{fig:Histograms_rt_2012_2014}. 
+
+As outlined before the Belpex and EPEXSpot markets exhibit the most stable distribution of prices which is visible in the histograms as these markets show the most symmetric distributions. They exhibit an almost gaussian like distribution whereas other markets are clearly heavy tailed to the right. In order to see the distribution of prices more distinctly the histograms where cut off at 250 \$/MWh to be able to accurately compare the price distributions. 
+
+
+
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.8\textwidth]{figures/data_analysis/Histograms_da_2012_2014.png}
+	\caption{Histograms of day ahead markets for years 2012 to 2014}
+	\label{fig:Histograms_da_2012_2014}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.8\textwidth]{figures/data_analysis/Histograms_rt_2012_2014.png}
+	\caption{Histograms of real time markets for years 2012 to 2014}
+	\label{fig:Histograms_rt_2012_2014}
+\end{figure}
+
 
 
 
