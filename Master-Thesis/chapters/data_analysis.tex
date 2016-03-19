@@ -2,43 +2,295 @@
 
 
 
-\section{Day ahead and real time energy prices}
+\section{Day ahead and real time energy prices} \label{sec:day_ahead_and_real_time_energy_prices}
+
+A system comprising a day ahead as well as a real time market is also known as two-settlement system \cite{lambert2001creating}. Day ahead and real time prices are traded within the scope of deregulated wholesale power markets \cite{hogan1993competitive}. 
+%A two settlement system has been defined for the PJM power market (PJM standing for Pennsylvania, New Jersey, Maryland)\cite{lambert2001creating}. 
+
+In day ahead or spot markets bids are placed for each consecutive hour of the following day. Prices may change substantially from one hour to the next, up to a factor of ten \cite{huisman2007hourly,weron2004modeling}. Therefore market operators need to apply profound risk management techniques to alleviate such price spikes.
+
+The real time market, also called intraday or balancing market on the other hand is used to compensate demand variations during the day which may result in additional changes in energy prices \cite{barroso2005classification}. 
+Due to this characteristic the real time market prices exhibit an even greater volatility than those of the day-ahead market. 
+
+A direct comparison of day ahead and real time prices is depicted in Figure \ref{fig:da_vs_rt_prices_maine}.
+
+\begin{figure}[!htbp]
+	\centering
+		\includegraphics[width=0.90\textwidth]{figures/data_analysis/day_ahead_vs_real_time_prices.png}
+	\caption{Day ahead vs real time energy prices, Maine 4th Aug, 2015}
+	\label{fig:da_vs_rt_prices_maine}
+\end{figure}
+
+What can be noted is that both day ahead and real time prices show a clear trend over one day denoting a daily seasonality pattern, with real time prices exhibiting more variation during the day. Thus prices start to rise at 5 a.m.~and start falling again at 5 p.m. This pattern is highly related to energy demand which reaches its peak during the day mainly due to industrial power demands. As real time prices show a more irregular pattern this trend is not as clearly visible for real time markets. 
 
 
 
 
 \section{Characteristics of energy markets}
 
-Ideas: 
-
-\begin{itemize}
-	\item Show electricity price variation for market over a 3 year period (Weron, pg 33)
-	\item Show autocorrelation function over extended (same) time period
-	\item Show periodogram over extended time period
-\end{itemize}
+In this section different studies of power market characteristics are presented to distinguish features that may be used in building forecasting models. 
 
 
+The main differences between electricity power markets and other financial markets are price volatility, mean reversion and price jumps or "`spikes"' \cite{weron2007modeling,weron2008market,weron2004modelingmarkets}. In addition to these characteristic features electricity prices may exhibit strong seasonality patterns on a daily, weekly and annual basis \cite{weron2004modelingmarkets}. 
+
+Volatility and price variations are inherent characteristics of deregulated power markets as energy cannot be stored but has to be delivered immediately. This results in constant balancing of electricity demand vs.~supply to ensure the stability of the electrical grid which has a direct impact on energy prices. When building energy price models the impact of price variations can be reduced by applying logarithmic transformations to input data or utilizing Box Cox transformations \cite{weron2005forecasting, box1964analysis}. 
+
+%Volatility is high as generated electricity cannot be stored but has to be delivered at once which might lead to high prices due to transmission congestion or surges in demand. Its impact can be reduced by applying logarithmic transformations to input data \cite{weron2005forecasting}. 
+
+Energy prices in general exhibit strong mean reversion which denotes the characteristic that prices tend to return to their mean levels after a significant deviation from the mean \cite{weron2004modelingmarkets,weron2007modeling}. To discover mean reversion or long range dependencies in time series different models can be utilized of which the most important are rescaled range analysis, Detrended Fluctuation Analysis, periodogram regression and Average Wavelet Coefficient \cite{weron2007modeling}. By applying these methods to electricity price data strong mean reversion could be detected which does not occur in typical financial stock indices. 
 
 
-See folders "`Electricity pricing"' and "`power markets"'
+Price jumps or spikes are a distinctive feature of electricity markets due to the non-storable nature of electricity prices and occasional gaps in supply vs.~demand caused by transmission congestion, plant failure or unanticipated high power consumption \cite{weron2004modelingmarkets, weron2007modeling}. 
+Considering price spikes is critical as price values may increase tenfold from one hour to the next \cite{huisman2007hourly}. 
+These phenomenons are called jumps as prices tend to rapidly return to their previous level after the jump. In order to model price spikes a combination of mean reversion and "`downward jumps"' can be applied. Another possibility is to model positive and negative jumps in consecutive order \cite{weron2004modeling}. This can be done by applying \textit{jump diffusion models} which are able to accurately model price spikes \cite{weron2004modeling}. 
 
+
+
+%Electricity wholesale markets are constantly developing. In Europe incentives exist to create an integrated EU energy market for secure and affordable electricity supplies\footnote{\url{https://ec.europa.eu/energy/en/topics/markets-and-consumers}}. Also concrete plans exist for creating a so called \emph{Energy Union} as a single energy market that aim to make energy more reliable and interchangable within the EU\footnote{\url{https://ec.europa.eu/energy/en/news/new-electricity-market-consumers}}. 
+
+An outline of a possible implementation of a competitive energy market is depicted in \cite{hogan1993competitive} which is still valid as of today in many respects. A competitive market captures the advantage of market participants being able to actively shaping the final clearing price applicable to both producers and consumers in the market. Thus the market price more accurately resembles actual market conditions in contrast to a defined price dictated in regulated markets. 
+
+
+
+
+\subsection{Electricity market models}
+
+Two main models exist for the exchange and types of trading of energy prices in power markets which are bilateral trading and electricity pooling, also called loose pool and tight pool models \cite{onaiwu2009does,hogan1997reshaping,barroso2005classification,chao1999design}.
+
+\subsubsection{Bilateral trading}
+
+In bilateral trading or loose pool models utility operators (producers) and energy consumers establish bilateral contracts to determine the terms and conditions applied for trading energy \cite{onaiwu2009does,chao1999design}. Generators or producers may also buy electricity from other suppliers in case their own electricity generation does not fit current demand. The exact amount, price and time when tradings take place are negotiated on the contract. Since electricity demand may vary from the negotiated terms the resulting imbalances have to be taken care of by the system operator. 
+
+\subsubsection{Electricity pooling}
+
+Electricity pooling in tight pool models provide a way for utility operators to offer a certain amount of energy at a set price. Each generator places a bid containing the quantity and expected price \cite{barroso2005classification}. In return consumers place bids on how much they are willing to pay for a given amount of energy. The intersection of the aggregated demand and supply curves defines the energy price for that hour. 
+Customers, brokers and aggregators have the choice to either establish long term contracts of electricity in bilateral contracts or rely on the short-term market \cite{hogan1997reshaping}.
+
+
+%\subsubsection{Day ahead vs real time markets}
+
+
+
+%TODO Explain difference of intraday - real time markets. Same? See \url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}. 
+
+% Another resource (intraday market): https://www.next-kraftwerke.de/wissen/strommarkt/intraday-handel
+
+% EPEX Spot - Intraday
+
+%Der Intraday-Handel dient primär dazu, Fehlmengen oder Überschüsse des eigenen Bilanzkreises durch kurzfristige, untertägige Handelsaktivitäten so gering wie möglich zu halten, um den Prognoseverpflichtungen des Bilanzkreisvertrages nachzukommen und etwaige Ausgleichsenergiekosten zu reduzieren. Mit Hinblick auf immer flexibler werdende Anlagen lässt sich der kurzfristige Handel aber auch dafür nutzen, um den Strom von Anlagen kurzfristig bedarfsgerecht – und somit möglichst gewinnbringend und systemstabilisierend – zu produzieren.
+%
+%Der Intraday-Handel ist insbesondere von Bedeutung, um unvorhersehbare Änderungen in Stromproduktion und -nachfrage über marktliche Mechanismen aufzufangen, bevor der Einsatz von Regelenergie notwendig wird. So kann beispielsweise ein Kraftwerksbetreiber, in dessen Kraftwerk kurzfristig ein Block ausfällt, bei anderen Marktpartnern den seinem Bilanzkreis nun fehlenden Strom einkaufen. Dem Intraday-Handel kommt daher auch in der Direktvermarktung von Erneuerbaren Energien eine Schlüsselrolle zu, etwa wenn kurzfristig angepasste Wetterprognosen ein ungeplantes Mehr oder Weniger an Stromproduktion aus Solar- oder Windkraftanlagen verheißen.
+
+%TODO Compare real time (5 min?) data with hourly day ahead data (graph). Evaluate volatility and maybe also forecasting behavior (this better suits under forecasting menu). 
+
+% Negative Prices
+
+% See https://www.epexspot.com/en/company-info/basics_of_the_power_market/negative_prices
+
+
+
+
+
+\subsubsection{Forward Capacity Market (FCM)} 
+
+In contrast to day ahead and real time markets which are classified as short term markets (Section \ref{sec:day_ahead_and_real_time_energy_prices}) other types of markets exist for mid- and long term planning to ensure sufficient capacities over an extended period of time \cite{barroso2005classification,nomikos2010modelling}. One of the most important of these markets is the Forward Capacity Market which is introduced shortly. 
+
+A forward capacity market is used to ensure having enough capacity for a specific amount of time into the future \cite{gottstein2010role}. A capacity commitment period (CCP) ensures that a certain amount of capacity will be available during that period. For example, the CCP at ISO-NE is set as one year ranging from June 1st until May 31st. 
+
+The market has to ensure that the \emph{Installed Capacity Requirements (ICR)} for the corresponding region are met. These requirements are defined for each capacity commitment period and define the amount of capacity needed to meet estimated peak and reserve demands. Important measures to define the ICR are the local sourcing requirements (LSR) and maximum capacity limits (MCL) that define the constraints given by market participants \cite{gottstein2010role}. 
+
+The actual procurement of resources for each capacity commitment period is determined by a \emph{Forward Capacity Auction (FCA)} which aims to meet the defined ICRs for the given period.
+This auction is carried out three years ahead of the related CCP to ensure that enough resources will be available during that period. \emph{Reconfiguration Auctions (RA)} are then executed annually until the start of the CCP and continued monthly afterward. During an RA capacity resources may be amended to adapt to potential changes in capacity zones. 
+
+At the FCM of ISO New England there is also the option of making a composite offer where different capacity resources may join their capacity offers (useful e.g.~in case of single season capacities) to result in a single resource offer at the market. 
+
+%Capacity resources <-> energy suppliers/providers?
+
+%See definition at the website of ISO NE\footnote{\url{http://www.iso-ne.com/markets-operations/markets/forward-capacity-market}}.
+
+%\subsubsection{Regulation market}
+%
+%Definition by the ISO NE power market\footnote{\url{http://www.iso-ne.com/markets-operations/markets/regulation-market}}:
+%
+%\begin{quote}
+%The Regulation Market is the mechanism for selecting and compensating market participants to provide regulation—the capability of specially equipped generators and other energy sources to increase or decrease output or consumption every four seconds. Participants allow their Automatic Generation Control (AGC) resources to be controlled by the ISO using automated signals to balance both second-by-second variations in demand and the system frequency, which must be kept constant. This market helps ensure that the ISO meets the North American Electric Reliability Corporation Real Power Balancing Control Performance Standard (BAL-001-0). Two regulation clearing prices are calculated: one for capacity and one for actual service mileage.
+%\end{quote}
+
+
+
+%
+%
+%\subsection{Outline of selected energy markets}
+%
+%
+%
+%\subsubsection{Nord Pool Spot}
+%
+%
+%The NordPoolSpot market is the most mature power market to date and has been the first energy market that was established in Europe [c]. 
+%
+%The NordPoolSpot power market consists of four different markets. 
+%
+%
+%\begin{itemize}[-]
+%
+%\item Financial market (Nasdaq OMX)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Financial-market/}}
+%
+%Market for risk management, forwards futures and options. 
+%This market generally includes long term contracts (up to six
+%years) with different time horizons where contracts are made for 
+%daily, weekly, monthly, quarterly and annual time spans. 
+%
+%\item Day-ahead market (Nord Pool Spot)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Day-ahead-market-Elspot-/}}
+%
+%Elspot, the main electricity spot market of Nord Pool, is used for day-ahead
+%trading of energy prices in various regions. 
+%Trades can be made until 12:00 CET of each day where the prices
+%are fixed for the following day. Actual power delivery is done
+%from the sellers to the buyers for each hour according to the defined contract. 
+%
+%\item Intraday market (Nord Pool Spot)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Intraday-market/}}
+%
+%The intraday market Elbas provides the possibility of continuous trading up to 30 minutes before delivery. 
+%This can be important in case of a sudden surge in power demands where additional power sources have to be
+%activated to meet demand. Unstable wind conditions when operating wind turbines may also require changes of trades. 
+%Short term bids can be used for compensation of too little or too much power delivery at a given area. 
+%
+%\item Balancing market (TSOs)\footnote{\url{http://www.nordpoolspot.com/How-does-it-work/Transmission-system-operators-TSOs/}}
+%
+%At the balancing market corrective actions can be taken by transmission system operators (TSOs). 
+%These are responsible for the security of supply and correct frequency of the grid. 
+%
+%\end{itemize}
+%% other source: \url{http://www.nordpoolspot.com/globalassets/download-center/annual-report/nord-pool-spot_europes-leading-power-markets.pdf}
+%
+%
+%
+%As discussed before some markets exhibit strong seasonalities, while others do not. Nord Pool Spot is an example of a power market with obvious seasonalities in the data which can be taken advantage of when creating forecasting models. 
+%
+%Two hourly time series from two locations within Nord Pool Spot are displayed that show significant seasonal behavior (figures \ref{fig:hourly_prices_finland} and \ref{fig:hourly_prices_sweden}).
+%
+%\begin{figure}[!h]
+	%\centering
+		%\includegraphics[width=1.00\textwidth]{figures/methodology/hourly_prices_finland.PNG}
+	%\caption{Finland prices from June, 22nd until July, 1st 2015}
+	%\label{fig:hourly_prices_finland}
+%\end{figure}
+%
+%\begin{figure}[!h]
+	%\centering
+		%\includegraphics[width=1.00\textwidth]{figures/methodology/hourly_prices_sweden.PNG}
+	%\caption{Sweden prices from June, 22nd until July, 1st 2015}
+	%\label{fig:hourly_prices_sweden}
+%\end{figure}
+%
+%
+%
+%
+%
+%\subsubsection{ISO New England}
+%
+%The market of ISO New England offers day ahead as well as real time energy prices where day ahead prices are available at an hourly interval while (preliminary) real time prices are available both at hourly and five minute intervals\footnote{\url{http://www.iso-ne.com/}}. 
+%
+%Current locational marginal prices (LMPs) can be downloaded from a base url\footnote{\url{http://www.iso-ne.com/static-transform/csv/histRpts/da-lmp/}} and a specialized suffix depending on the file and date (e.g.~WW\_DALMP\_ISO\_20150414.csv). In this case, files are provided in csv format for better machine processing. 
+%
+%%Example: 
+%%\begin{verbatim}
+	%%H,"Date","Hour Ending","Location ID","Location Name","Location Type","Locational Marginal Price",
+	%%"Energy Component","Congestion Component","Marginal Loss Component"
+	%%D,"04/14/2015","02","4006",".Z.SEMASS","LOAD ZONE",14.82,14.85,0.01,-0.04
+	%%D,"04/14/2015","02","4007",".Z.WCMASS","LOAD ZONE",14.94,14.85,0.01,0.08
+	%%D,"04/14/2015","02","4008",".Z.NEMASSBOST","LOAD ZONE",14.84,14.85,0.01,-0.02
+%%\end{verbatim}
+%
+%A summary of all data that is available is provided for day ahead as well as real time prices\footnote{\url{http://www.iso-ne.com/isoexpress/web/reports/pricing/-/tree/zone-info}}. It is described as ``zonal information'' on the website to emphasize the locational character of the prices. 
+%
+%
+%\subsubsection{EEX}
+%
+%The European Energy Exchange (EEX) is a power market operating for the market area of France, Germany/Austria and Switzerland. Each of these regions exhibits a separate spot market where prices are traded for the respective country. 
+%The actual trading takes place on EPEX SPOT, an organisation that drives the integration of power markets in Europe where EEX is a part of. It consists of an intraday (real time) and day ahead market for trading during the day and for the next day, respectively. 
+%
+%Several info products are available on the market for end-of-day data (EOD) that cover historical as well as current trading data from the spot and derivatives markets. 
+%Data is available on subscription for all of the above mentioned regions. Available data formats include csv, excel and xml files, provided on demand on a ftp server. 
+%Depending on the type of product and the time period available different fees apply and have to be paid in advance. 
+%Access is granted to a vast amount of historical energy price data for the derivatives as well as the spot market for energy and other commodities like natural gas and coal where both prices and trading volumes are included. 
+%
+%%Naming conventions designating the different areas of trading are defined as follows: 
+%%
+%%\begin{itemize}
+%%
+%%\item \emph{PHELIX} The Physical Electricity Index denotes the area of Germany and Austria
+%%
+%%\item \emph{SWISSIX} The Swiss Index denotes the area of Switzerland
+%%
+%%\item \emph{FRANCE} The index for France denotes the area of France
+%%
+%%\item \emph{ELIX} The European Electricity Index defines prices valid for all of Europe (?)
+%%
+%%\end{itemize}
+%
+%
+%%\subsubsection{APG}
+%%
+%%Austrian Power Grid\footnote{\url{http://www.apg.at/de/markt/strommarkt}}
+%
+%
+%
+%\subsubsection{PJM}
+%
+%See at \url{http://www.pjm.com/}. 
+%
+
+
+
+
+\subsection{Power pools vs power exchanges}
+
+Two types of power markets have been established, power pools and power exchanges. The main difference between those types is the type of auction that is applied. In power pools one sided auctions are conducted whereas in power exchanges two sided auctions are performed \cite{weron2007modeling}. The difference lies in the fact whether demand bids are conducted for each hour of the following day or power demand is estimated based on current demand in the market. 
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics[width=0.5\textwidth]{figures/data_analysis/DA_supply_demand.png}
-	\caption{Intersection between supply and demand \cite{nord2014supply}}
-	\label{fig:DA_supply_demand}
+		\includegraphics[width=0.8\textwidth]{figures/data_analysis/power_markets_one_two_sided_auctions.PNG}
+	\caption{One sided and two sided auctions in power markets \cite{weron2007modeling}}
+	\label{fig:power_markets_one_two_sided_auctions}
 \end{figure}
 
+The market clearing price (MCP) is the final settled price that results from demand and/or supply bids for a specific hour of the following day. This price can be taken as reference price for the corresponding hour that is to be paid by consumers. The market clearing volume (MCV) is the estimated energy demand (volume) for the corresponding hour that is to be generated by suppliers \cite{weron2007modeling}. 
+
+For one sided auctions power demand is estimated for all consumers for one specific hour which results in the market clearing volume. The market clearing price is determined by the intersection between the supply curve (consisting of aggregated supply bids) and the market clearing volume. 
+For two sided auctions the demand curve is established by aggregated demand bids and the MCP is determined by the intersection between the supply and demand curves (Figure \ref{fig:power_markets_one_two_sided_auctions}) \cite{weron2007modeling}. 
+
+The sudden increase in slope of the supply price curve indicates that when market volume reaches a certain threshold a significantly higher price has to be paid due to the activation of more expensive power generation utilities. For example, a market area may depend on renewable energy (hydro generation utilities, wind turbines) for times with low electricity demand, however additional gas and coal power plants may need to be activated when electricity demand increases. 
+
+All power markets considered in this work are part of the category \textit{power exchanges} and thus conduct two sided auctions. Despite its name, \textit{Nord Pool Spot} is not a power pool but a power exchange. 
+
+%\begin{figure}[htbp]
+	%\centering
+		%\includegraphics[width=0.5\textwidth]{figures/data_analysis/DA_supply_demand.png}
+	%\caption{Intersection between supply and demand \cite{nord2014supply}}
+	%\label{fig:DA_supply_demand}
+%\end{figure}
 
 
-In this section different studies of power market characteristics are presented to distinguish features that may be used in building forecasting models. 
+\subsection{Bidding strategies}
 
-\subsection{Stable Modeling of different European Power Markets}
+
+\subsubsection{Pay-as-bid model}
+...
+
+\subsubsection{Uniform pricing model}
+
+
+
+Suprisingly, this pricing scheme really is the root cause of price spikes \cite{weron2007modeling}. Since electricity is an essential commodity for most market participants they are willing to pay almost any price to ensure a continuous supply of electric power. Thus bids on demand side are regularly placed at the highest possible price (price cap) which results in suppliers raising their bids as well since they are aware of these bidding strategies. Since bids are placed for all 24 hours of the following day market participants have to stick with high priced periods for at least one day before they can choose to search for cheaper alternatives. 
+
+
+\subsection{Electricity price characteristics in European Power Markets}
 
 In \cite{mugele2005stable} different European power markets have been investigated to reveal major differences in energy price behaviour. The EEX, Nord Pool Spot and Polish power markets have been evaluated whereby the markets are responsible for the Mid-Europe, Northern Europe and Polish regions respectively. 
 
-As electricity prices depend on energy demand \cite{weron2005forecasting} which changes due to climate conditions (temperature and number of daylight hours) electricity prices exhibit a seasonal component as well (Figure \ref{fig:seasonal_behaviour_of_eex_prices}). 
+As electricity prices depend on energy demand which changes due to climate conditions (temperature and number of daylight hours) electricity prices exhibit a seasonal component as well (Figure \ref{fig:seasonal_behaviour_of_eex_prices}) \cite{weron2005forecasting}. 
 
 \begin{figure}[htbp]
 	\centering
@@ -48,11 +300,7 @@ As electricity prices depend on energy demand \cite{weron2005forecasting} which 
 \end{figure}
 
 The daily seasonality for hourly spot prices at EEX (Figure \ref{fig:seasonal_behaviour_of_eex_prices}) can be clearly spotted where prices 
-start rising at 6 a.m.~to 8 a.m.~and begin to fall at 6 p.m.~to 8 p.m. Daily variations of prices are caused by reduced electricity demand and power consumption at nights. 
-
-The main differences between electricity power markets and other financial markets are price volatility, mean reversion and price jumps or "`spikes"'. Volatility is high as generated electricity cannot be stored but has to be delivered at once which might lead to high prices due to transmission congestion or surges in demand. It's impact can be reduced by applying logarithmic transformations to input data \cite{weron2005forecasting}. 
-
-Energy prices experience strong mean reversion which denotes the characteristic that prices return to their mean levels after an increase in prices. In addition price spikes may appear where prices can increase tenfold from one hour to the next. To mitigate these spikes they may be averaged out in a data preprocessing step. 
+start rising at 6 a.m.~to 8 a.m.~and begin to fall at around 10 p.m. Daily variations of prices are caused by reduced electricity demand and power consumption at nights. 
 
 Even though price seasonality and trend seem to be stable over a short time range (Figure \ref{fig:seasonal_behaviour_of_eex_prices}) they can show significant fluctuations over a longer time range. In \cite{mugele2005stable} data related to each examined energy market was fitted to a stable Paretian distribution as well as a normal distribution. The result showed that mature markets as EEX or Nord Pool Spot exhibit high volatility, heavy tails, high kurtosis and asymmetrics in the energy price data which was best modeled by the Paretian distribution. In contrast the Gielda Energii SA market in Poland shows a much more stable energy price behavior which can be modeled by a Gaussian distribution. 
 
@@ -73,7 +321,7 @@ The variation in energy price levels for the two power markets EEX and Nord Pool
   \end{minipage}
 \end{figure}
 
-Even though the figures above show neither the same time ranges nor the same scale (150 NOK equal to about 20 Euros in 2002) it is clearly visible that both energy price levels and amount of price variation can be very different across power markets. 
+By comparing these graphs by scale over a longer period of time (150 NOK equal to about 20 Euros in 2002) it is clearly visible that both energy price levels and amount of price variation can be very different across power markets. 
 
 %This shows that it is important to investigate energy price characteristics from power markets to accurately model market prices. 
 
@@ -93,14 +341,23 @@ Even though the figures above show neither the same time ranges nor the same sca
 
 \section{Energy price case study}
 
-In this section the aforementioned characteristics of electricity prices in power markets will be investigated for both day ahead and real time energy price data within a time range of three years. 
+%Ideas: 
+%
+%\begin{itemize}
+	%\item Show electricity price variation for market over a 3 year period (Weron, pg 33)
+	%\item Show autocorrelation function over extended (same) time period
+	%\item Show periodogram over extended time period
+%\end{itemize}
 
 
-\subsection{Electricity market price characteristics}
+In this section the aforementioned characteristics of electricity prices in power markets will be investigated for both day ahead and real time energy price data over an extended range of time. 
+
+
+\subsection{Evaluation of electricity market price characteristics}
 
 Through display of energy price time series over an extended time range the general behavior of different energy markets can be observed. Day ahead and real time energy price time series have been collected for the years 2012 to 2014 which are displayed in figures \ref{fig:da_energy_markets_2012_2014} and \ref{fig:rt_energy_markets_2012_2014}. 
 
-The title displays the name of the energy market followed by the country abbreviation and an indicator whether this market is a day ahead or real time market (DA or RT). Strongest price variations are experienced in real time markets (figure \ref{fig:rt_energy_markets_2012_2014}) where price spikes of almost 2000 \$/MWh occur. 
+The title displays the name of the energy market followed by the country abbreviation and an indicator whether this market is a day ahead or real time market (DA or RT). Strongest price variations are experienced in real time markets (Figure \ref{fig:rt_energy_markets_2012_2014}) where price spikes of almost 2000 \$/MWh occur. 
 
 
 \begin{figure}[htbp]
@@ -185,10 +442,11 @@ ISO NE, ME (RT) & -147.00 & 26.42 & 34.83 & 49.21 & 48.90 & 1257.00 & 4.24 & 42.
 \end{table}
 
 
-In order to visualize the aforementioned statistical properties histograms have been generated for each market over the whole time range \ref{fig:Histograms_da_2012_2014}, \ref{fig:Histograms_rt_2012_2014}. 
+In order to visualize the aforementioned statistical properties histograms have been generated for each market over the whole time range (Figures \ref{fig:Histograms_da_2012_2014} and \ref{fig:Histograms_rt_2012_2014}). 
 
 As outlined before the Belpex and EPEXSpot markets exhibit the most stable distribution of prices which is visible in the histograms as these markets show the most symmetric distributions. They exhibit an almost gaussian like distribution whereas other markets are clearly heavy tailed to the right. In order to see the distribution of prices more distinctly the histograms where cut off at 250 \$/MWh to be able to accurately compare the price distributions. 
 
+The previously shown results have major implications for the generation of forecasting models. Various models have different requirements regarding statistical properties of the data, for example statistical time series models demand a constant mean and variance in the dataset to capture the underlying time series characteristics. When observing the discussed energy price time series these characteristics can not be found for any time series over an extended period of time. Therefore, in order to accurately model energy prices data preprocessing steps have to be taken before applying statistical models. An in-depth discussion about forecasting models and data preprocessing is provided in Chapter \ref{ch:forecasting}. 
 
 
 

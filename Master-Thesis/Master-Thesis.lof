@@ -9,21 +9,20 @@
 \contentsline {figure}{\numberline {2.6}{\ignorespaces Live migration algorithm performs pre-copying in iterative rounds \cite {liu2013performance}}}{18}{figure.2.6}
 \contentsline {figure}{\numberline {2.7}{\ignorespaces Migration cost savings by using proposed models \cite {liu2013performance}}}{19}{figure.2.7}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Intersection between supply and demand \cite {nord2014supply}}}{21}{figure.3.1}
-\contentsline {figure}{\numberline {3.2}{\ignorespaces EEX - hourly spot prices \cite {mugele2005stable}}}{22}{figure.3.2}
-\contentsline {figure}{\numberline {3.3}{\ignorespaces EEX levels \cite {mugele2005stable}}}{23}{figure.3.3}
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Nord Pool levels \cite {mugele2005stable}}}{23}{figure.3.4}
-\contentsline {figure}{\numberline {3.5}{\ignorespaces Day ahead energy market prices}}{24}{figure.3.5}
-\contentsline {figure}{\numberline {3.6}{\ignorespaces Real time energy market prices}}{24}{figure.3.6}
-\contentsline {figure}{\numberline {3.7}{\ignorespaces Histograms of day ahead markets for years 2012 to 2014}}{26}{figure.3.7}
-\contentsline {figure}{\numberline {3.8}{\ignorespaces Histograms of real time markets for years 2012 to 2014}}{26}{figure.3.8}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Day ahead vs real time energy prices, Maine 4th Aug, 2015}}{22}{figure.3.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces One sided and two sided auctions in power markets \cite {weron2007modeling}}}{24}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces EEX - hourly spot prices \cite {mugele2005stable}}}{25}{figure.3.3}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces EEX levels \cite {mugele2005stable}}}{26}{figure.3.4}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Nord Pool levels \cite {mugele2005stable}}}{26}{figure.3.5}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Day ahead energy market prices}}{27}{figure.3.6}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Real time energy market prices}}{27}{figure.3.7}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Histograms of day ahead markets for years 2012 to 2014}}{29}{figure.3.8}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Histograms of real time markets for years 2012 to 2014}}{30}{figure.3.9}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Periodogram of hourly day ahead prices in July 2014}}{28}{figure.4.1}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Periodogram of hourly day ahead prices in July 2014}}{32}{figure.4.1}
 \addvspace {10pt}
 \addvspace {10pt}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Finland prices from June, 22nd until July, 1st 2015}}{39}{figure.7.1}
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Sweden prices from June, 22nd until July, 1st 2015}}{39}{figure.7.2}
 \addvspace {10pt}
 \contentsline {figure}{\numberline {8.1}{\ignorespaces Architecture Block Diagram}}{49}{figure.8.1}
 \contentsline {figure}{\numberline {8.2}{\ignorespaces Component Diagram}}{51}{figure.8.2}
