@@ -37,12 +37,14 @@ Volatility and price variations are inherent characteristics of deregulated powe
 
 %Volatility is high as generated electricity cannot be stored but has to be delivered at once which might lead to high prices due to transmission congestion or surges in demand. Its impact can be reduced by applying logarithmic transformations to input data \cite{weron2005forecasting}. 
 
-Energy prices in general exhibit strong mean reversion which denotes the characteristic that prices tend to return to their mean levels after a significant deviation from the mean \cite{weron2004modelingmarkets,weron2007modeling}. To discover mean reversion or long range dependencies in time series different models can be utilized of which the most important are rescaled range analysis, Detrended Fluctuation Analysis, periodogram regression and Average Wavelet Coefficient \cite{weron2007modeling}. By applying these methods to electricity price data strong mean reversion could be detected which does not occur in typical financial stock indices. 
+Energy prices in general exhibit strong mean reversion which denotes the characteristic that prices tend to return to their mean levels after a significant deviation from the mean \cite{weron2004modelingmarkets,weron2007modeling}. To discover mean reversion or long range dependencies in time series different models can be utilized of which the most important are rescaled range analysis, Detrended Fluctuation Analysis, periodogram regression and Average Wavelet Coefficient \cite{weron2007modeling}. By applying these methods to electricity price data strong mean reversion could be detected in contrast to typical financial stock indices where this behavior can not be recognized. 
 
 
 Price jumps or spikes are a distinctive feature of electricity markets due to the non-storable nature of electricity prices and occasional gaps in supply vs.~demand caused by transmission congestion, plant failure or unanticipated high power consumption \cite{weron2004modelingmarkets, weron2007modeling}. 
 Considering price spikes is critical as price values may increase tenfold from one hour to the next \cite{huisman2007hourly}. 
-These phenomenons are called jumps as prices tend to rapidly return to their previous level after the jump. In order to model price spikes a combination of mean reversion and "`downward jumps"' can be applied. Another possibility is to model positive and negative jumps in consecutive order \cite{weron2004modeling}. This can be done by applying \textit{jump diffusion models} which are able to accurately model price spikes \cite{weron2004modeling}. 
+These phenomenons are called spikes as prices tend to rapidly return to their previous level after the sudden increase. In order to model price spikes a combination of mean reversion and "`downward jumps"' can be applied. Another possibility is to model positive and negative jumps through the application of \textit{jump diffusion models} \cite{weron2004modeling}. These kind of models are able to accurately model price spikes. 
+
+The actual root cause of price spikes lies in the applied bidding strategy (Section \ref{ssec:bidding_strategies}) \cite{weron2007modeling}. Since electricity is an essential commodity for most market participants they are willing to pay almost any price to ensure a continuous supply of electric power. Thus bids on demand side are regularly placed at the highest possible price (price cap) which results in suppliers raising their bids as well since they are aware of these bidding strategies. Since bids are placed for all 24 hours of the following day market participants have to stick with high priced periods for at least one day before they can choose to search for cheaper alternatives. 
 
 
 
@@ -273,18 +275,17 @@ All power markets considered in this work are part of the category \textit{power
 %\end{figure}
 
 
-\subsection{Bidding strategies}
+\subsection{Bidding strategies} \label{ssec:bidding_strategies}
 
+In deregulated power markets two bidding strategies have evolved over time, pay-as-bid and uniform pricing \cite{weron2007modeling,tierney2008uniform}. In \cite{tierney2008uniform} it is discussed why pay-as-bid models are not necessarily more cost effective than uniform pricing models even though they seem to offer greater benefits at the first glance. 
 
 \subsubsection{Pay-as-bid model}
-...
+
+In a pay-as-bid auction suppliers place bids according to the desired compensation (\$ per MWh) for quantities sold in the market \cite{tierney2008uniform}. Suppliers are paid exactly the amount they bid for the quantity transacted, there is no uniform market price which applies to all market participants. Therefore suppliers aim to maximize their revenue by placing bids more closely to the expected average bid price such that they "`win"' a greater amount of offers. An offer is won when a bid is placed at or below the offer price of the last bidder whose supplies are needed to meet customer demand. 
 
 \subsubsection{Uniform pricing model}
 
-
-
-Suprisingly, this pricing scheme really is the root cause of price spikes \cite{weron2007modeling}. Since electricity is an essential commodity for most market participants they are willing to pay almost any price to ensure a continuous supply of electric power. Thus bids on demand side are regularly placed at the highest possible price (price cap) which results in suppliers raising their bids as well since they are aware of these bidding strategies. Since bids are placed for all 24 hours of the following day market participants have to stick with high priced periods for at least one day before they can choose to search for cheaper alternatives. 
-
+In contrast to a pay-as-bid model the uniform pricing model demands suppliers to place bids that reflect their actual marginal costs rather than a desired compensation \cite{tierney2008uniform}. Supply bids are ranked according to their bid prices, such that supplies exhibiting the least costs are considered first. Suppliers are then dispatched in this order until the total customer demand is met. The supply bid of the last considered supplier is set as the uniform market clearing price that has to be paid by all market participants which placed demand bids at or above the market clearing price. 
 
 \subsection{Electricity price characteristics in European Power Markets}
 
