@@ -4,7 +4,7 @@
 
 \section{Day ahead and real time energy prices} \label{sec:day_ahead_and_real_time_energy_prices}
 
-A system comprising a day ahead as well as a real time market is also known as two-settlement system \cite{lambert2001creating}. Day ahead and real time prices are traded within the scope of deregulated wholesale power markets \cite{hogan1993competitive}. 
+A system comprising a day ahead as well as a real time market is also known as two-settlement system \cite{lambert2001creating}. Day ahead and real time markets are classified as short-term markets within the scope of deregulated wholesale power markets \cite{hogan1993competitive}. 
 %A two settlement system has been defined for the PJM power market (PJM standing for Pennsylvania, New Jersey, Maryland)\cite{lambert2001creating}. 
 
 In day ahead or spot markets bids are placed for each consecutive hour of the following day. Prices may change substantially from one hour to the next, up to a factor of ten \cite{huisman2007hourly,weron2004modeling}. Therefore market operators need to apply profound risk management techniques to alleviate such price spikes.
@@ -21,12 +21,39 @@ A direct comparison of day ahead and real time prices is depicted in Figure \ref
 	\label{fig:da_vs_rt_prices_maine}
 \end{figure}
 
-What can be noted is that both day ahead and real time prices show a clear trend over one day denoting a daily seasonality pattern, with real time prices exhibiting more variation during the day. Thus prices start to rise at 5 a.m.~and start falling again at 5 p.m. This pattern is highly related to energy demand which reaches its peak during the day mainly due to industrial power demands. As real time prices show a more irregular pattern this trend is not as clearly visible for real time markets. 
+What can be noted is that both day ahead and real time prices show a clear trend over one day denoting a daily seasonality pattern, with real time prices exhibiting more variation during the day. Thus prices start to rise at 5 a.m.~and start falling again at around 5 p.m. This pattern is highly related to energy demand which reaches its peak during the day mainly due to industrial power demands. 
+
+Price time series spanning a whole month can be seen in Figure \ref{fig:da_rt_prices_aug_2015}. It shows day ahead and real time markets (top to bottom) from Portland, Maine belonging to the ISO New England power market which is located in Northeast USA. It covers the whole month of August 2015 to display energy price characteristics over an extended time range. 
+Some characteristics of energy prices can be spotted in both day ahead and real time markets such as daily and weekly seasonality, trends, price volatility and price spikes (see Section \ref{sec:characteristics_of_energy_markets}). 
+
+Daily and weekly seasonality are most evident in day ahead markets. Apart from the daily variations of energy prices a weekly seasonality is clearly visible where prices are higher at the start of a week and decline towards the end of the week. This may be explained by the fact that power demand is most present at the start of the week and is usually decreased on weekends due to the weekly lifecycle of industrial facilities and established companies. Even though the real time market shows much higher volatility in energy price levels the daily and weekly seasonality are still present. 
+
+Price trends can be observed during the second week of this investigation where prices continuously rise and hit a peak at the beginning of the third week. Weekly seasonality might therefore be masked by the increasing trend however it can still be spotted as the price peak of the second day is surpassed by the one of the previous day. In the third and fourth weeks prices continue to decline to return to their former levels. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.95\textwidth]{figures/data_analysis/da_rt_prices_aug_2015.png}
+	\caption{Day ahead and real time prices, ISO-NE, ME}
+	\label{fig:da_rt_prices_aug_2015}
+\end{figure}
+
+Price volatility is most evident in the real time market where variations in energy price levels is more common than in the corresponding day ahead market. Seasonality is less clear and prices tend to change their levels more often and to a greater extent than those at the day ahead market. This can be observed in the middle of the third week where prices experience a sudden drop in price level and variation. 
+
+An important characteristic of energy prices in deregulated markets are the so called \textit{price spikes} \cite{weron2004modelingmarkets}. A price spike is defined as an extreme price increase (more than three times the standard deviation of the price series) from one observation time stamp to the next where the price tends to rapidly return to its normal level again. 
+A price spike appears e.g.~when there is a sudden surge in power demand or a power outage occurred. In the lower part of Figure \ref{fig:da_rt_prices_aug_2015} the real time market shows several price spikes. Major spikes can be observed on the 15th, 18th, 19th, 24th and 25th of August. As the spikes reached maximum values of up to \$ 700 the range of the y axis has been limited to be able to accurately observe relevant price characteristics. 
+
+Another more subtle characteristic of energy prices in wholesale power markets is the occurrence of negative prices. This phenomenon can occur when an excess of electricity is produced which cannot be easily distributed to consumers as electricity demand is low. In this situation market participants are actually paid to get electricity from the market in order to stabilize supply and demand. As electricity is not storable at a larger scale it has to be consumed as soon as it is produced. 
+In Figure \ref{fig:da_rt_prices_aug_2015} a negative price occurs at the end of the fourth week on the 28th of August where prices and demand tend to be low which finally leads to a small negative price spike. 
+%For this reason negative prices represent an incentive for consumers 
+
+
+
+%The weekly seasonality is again clearly visible in the day ahead market
 
 
 
 
-\section{Characteristics of energy markets}
+\section{Characteristics of energy markets} \label{sec:characteristics_of_energy_markets}
 
 In this section different studies of power market characteristics are presented to distinguish features that may be used in building forecasting models. 
 
@@ -95,14 +122,14 @@ Customers, brokers and aggregators have the choice to either establish long term
 
 \subsubsection{Forward Capacity Market (FCM)} 
 
-In contrast to day ahead and real time markets which are classified as short term markets (Section \ref{sec:day_ahead_and_real_time_energy_prices}) other types of markets exist for mid- and long term planning to ensure sufficient capacities over an extended period of time \cite{barroso2005classification,nomikos2010modelling}. One of the most important of these markets is the Forward Capacity Market which is introduced shortly. 
+In contrast to day ahead and real time markets which are classified as short term markets (Section \ref{sec:day_ahead_and_real_time_energy_prices}) other types of markets exist for mid- and long term planning to ensure sufficient capacities over an extended period of time \cite{barroso2005classification,nomikos2010modelling,redl2009price}. One of the most important of these markets is the Forward Capacity Market which is introduced shortly. 
 
 A forward capacity market is used to ensure having enough capacity for a specific amount of time into the future \cite{gottstein2010role}. A capacity commitment period (CCP) ensures that a certain amount of capacity will be available during that period. For example, the CCP at ISO-NE is set as one year ranging from June 1st until May 31st. 
 
-The market has to ensure that the \emph{Installed Capacity Requirements (ICR)} for the corresponding region are met. These requirements are defined for each capacity commitment period and define the amount of capacity needed to meet estimated peak and reserve demands. Important measures to define the ICR are the local sourcing requirements (LSR) and maximum capacity limits (MCL) that define the constraints given by market participants \cite{gottstein2010role}. 
+The market has to ensure that the \emph{Installed Capacity Requirements (ICR)} for the corresponding region are met. These requirements are defined for each capacity commitment period and define the amount of capacity needed to meet estimated peak and reserve demands. Important measures to define the ICR are the local sourcing requirements (LSR) and maximum capacity limits (MCL) that define the constraints given by market participants. 
 
 The actual procurement of resources for each capacity commitment period is determined by a \emph{Forward Capacity Auction (FCA)} which aims to meet the defined ICRs for the given period.
-This auction is carried out three years ahead of the related CCP to ensure that enough resources will be available during that period. \emph{Reconfiguration Auctions (RA)} are then executed annually until the start of the CCP and continued monthly afterward. During an RA capacity resources may be amended to adapt to potential changes in capacity zones. 
+This auction is carried out three years ahead of the related CCP to ensure that enough resources will be available during that period. \emph{Reconfiguration Auctions (RA)} are then executed annually until the start of the CCP and continued monthly afterward. During an RA capacity resources may be amended to adapt to potential changes in capacity zones \cite{gottstein2010role}. 
 
 At the FCM of ISO New England there is also the option of making a composite offer where different capacity resources may join their capacity offers (useful e.g.~in case of single season capacities) to result in a single resource offer at the market. 
 
