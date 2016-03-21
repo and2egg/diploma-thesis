@@ -2,10 +2,10 @@
 \contentsline {figure}{\numberline {1.1}{\ignorespaces Data center lifetime costs as function of PUE \cite {dcw2013optimizing}}}{2}{figure.1.1}
 \addvspace {10pt}
 \contentsline {figure}{\numberline {2.1}{\ignorespaces The dependence between the hourly log prices and hourly log system loads in California for the period January 1 \IeC {\textendash } July 2, 2000. \cite {weron2005forecasting}}}{8}{figure.2.1}
-\contentsline {figure}{\numberline {2.2}{\ignorespaces Taxonomy of price forecasting models \cite {aggarwal2009electricity}}}{9}{figure.2.2}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Taxonomy of price forecasting models \cite {aggarwal2009electricity}}}{10}{figure.2.2}
 \contentsline {figure}{\numberline {2.3}{\ignorespaces Two level scheduling model \cite {fang2010task}}}{14}{figure.2.3}
 \contentsline {figure}{\numberline {2.4}{\ignorespaces Illustration of scheduling power savings \cite {younge2010efficient}}}{16}{figure.2.4}
-\contentsline {figure}{\numberline {2.5}{\ignorespaces WWS curve for a complete run of SPEC CINT2000 (512MB VM) \cite {clark2005live}}}{17}{figure.2.5}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces WWS curve for a complete run of SPEC CINT2000 (512MB VM) \cite {clark2005live}}}{18}{figure.2.5}
 \contentsline {figure}{\numberline {2.6}{\ignorespaces Live migration algorithm performs pre-copying in iterative rounds \cite {liu2013performance}}}{18}{figure.2.6}
 \contentsline {figure}{\numberline {2.7}{\ignorespaces Migration cost savings by using proposed models \cite {liu2013performance}}}{19}{figure.2.7}
 \addvspace {10pt}
@@ -20,13 +20,14 @@
 \contentsline {figure}{\numberline {3.9}{\ignorespaces Histograms of day ahead markets for years 2012 to 2014}}{31}{figure.3.9}
 \contentsline {figure}{\numberline {3.10}{\ignorespaces Histograms of real time markets for years 2012 to 2014}}{31}{figure.3.10}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Periodogram of hourly day ahead prices in July 2014}}{34}{figure.4.1}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Periodogram of hourly day ahead prices of Nord Pool Spot, Helsinki from July 7th to July 21st in 2014}}{35}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces STL decomposition of hourly day ahead time series, Nord Pool Spot, Helsinki from July 7th to July 21st in 2014}}{36}{figure.4.2}
 \addvspace {10pt}
 \addvspace {10pt}
 \addvspace {10pt}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {8.1}{\ignorespaces Architecture Block Diagram}}{51}{figure.8.1}
-\contentsline {figure}{\numberline {8.2}{\ignorespaces Component Diagram}}{53}{figure.8.2}
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Architecture Block Diagram}}{53}{figure.8.1}
+\contentsline {figure}{\numberline {8.2}{\ignorespaces Component Diagram}}{55}{figure.8.2}
 \addvspace {10pt}
 \addvspace {10pt}
 \addvspace {10pt}

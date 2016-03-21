@@ -1,6 +1,6 @@
 
 
-\section{Electricity price forecasting}
+\section{Electricity price forecasting} \label{sec:electricity_price_forecasting}
 
 A lot of research has been going on in electricity price forecasting in power markets. Different strategies and models have been developed of which the most relevant regarding this thesis will be discussed. 
 
@@ -9,7 +9,9 @@ A lot of research has been going on in electricity price forecasting in power ma
 
 In \cite{weron2005forecasting} the authors state that forecasting electricity prices with accuracy levels comparable to electricity load forecasting is hard to achieve, as different seasonality patterns (e.g.~daily, weekly, annually) and exogenous variables (such as loads and network constraints) have to be taken into account. 
 
-Three basic types of models for electricity price forecasting have been identified: 
+%See also "`Forecasting electricity prices"' pg. 6, 19 ...
+
+Three basic types of models for electricity price forecasting have been identified \cite{bunn2003forecasting,weron2005forecasting}: 
 
 \begin{itemize}
 	\item parsimonious stochastic models
@@ -17,11 +19,13 @@ Three basic types of models for electricity price forecasting have been identifi
 	\item non-parametric models
 \end{itemize}
 
-where focus has been laid on a combination of the first two types of models. 
+The first class of models aims to capture the data's statistical characteristics and extrapolate these patterns into the future. Energy price characteristics such as mean reversion and price spikes are modeled to more accurately resemble the actual price time series. Structural or fundamental models take a different approach as they take into account external factors (fundamentals) such as load or weather data combined with historical price series to derive accurate forecasts. As the name implies, non-parametric models do not depend on parameter estimations and properties of the time series but define complex algorithms to map input variables to outputs that represent electricity price forecasts for a specific period of time. 
+%their goal is to understand market performance and the rich structure of electricity prices thereby combining historic market prices and fundamentals such as load, weather and plant data \cite{bunn2003forecasting}. 
+%where focus has been laid on a combination of the first two types of models. 
 
-Data was taken from the Californian power market from before and during the market crash in 2001. Preprocessing has been done by removing outliers (substitution by the arithmetic average of neighbouring values), mean removal (center data around zero) and logarithmic transformations of load ($z_t = \log(Z_t)$) and price ($p_t = \log(P_t)$) time series. The latter approach is used to obtain a more stable variance of the time series data. 
+In \cite{weron2005forecasting} forecast models are developed to model the next 24 hours of the following day (day ahead) by utilizing historical prices and demand as well as day ahead load predictions. In order to model the daily variation of demand, costs and operational constraint models have been built for each hour separately which is inspired by studies of demand forecasting \cite{bunn2000forecasting}. 
 
-For building forecast models for the next 24 hours of the following day historical prices and demand as well as day ahead load predictions of the next 24 hours have been utilized. In order to model the daily variation of demand, costs and operational constraints models have been built for each hour separately which is inspired by studies of demand forecasting \cite{bunn2000forecasting}. 
+Data was taken from the Californian power market from before and during the market crash in 2001 \cite{weron2005forecasting}. Preprocessing has been done by removing outliers (substitution by the arithmetic average of neighbouring values), mean removal (center data around zero) and logarithmic transformations of load ($z_t = \log(Z_t)$) and price ($p_t = \log(P_t)$) time series. The latter approach is used to obtain a more stable variance of the time series data. 
 
 To achieve seasonal autoregression models the log price $p_t$ was made dependent on the same hour in previous days and weeks as well as on an aggregate function based on the previous day prices. The system load has been used as the fundamental variable as strong correlations between loads and prices have been revealed (Figure \ref{fig:log_loads_vs_log_prices}). 
 
@@ -85,7 +89,7 @@ Game theoretic models study the evolution of energy prices by analyzing the stra
 	\label{fig:classification_of_price_forecasting_models}
 \end{figure}
 
-Production cost or simulation models build an exact model of the system and consider the physical phenomenon that governs the process \cite{aggarwal2009electricity}. 
+Production cost or simulation models build an exact model of the system and emulate the underlying process \cite{aggarwal2009electricity}. 
 They simulate the operation of power systems as well as agents' strategic behavior impact on market prices \cite{gonzalez2005modeling,lora2007electricity}. Based on the system model mathematical models are generated by the simulation method which are then solved for price forecasting. 
 Due to their advanced modeling of the system these models require detailed system operation data and exhibit high computational costs \cite{aggarwal2009electricity}. 
 

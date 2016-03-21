@@ -4,8 +4,7 @@
 
 \section{Day ahead and real time energy prices} \label{sec:day_ahead_and_real_time_energy_prices}
 
-A system comprising a day ahead as well as a real time market is also known as two-settlement system \cite{lambert2001creating}. Day ahead and real time markets are classified as short-term markets within the scope of deregulated wholesale power markets \cite{hogan1993competitive}. 
-%A two settlement system has been defined for the PJM power market (PJM standing for Pennsylvania, New Jersey, Maryland)\cite{lambert2001creating}. 
+Real time and day ahead energy prices are traded within deregulated wholesale power markets for the current or the following day. Thus day ahead and real time markets are classified as short-term markets within deregulated power markets \cite{hogan1993competitive}. 
 
 In day ahead or spot markets bids are placed for each consecutive hour of the following day. Prices may change substantially from one hour to the next, up to a factor of ten \cite{huisman2007hourly,weron2004modeling}. Therefore market operators need to apply profound risk management techniques to alleviate such price spikes.
 
@@ -273,7 +272,7 @@ In order to visualize the aforementioned statistical properties histograms have 
 
 As outlined before the Belpex and EPEXSpot markets exhibit the most stable distribution of prices which is visible in the histograms as these markets show the most symmetric distributions. They exhibit an almost gaussian like distribution whereas other markets are clearly heavy tailed to the right. In order to see the distribution of prices more distinctly the histograms where cut off at 250 \$/MWh to be able to accurately compare the price distributions. 
 
-The previously shown results have major implications for the generation of forecasting models. Various models have different requirements regarding statistical properties of the data, for example statistical time series models demand a constant mean and variance in the dataset to capture the underlying time series characteristics. When observing the discussed energy price time series these characteristics can not be found for any time series over an extended period of time. Therefore, in order to accurately model energy prices data preprocessing steps have to be taken before applying statistical models. An in-depth discussion about forecasting models and data preprocessing is provided in Chapter \ref{ch:forecasting}. 
+The previously shown results have major implications for the generation of forecasting models. Various models have different requirements regarding statistical properties of the data, for example statistical time series models demand a constant mean and variance in the dataset to capture the underlying time series characteristics. When observing the presented energy price time series these characteristics can not be found for any of the discussed time series over an extended period of time. Therefore, in order to accurately model energy prices data preprocessing steps might have to be taken before applying statistical models. An in-depth discussion about forecasting models and data preprocessing is provided in Chapter \ref{ch:forecasting}. 
 
 
 
