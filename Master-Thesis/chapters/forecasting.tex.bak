@@ -309,7 +309,7 @@ In \cite{nelson1979experience} the autors show that it might not be always possi
 
 Different forecast accuracy methods can be applied to investigate model performance. These methods are based on estimating the overall forecast error for a given model and forecast horizon \cite{hyndman2012forecasting, weron2007modeling}. 
 
-The forecast errors are computed as a function of residuals which are defined as the differences of actual values to forecasts \cite{hyndman2012forecasting}: 
+The forecast errors are computed as a function of residuals which are defined as the differences of actual values to forecasts: 
 
 \begin{equation}
 	e_i = y_i - \hat{y_i}
@@ -317,71 +317,6 @@ The forecast errors are computed as a function of residuals which are defined as
 \end{equation}
 
 where $\hat{y_t}$ denotes the one step ahead forecast based on a series of past values $\{y_1,\ldots,y_{t-1}\}$. 
-
-
-\subsubsection{Scale-dependent error measures}
-
-Scale dependent errors are absolute error measures depending on the scale of the examined dataset. Therefore when comparing these types of error measures they should be applied to data showing the same scale. 
-
-\paragraph{Mean error}
-The mean error (ME) denotes a measure of the mean value of forecast errors over a given period of time. 
-It can be seen as indication of the symmetry of the forecast error distribution. 
-
-\begin{equation}
-\frac{1}{n} \sum_{i=1}^{n} \hat{y}_i - y_i
-\label{eq:acc_me}
-\end{equation}
-
-where $n$ is the number of observations, $\hat{y}_i$ is the forecast for observation $i$ and $y_i$ denotes the actual value for observation $i$. 
-
-\paragraph{Mean absolute error}
-The mean absolute error (MAE) shows the mean of all absolute errors over the forecast horizon where the absolute error is defined by the absolute difference between a value of the dataset and its forecasted value. The mean absolute error provides a means for retrieving a measure proportional to actual forecast errors. 
-
-\begin{equation}
-\frac{1}{n} \sum_{i=1}^{n} |\hat{y}_i - y_i|
-\label{eq:acc_mae}
-\end{equation}
-
-
-
-\paragraph{Root mean squared error}
-The root mean squared error (RMSE) takes the root of the sum of the squared forecast errors which puts more emphasis on possible outliers in residual values. 
-
-\begin{equation}
-	\sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}
-\label{eq:acc_rmse}
-\end{equation}
-
-
-\subsubsection{Percentage based error measures}
-
-Percentage based error measures have the advantage of providing scale independent measures for comparing forecast errors across different time series. However a significant disadvantage of percentage errors is their inability to handle zero values in time series. Also numerical compuations become unstable when values get closer to zero. 
-
-
-\paragraph{Mean percentage error}
-
-The mean percentage error (MPE) is dependent on the symmetry of the forecast error distribution as positive and negative value differences might cancel each other out. This can be compared to the mean error which shows the same behavior as a scale dependent measure. 
-
-
-\begin{equation}
-\frac{1}{n} \sum_{i=1}^{n} \frac{\hat{y}_i - y_i}{y_i}
-\label{eq:acc_mpe}
-\end{equation}
-
-
-
-\paragraph{Mean absolute percentage error}
-
-The mean absolute percentage error (MAPE) shows similar to the mean absolute error the mean of all absolute errors but as percentage error relative to the corresponding actual value. 
-
-\begin{equation}
-\frac{1}{n} \sum_{i=1}^{n} \left|\frac{\hat{y}_i - y_i}{y_i}\right|
-\label{eq:acc_mape}
-\end{equation}
-
-
-
-
 
 
 \section{Model generation}
