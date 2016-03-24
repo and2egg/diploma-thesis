@@ -158,35 +158,6 @@ Neural network forecasting competition available from 2008\footnote{\url{http://
 
 \subsubsection{Autocorrelation}
 
-The autocorrelation function determines the existence or non-existence of correlation between lagged variables within a time series. 
-
-That is, the correlation between a point in the time series to another point in the same time series is calculated where the gap between the two points is fixed by the given lag. 
-
-The autocorrelation is calculated as an autocorrelation coefficient in equation \ref{eq:autocorr_coeff}
-
-\begin{equation}
-R_h = \frac{C_h}{C_0}
-\label{eq:autocorr_coeff}
-\end{equation}
-
-
-where $C_h$ denotes the autocovariance function and $C_0$ the variance function 
-(see equations \ref{eq:autocov_func} and \ref{eq:variance_func}). 
-
-
-\begin{equation}
-C_h = \frac{1}{N} \sum\limits_{t=1}^{N-h} (Y_t - \bar{Y}) (Y_{t+h} - \bar{Y})
-\label{eq:autocov_func}
-\end{equation}
-
-
-\begin{equation}
-C_0 = \frac{1}{N} \sum\limits_{t=1}^{N} (Y_t - \bar{Y})^2
-\label{eq:variance_func}
-\end{equation}
-
-
-Explanation: The autocovariance function determines the (average) covariance between variables with the given lag while the variance function determines the maximum (average) variance over all timestamps (t=1 to N). 
 
 
 See \url{http://www.itl.nist.gov/div898/handbook/eda/section3/autocopl.htm}
