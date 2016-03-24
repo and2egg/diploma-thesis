@@ -1,0 +1,29 @@
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
+\contentsline {table}{\numberline {3.1}{\ignorespaces Day ahead energy market summary statistics}}{30}{table.3.1}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Real time energy market summary statistics}}{30}{table.3.2}
+\addvspace {10pt}
+\contentsline {table}{\numberline {4.1}{\ignorespaces Model names and parameters}}{49}{table.4.1}
+\contentsline {table}{\numberline {4.2}{\ignorespaces AICc and Ljung Box values}}{49}{table.4.2}
+\contentsline {table}{\numberline {4.3}{\ignorespaces Results of evaluation for Hamina, Nord Pool Spot (DA)}}{52}{table.4.3}
+\contentsline {table}{\numberline {4.4}{\ignorespaces Results of evaluation for St.Ghislain, Belpex (DA)}}{52}{table.4.4}
+\contentsline {table}{\numberline {4.5}{\ignorespaces Results of evaluation for Portland, ISO-NE (RT)}}{52}{table.4.5}
+\contentsline {table}{\numberline {4.6}{\ignorespaces Results of evaluation for Richmond, PJM (RT)}}{52}{table.4.6}
+\addvspace {10pt}
+\addvspace {10pt}
+\contentsline {table}{\numberline {6.1}{\ignorespaces Total costs for different scenarios (in \$)}}{55}{table.6.1}
+\contentsline {table}{\numberline {6.2}{\ignorespaces Normalized total cost reductions for different scenarios (in \%)}}{55}{table.6.2}
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
+\contentsline {table}{\numberline {A.1}{\ignorespaces Aggregated values for RMSE for a trainings period of 2 weeks}}{75}{table.A.1}
+\contentsline {table}{\numberline {A.2}{\ignorespaces Aggregated values for RMSE for a trainings period of 3 weeks}}{75}{table.A.2}
+\contentsline {table}{\numberline {A.3}{\ignorespaces Aggregated values for RMSE for a trainings period of 4 weeks}}{76}{table.A.3}
+\addvspace {10pt}
+\contentsline {table}{\numberline {B.1}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}RT Spring\active@dq \dq@prtct {'}}}{81}{table.B.1}
+\contentsline {table}{\numberline {B.2}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}RT Summer\active@dq \dq@prtct {'}}}{82}{table.B.2}
+\contentsline {table}{\numberline {B.3}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}DA Spring\active@dq \dq@prtct {'}}}{82}{table.B.3}
+\contentsline {table}{\numberline {B.4}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}DA Summer\active@dq \dq@prtct {'}}}{83}{table.B.4}

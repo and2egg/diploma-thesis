@@ -153,11 +153,44 @@ Neural network forecasting competition available from 2008\footnote{\url{http://
 
 
 
+\subsubsection{Forecasting benchmarks}
+
+
+
 \subsection{Model selection techniques}
 
 
 \subsubsection{Autocorrelation}
 
+The autocorrelation function determines the existence or non-existence of correlation between lagged variables within a time series. 
+
+That is, the correlation between a point in the time series to another point in the same time series is calculated where the gap between the two points is fixed by the given lag. 
+
+The autocorrelation is calculated as an autocorrelation coefficient in equation \ref{eq:autocorr_coeff}
+
+\begin{equation}
+R_h = \frac{C_h}{C_0}
+\label{eq:autocorr_coeff}
+\end{equation}
+
+
+where $C_h$ denotes the autocovariance function and $C_0$ the variance function 
+(see equations \ref{eq:autocov_func} and \ref{eq:variance_func}). 
+
+
+\begin{equation}
+C_h = \frac{1}{N} \sum\limits_{t=1}^{N-h} (Y_t - \bar{Y}) (Y_{t+h} - \bar{Y})
+\label{eq:autocov_func}
+\end{equation}
+
+
+\begin{equation}
+C_0 = \frac{1}{N} \sum\limits_{t=1}^{N} (Y_t - \bar{Y})^2
+\label{eq:variance_func}
+\end{equation}
+
+
+Explanation: The autocovariance function determines the (average) covariance between variables with the given lag while the variance function determines the maximum (average) variance over all timestamps (t=1 to N). 
 
 
 See \url{http://www.itl.nist.gov/div898/handbook/eda/section3/autocopl.htm}
@@ -168,6 +201,67 @@ See \url{http://www.itl.nist.gov/div898/handbook/eda/section3/autocopl.htm}
 To test if residuals can be regarded as white noise, its auto correlation functions is examined. In case auto correlations are present it means that some values within the series depend on one another. In theory a true white noise series should not exhibit any auto correlations but since we operate on finite time series there will always be a few correlations present in the data\cite{makridakisforecasting}. 
 
 It can be shown that the auto correlations of a white noise series have a sampling distribution similar to a gaussian distribution with zero mean and a standard deviation of $1/\sqrt{n}$ where $n$ denotes the total number of observations in the series\cite{makridakisforecasting}. 
+
+
+
+\subsubsection{Box Cox transformation}
+
+The Box Cox transformation is used to transform a series based on a non-normal distribution to a normal distribution. This is done via log and exponential transformations. 
+
+See \url{http://www.isixsigma.com/tools-templates/normality/making-data-normal-using-box-cox-power-transformation/}
+
+
+
+
+
+\subsection{Forecast accuracy measures}
+
+There are different kinds of accuracy measures that can be applied to forecasting methods. \footnote{https://www.otexts.org/fpp/2/5}
+
+\subsubsection{Scale-dependent error measures}
+
+Scale dependent errors are absolute error measures given in the same scale as the dataset that is examined. Thus they are most useful when testing fc methods on the same dataset or on the same scale, respectively. 
+
+\begin{itemize}
+\item Mean absolute error (MAE)
+The absolute error is defined by the value difference between a value of the dataset and its forecasted value. The mean absolute error returns the mean of all absolute errors on the dataset. [insert formula]
+
+\item Root mean squared error (RMSE)
+The root mean squared error takes the root of the sum of the squared forecast errors, and is scale dependent as well. [insert formula]
+
+\end{itemize}
+
+\subsubsection{Percentage error measures}
+
+The most common percentage error is the mean absolute percentage error (MAPE) which is defined as the mean of percentage errors of a dataset. A percentage error is defined as $p_i=e_i/y_i * 100$. The mean absolute percentage error is then $mean(|pi|)$. 
+
+The disadvantage of percentage error measures is that the value becomes infinite if there is some $y_i = 0$ on the dataset. Also, extreme values occur when the values on the dataset come close to zero. 
+
+
+\subsubsection{Forecast error classification}
+
+\begin{itemize}
+
+\item Mean absolute error (MAE): \[ \frac{1}{n} \sum_{i=1}^{n} |\hat{y}_i - y_i| \] % \[\sum_{i=1}^{10} t_i\] %\sum(abs(predicted - actual)) / N
+
+\item Mean squared error (MSE): \[ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 \] %$sum((predicted - actual)^2) / N$
+
+\item Root mean squared error (RMSE): \[ \sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}\] % $sqrt(sum((predicted - actual)^2) / N)$
+
+\item Mean absolute percentage error (MAPE): \[ \frac{1}{n} \sum_{i=1}^{n} \left|\frac{\hat{y}_i - y_i}{y_i}\right| \] % $sum(abs((predicted - actual) / actual)) / N$
+
+\item Direction accuracy (DAC): \[ \frac{count(sign(y_i - y_{i-1}) = sign(\hat{y}_i - \hat{y}_{i-1}))}{n} \]
+% $count(sign(actual\_current - actual\_previous) == sign(pred\_current - pred\_previous)) / N$
+
+\item Relative absolute error (RAE): \[  \frac{ \sum_{i=1}^{n} |\hat{y}_i - y_i|}{ \sum_{i=1}^{n} |\hat{y}_{i-1} - y_i|}   \]
+ % $sum(abs(predicted - actual)) / sum(abs(previous\_target - actual))$
+
+\item Root relative squared error (RRSE): \[  \frac{ \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2 }} { \sqrt{ \frac{1}{n} \sum_{i=1}^{n} (\hat{y}_{i-1} - y_i)^2 }} \]
+ % $sqrt(sum((predicted - actual)^2) / N) / sqrt(sum(previous\_target - actual)^2 / N)$
+
+\end{itemize}
+
+
 
 
 

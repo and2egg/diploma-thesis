@@ -1,6 +1,6 @@
 
 
-\section{Electricity price forecasting}
+\section{Electricity price forecasting} \label{sec:electricity_price_forecasting}
 
 A lot of research has been going on in electricity price forecasting in power markets. Different strategies and models have been developed of which the most relevant regarding this thesis will be discussed. 
 
@@ -9,7 +9,9 @@ A lot of research has been going on in electricity price forecasting in power ma
 
 In \cite{weron2005forecasting} the authors state that forecasting electricity prices with accuracy levels comparable to electricity load forecasting is hard to achieve, as different seasonality patterns (e.g.~daily, weekly, annually) and exogenous variables (such as loads and network constraints) have to be taken into account. 
 
-Three basic types of models for electricity price forecasting have been identified: 
+%See also "`Forecasting electricity prices"' pg. 6, 19 ...
+
+Three basic types of models for electricity price forecasting have been identified \cite{bunn2003forecasting,weron2005forecasting}: 
 
 \begin{itemize}
 	\item parsimonious stochastic models
@@ -17,11 +19,13 @@ Three basic types of models for electricity price forecasting have been identifi
 	\item non-parametric models
 \end{itemize}
 
-where focus has been laid on a combination of the first two types of models. 
+The first class of models aims to capture the data's statistical characteristics and extrapolate these patterns into the future. Energy price characteristics such as mean reversion and price spikes are modeled to more accurately resemble the actual price time series. Structural or fundamental models take a different approach as they take into account external factors (fundamentals) such as load or weather data combined with historical price series to derive accurate forecasts. As the name implies, non-parametric models do not depend on parameter estimations and properties of the time series but define complex algorithms to map input variables to outputs that represent electricity price forecasts for a specific period of time. 
+%their goal is to understand market performance and the rich structure of electricity prices thereby combining historic market prices and fundamentals such as load, weather and plant data \cite{bunn2003forecasting}. 
+%where focus has been laid on a combination of the first two types of models. 
 
-Data was taken from the Californian power market from before and during the market crash in 2001. Preprocessing has been done by removing outliers (substitution by the arithmetic average of neighbouring values), mean removal (center data around zero) and logarithmic transformations of load ($z_t = \log(Z_t)$) and price ($p_t = \log(P_t)$) time series. The latter approach is used to obtain a more stable variance of the time series data. 
+In \cite{weron2005forecasting} forecast models are developed to model the next 24 hours of the following day (day ahead) by utilizing historical prices and demand as well as day ahead load predictions. In order to model the daily variation of demand, costs and operational constraint models have been built for each hour separately which is inspired by studies of demand forecasting \cite{bunn2000forecasting}. 
 
-For building forecast models for the next 24 hours of the following day historical prices and demand as well as day ahead load predictions of the next 24 hours have been utilized. In order to model the daily variation of demand, costs and operational constraints models have been built for each hour separately which is inspired by studies of demand forecasting \cite{bunn2000forecasting}. 
+Data was taken from the Californian power market from before and during the market crash in 2001 \cite{weron2005forecasting}. Preprocessing has been done by removing outliers (substitution by the arithmetic average of neighbouring values), mean removal (center data around zero) and logarithmic transformations of load ($z_t = \log(Z_t)$) and price ($p_t = \log(P_t)$) time series. The latter approach is used to obtain a more stable variance of the time series data. 
 
 To achieve seasonal autoregression models the log price $p_t$ was made dependent on the same hour in previous days and weeks as well as on an aggregate function based on the previous day prices. The system load has been used as the fundamental variable as strong correlations between loads and prices have been revealed (Figure \ref{fig:log_loads_vs_log_prices}). 
 
@@ -39,7 +43,7 @@ As can be observed the dependence between loads and energy prices is almost line
 
 Results show that for the proposed dataset ARX models (AR with exogenous variables) exhibit lower mean weekly errors (MWE) than AR models which in turn had significantly lower errors than standard ARIMA models. The difference is the separate modeling of individual hours for the ARX and AR models as opposed to an 48 hour aggregate modeling for ARIMA models. 
 
-\subsection{ARIMA models to predict next-day electricity prices}
+\subsection{ARIMA models to predict next-day electricity prices} \label{ssec:arima_models_to_predict_next_day_prices}
 
 The authors in \cite{contreras2003arima} propose the application of ARIMA models for day ahead energy price forecasting based on data in the Spanish and Californian power markets. These models are based on time series analysis and results show that accurate electricity price forecasting for the aforementioned power markets is possible. Depending on the market and selected time range average weekly prediction errors 
 range from 5\% to 10\%. These results are quite reasonable given that prices from the Californian market in the year 2000 have been selected which has been a very volatile and unstable time period due to the market crash in early 2001 \cite{weron2007modeling}. 
@@ -54,50 +58,67 @@ The described model generation process consists of five steps:
 	\item[4)] The model is ready for forecasting.
 \end{itemize}
 
-This process is taken from the Box Jenkins methodology for forecast model generation \cite{hibon1997arma}.
+This process is taken from the Box Jenkins methodology for forecast model generation \cite{hibon1997arma}:
 
-Interestingly only five hour training periods are needed to model forecasts for the next consecutive hour for Spanish power prices, only two hour training periods are needed for modeling Californian energy prices. 
+\textbf{Step 0)} consists of determining a suitable class of models that can be applied to the time series based on observed characteristics, e.g.~high frequency, nonconstant mean and variance, and multiple seasonality. The hypothesis of the model at this step assumes a forecast error term with a normal distribution having a zero mean and constant variance. 
+
+\textbf{Step 1)} selects a trial model for which data has to be made stationary. Through application of a logarithmic transformation a more stable variance can be achieved whereas (seasonal) differencing of data may result in a more stable mean. In order to find appropriate autoregressive and moving average coefficients for the resulting ARIMA model autocorrelation (ACF) and partial autocorrelation (PACF) plots may be consulted to retrieve a first fit of the model. 
+
+\textbf{Step 2)} consists of estimation of parameters which is typically done by applying the maximum likelihood function with respect to the parameters. In order to optimize forecasting performance outlier detection methods may be applied to minimize the impact of single "`spikes"' in the data. 
+
+\textbf{Step 3)} evaluates the residuals (forecast errors) of the resulting model based on desired characteristics. Residuals should exhibit zero mean, constant variance, follow a normal distribution and be uncorrelated. Suitable tests for these properties are portmanteau tests (Ljung box, Box Pierce) and examination of ACF and PACF plots to find dependencies within the data. 
+
+\textbf{Step 4)} is concluding the model selection process. The resulting model of step 2) is used for forecasting based on trained data. 
+
+Notably only five hour training periods have been used to model forecasts for the next consecutive hour for Spanish power prices, only two hour training periods have been applied for modeling Californian energy prices. 
 Through outlier detection the resulting forecasts could have been slightly improved but as stated in \cite{contreras2003arima} this would result in significantly increased computation time. 
 
-%The first step (0) consists of determining a suitable class of models that can be applied to the time series based on observed characteristics, e.g.~high frequency, nonconstant mean and variance, and multiple seasonality. The hypothesis of the model at this step assumes a forecast error term with a normal distribution having a zero mean and constant variance. 
-%
-%In step 1) a trial model has to be selected for which data has to be made stationary. Through application of a logarithmic transformation a more stable variance can be achieved whereas (seasonal) differencing of data may result in a more stable mean. In order to find appropriate autoregressive and moving average coefficients for the resulting ARIMA model autocorrelation (ACF) and partial autocorrelation (PACF) plots may be consulted to retrieve a first fit of the model. 
-%
-%Step 2) consists of estimation of parameters which is typically done by applying the maximum likelihood function with respect to the parameters. In order to optimize forecasting performance outlier detection methods may be applied to minimize the impact of single "`spikes"' in the data. 
-%
-%In step 3) the residuals (forecast errors) of the resulting model are evaluated based on desired characteristics. Residuals should exhibit zero mean, constant variance, should follow a normal distribution and should be uncorrelated. Suitable tests for these properties are portmanteau tests (Ljung box, Box Pierce) and examination of ACF and PACF plots to find dependencies within the data. 
-%
-%Step 4) is concluding the model selection process. The resulting model of step 2) is used for forecasting based on trained data. 
 
+\subsection{Classification of forecast models applicable to electricity price forecasting}
 
+Electricity price forecast models in general can be classified in three different sets of models: game theory models, time series models and production cost or simulation models \cite{gonzalez2005modeling, aggarwal2009electricity} (Figure \ref{fig:classification_of_price_forecasting_models}).  
 
-
-\subsection{Energy price forecasting approaches in wholesale power markets}
-
-According to \cite{lora2007electricity} electricity price models in general can be classified in two different sets of models, production cost models and statistical models. 
-
-Production cost models retrieve all available information to accurately model system behavior while statistical models are trained on historical data and have little information about the underlying system. An advantage of statistical models is that the amount of information needed to build models is significantly less than that needed for production cost models. 
-
-A taxonomy of electricity price forecasting models is presented in \cite{aggarwal2009electricity} (Figure \ref{fig:classification_of_price_forecasting_models}). 
+Game theoretic models study the evolution of energy prices by analyzing the strategic behavior of the agents \cite{gonzalez2005modeling}. They aim to model the strategies of market participants (agents) as formalized games and identify solutions to those games \cite{aggarwal2009electricity}. Specifically equilibrium models analyze the strategic market equilibrium which describes the set of strategies such that no player in the market can improve its position if its rivals maintain their strategies \cite{gonzalez2005modeling}. 
 
 \begin{figure}[htbp]
 	\centering
 		\includegraphics{figures/state_of_the_art/classification_of_price_forecasting_models.PNG}
-	\caption{Classification of price forecasting models \cite{aggarwal2009electricity}}
+	\caption{Taxonomy of price forecasting models \cite{aggarwal2009electricity}}
 	\label{fig:classification_of_price_forecasting_models}
 \end{figure}
 
-In the above taxonomy production cost models are all but parsimonious stochastic models and regression or casual models. Statistical time series models can thus be classified in classical time series models and models based on machine learning approaches \cite{lora2007electricity, duanelectricity}. Classical time series models have the benefit to exhibit a simpler structure than machine learning models, however it is hard to obtain accurate forecasts for non-linear time series such as energy prices. 
+Production cost or simulation models build an exact model of the system and emulate the underlying process \cite{aggarwal2009electricity}. 
+They simulate the operation of power systems as well as agents' strategic behavior impact on market prices \cite{gonzalez2005modeling,lora2007electricity}. Based on the system model mathematical models are generated by the simulation method which are then solved for price forecasting. 
+Due to their advanced modeling of the system these models require detailed system operation data and exhibit high computational costs \cite{aggarwal2009electricity}. 
 
-Regarding machine learning approaches, artificial neural networks (ANN) have been studied extensively in relation to electricity price forecasting \cite{vahidinasab2008day, singhal2011electricity, pao2007forecasting, amjady2006day, catalao2007short, 
-gareta2006forecasting, duanelectricity, szkuta1999electricity}. Neural network models are trained to model non-linear relationships between applicable input variables and historical energy prices. 
+Time series models on the other hand are based on historical price data and statistically model price evolution but do not model the underlying system's behavior in detail. Time series models have the advantage to exhibit a simpler structure and require less information than production cost models or game theory based models \cite{lora2007electricity}. A range of different types of time series models is available, from "`black box"' models that are only based on historical price data to complex structural models that include various explanatory variables (e.g.~load demand or fuel prices). 
 
-Extensive research has been made regarding stochastic time series models as well whereby models may be applied to single \cite{garcia2005garch, weron2008forecastingWh, weron2008forecasting, nogales2002forecasting, cuaresma2004forecasting, tan2010day, conejo2005day} or complex multiple seasonality patterns \cite{de2011forecasting, gould2008forecasting, zivot2003vector}. 
+Time series models can in turn be classified into classical time series models and models based on machine learning techniques \cite{lora2007electricity}. The benefit of classical time series models is that they exhibit a less complex structure and therefore less computation time than machine learning based models. However it can be harder to obtain accurate forecasts for non-linear time series such as energy prices \cite{lora2007electricity}. 
+
+Parsimonious stochastic models are inspired by financial research to model characteristics of energy prices. Stochastic models are either based on stationary or non-stationary time series \cite{gonzalez2005modeling}. Stationary denotes the characteristic of a time series to exhibit zero mean and constant variance \cite{hyndman2012forecasting}. The first type of models can only be based on stationary time series (e.g.~AR, MA and ARMA models). The latter type can handle non-stationarity by transforming data to a stationary series within the model generation process (e.g.~ARIMA, GARCH models) \cite{hyndman2012forecasting, aggarwal2009electricity}. 
+
+Regression or casual models handle the relationship between a dependent variable (electricity price) and a number of independent variables (e.g. load or weather conditions). By evaluating the correlations between independent and dependent variables the explanatory variables for the model can be identified \cite{aggarwal2009electricity}. 
+
+Finally artificial intelligence based methods can be divided into neural network based models and data mining models \cite{aggarwal2009electricity}. 
+Both of these types of models can be used to discover non-linear relationships that might be difficult to obtain by statistical models. By capturing the autocorrelation structure of the time series, neural network models extrapolate patterns discovered in historical price data into the future \cite{gonzalez2005modeling}. In constrast data mining methods use data mining techniques based on categorization of data, e.g.~Bayesian categorization or closest k-neighborhood categorization \cite{aggarwal2009electricity}. 
+
+
+%Regarding machine learning approaches, artificial neural networks (ANN) have been studied extensively in relation to electricity price forecasting \cite{vahidinasab2008day, singhal2011electricity, pao2007forecasting, amjady2006day, catalao2007short, 
+%gareta2006forecasting, duanelectricity, szkuta1999electricity}. Neural network models are trained to model non-linear relationships between applicable input variables and historical energy prices. 
+
+%Statistical time series models as well as artificial intelligence based models have been researched extensively. 
+
+When comparing statistical time series models with neural network based models a number of benefits and drawbacks can be discovered related to energy price forecasting. 
+
+Extensive research has been made regarding stochastic time series models whereby models may be applied to single \cite{garcia2005garch, weron2008forecastingWh, weron2008forecasting, nogales2002forecasting, cuaresma2004forecasting, tan2010day, conejo2005day} or complex multiple seasonality patterns \cite{de2011forecasting, gould2008forecasting, zivot2003vector}. 
 Studies show that univariate time series models may be improved significantly by modeling each hour of the day separately \cite{cuaresma2004forecasting, weron2008forecasting}. However this requires model building separately for each hour which increases the amount of effort needed especially in dynamic forecasting environments. 
-It is also stated that including modeling of non-linear phenomena would drastically increase computation time for time series models \cite{cuaresma2004forecasting}. 
+It is also stated that inclusion of non-linear phenomena would drastically increase computation time for time series models \cite{cuaresma2004forecasting}. 
 
+
+%Game theoretic model approaches for electricity markets with tight \cite{hu2008game,gan2005auction} and weak \cite{gan2005auction} capacity constraints have been developed. 
 %models may be classified in two types: univariate and multivariate time series models. 
-
+Regarding machine learning approaches, artificial neural networks (ANN) have been studied extensively in relation to electricity price forecasting \cite{vahidinasab2008day, singhal2011electricity, pao2007forecasting, amjady2006day, catalao2007short, 
+gareta2006forecasting, duanelectricity, szkuta1999electricity}. 
 Results show that ANN models have the potential to outperform statistical models such as Autoregressive (AR) or Autoregressive Integrated Moving Average (ARIMA) models \cite{pao2007forecasting, catalao2007short}. This may be due to their ability to more accurately model the underlying system behavior while they excel at modeling non-linear relationships in the dataset. 
 
 However, in order to successfully apply forecasting based on neural network models a set of requirements have to be met \cite{catalao2007short}: Availability of sufficient amounts of data, adequate selection of input/output samples, an appropriate number of hidden units and sufficient computational resources. In case these requirements can not be met or it is not possible to appropriately parametrize the model statistical models provide a good alternative for modeling energy prices. 
@@ -107,13 +128,11 @@ However, in order to successfully apply forecasting based on neural network mode
 
 \section{Cost optimization in geo distributed data centers}
 
-%Different cost optimization approaches have been developed for distributing resources in geographically dispersed data centers. 
-
 \subsection{A Study of Electricity Price Features on Distributed Internet Data Centers}
 
 A comprehensive study about optimization of energy costs under different operational and energy cost prediction regimes is presented in \cite{de2013study}. 
 
-The focus of this work is to leverage price differences across different energy markets in a network of geo distributed data centers to minimize energy costs by migrating resources to currently cheaper locations. It takes into account the impact of several metrics including the level of price variability, time lag between locations, reconfiguration delay and accuracy of energy price predictions. 
+The focus of that paper is to leverage price differences across different energy markets in a network of geo distributed data centers to minimize energy costs by migrating resources to currently cheaper locations. It takes into account the impact of several metrics including the level of price variability, time lag between locations, reconfiguration delay and accuracy of energy price predictions. 
 
 To provide a forecasting model based on the given data the Box-Jenkins method is used to build an ARIMA model characterizing the underlying electricity price data:
 
@@ -185,8 +204,40 @@ A cloud scheduler for simplified management of virtual machines has been develop
 Also, schedulers based on genetic algorithms were proposed by \cite{dutta2011genetic} for cost based multi QoS optimizations and \cite{ge2010ga} for improving delay scheduling policy. 
 
 
+%
+%Active research topics in this field include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
+%
+%The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
+%
+%
+%
+%In \cite{rao2010minimizing} a cloud consisting of several Internet Data Centers (IDC) is examined with regard to cost optimization which is done by intelligently assigning workload to data centers based on current energy prices. Two of these data centers in the scenario are connected to deregulated wholesale energy markets whereas the other one is connected to a regulated utility region charged by a fixed pricing scheme. Since price change differences in deregulated energy markets can be considerable energy cost reductions may be achieved by assigning workload based on changing energy prices.  %For the purpose of the simulation five front-end Web portal servers process a total workload of about $10^5$ requests per second. 
+%
+%In this paper the approaches of optimal and average workload assignments are visually and formally compared to gain insights into the total electricity cost reduction. The optimal workload assignment is calculated with respect to workload and delay constraints that are considered in a minimum cost flow problem based on a linear programming model. Thus the goal is to minimize costs without compromising quality of service constraints. 
+%%The proposed cost reductions amount up to 30 percent for a single hour test within the given time range. 
+%%The results measured at two timestamps at a specific day seem promising, since total cost reductions could be achieved by 30\% and 17\% respectively. 
+%
+%The differences compared to this work is that in \cite{rao2010minimizing} they do not consider longer running jobs as used in scientific calculations or large optimization problems that may take several hours to complete. Thus the impact of migrations is not examined in this scenario. In addition the possibility of energy price forecasting is not considered which may result in even greater energy cost reductions. 
+%
+%Another study on cost reductions in Internet Data Centers has been done where different aspects of cost reductions including cost prediction schemes have been considered \cite{de2013study}. Since up to 15\% of total capital investment is spend on energy related costs 
+%%(paper references \cite{greenberg2008cost} - old, from 2009!!) 
+%a special effort is invested to reduce the amount of energy costs through cost aware operations. %(TODO: Move to introduction?)
+%
+%In this paper cost optimization is seen as an assignment problem where an overall cost function is minimized through intelligent workload allocation. During the investigation different variables and their impact on resulting energy costs are considered which are price volatility, price predictions including variable prediction errors, time lag between locations and reconfiguration delays. 
+%
+%Similar to this work the simulation is run with the same set of fixed parameters to evaluate the impact of the various scenarios. It is observed that prediction errors greatly impact workload allocation where cost penalties due to non-optimal assignments increase quadratically with an increase of forecast errors \cite{de2013study}. Also with increasing number of locations the minimum cost of optimal assignments can be greatly reduced. Greater price volatility is beneficial as well since then price aware assignments will have greater impacts. 
+%
+%A comprehensive study on cost reductions and energy market characteristics in an environment where data centers are placed within the reach of different energy markets is presented at \cite{qureshi2009cutting}. Based on geotemporal variations of energy prices the maximum cost reductions under different scenarios are evaluated. Energy expenses are estimated for various large scale companies like Google and Yahoo to state the actual savings and the amount of reductions in energy costs that would be possible. 
+%They also discuss the impact of considering bandwith constraints and maximum client server distances on cost reductions. 
+%
+%Interestingly enough long term seasonalities in the energy price data has been discovered that spanned multiple energy markets. This is an important fact when training forecasting models since predictions can become a lot more accurate. An important fact that was revealed about energy markets was that data from different energy markets was much less correlated than data from the same area. Thus to take full advantage of energy price differences data centers located at different energy markets should be combined \cite{qureshi2009cutting}. 
+%
+%With different state of the art energy models and simulation constraints a summary of possible cost reduction schemes was presented. However no migration or forecasting of energy price data has been done which could further improve scenarios with longer running jobs. In addition these cost reductions are only valid under specific assumptions that large cloud providers would need to implement such as connection to wholesale energy markets and reasonable server energy elasticity. 
+%
 
-\section{Optimize resource scheduling in data centers}
+
+
+\section{Optimize resource scheduling algorithms}
 
 \subsection{A task scheduling algorithm based on load balancing in cloud computing}
 
@@ -263,7 +314,7 @@ In addition, live migration of virtual machines is applied to further optimize p
 
 \begin{figure}[htbp]
 	\centering
-		\includegraphics{figures/state_of_the_art/server_power_consumption.PNG}
+		\includegraphics[width=0.7\textwidth]{figures/state_of_the_art/server_power_consumption.PNG}
 	\caption{Illustration of scheduling power savings \cite{younge2010efficient}}
 	\label{fig:server_power_consumption}
 \end{figure}
@@ -272,41 +323,12 @@ Power aware resource scheduling has been simulated on an OpenNebula \cite{fontan
 
 
 %
-%Active research topics in this field include electricity cost reduction in data centers \cite{guler2013cutting, le2011reducing}. A comparison of different approaches considering spatial and temporal energy price changes and the contribution of the outside temperature to the resulting cooling effort and expense is outlined in \cite{guler2013cutting}. In \cite{le2011reducing} a set of homogenous data centers is simulated where the focus lies on the effects of changing workloads and migrations on the cooling infrastructure and on intelligent scheduling to reduce energy consumption and energy costs, respectively. 
-%
-%The authors in \cite{lucanin2013take} propose a green cloud approach using real time electricity prices where the duration and time of price peaks are estimated and VMs are paused during these times to reduce energy costs and save energy. Customers may choose between ``green'' and normal instances, taking into account some loss of availability for a reduced price. 
-%
-%
-%
-%In \cite{rao2010minimizing} a cloud consisting of several Internet Data Centers (IDC) is examined with regard to cost optimization which is done by intelligently assigning workload to data centers based on current energy prices. Two of these data centers in the scenario are connected to deregulated wholesale energy markets whereas the other one is connected to a regulated utility region charged by a fixed pricing scheme. Since price change differences in deregulated energy markets can be considerable energy cost reductions may be achieved by assigning workload based on changing energy prices.  %For the purpose of the simulation five front-end Web portal servers process a total workload of about $10^5$ requests per second. 
-%
-%In this paper the approaches of optimal and average workload assignments are visually and formally compared to gain insights into the total electricity cost reduction. The optimal workload assignment is calculated with respect to workload and delay constraints that are considered in a minimum cost flow problem based on a linear programming model. Thus the goal is to minimize costs without compromising quality of service constraints. 
-%%The proposed cost reductions amount up to 30 percent for a single hour test within the given time range. 
-%%The results measured at two timestamps at a specific day seem promising, since total cost reductions could be achieved by 30\% and 17\% respectively. 
-%
-%The differences compared to this work is that in \cite{rao2010minimizing} they do not consider longer running jobs as used in scientific calculations or large optimization problems that may take several hours to complete. Thus the impact of migrations is not examined in this scenario. In addition the possibility of energy price forecasting is not considered which may result in even greater energy cost reductions. 
-%
-%Another study on cost reductions in Internet Data Centers has been done where different aspects of cost reductions including cost prediction schemes have been considered \cite{de2013study}. Since up to 15\% of total capital investment is spend on energy related costs 
-%%(paper references \cite{greenberg2008cost} - old, from 2009!!) 
-%a special effort is invested to reduce the amount of energy costs through cost aware operations. %(TODO: Move to introduction?)
-%
-%In this paper cost optimization is seen as an assignment problem where an overall cost function is minimized through intelligent workload allocation. During the investigation different variables and their impact on resulting energy costs are considered which are price volatility, price predictions including variable prediction errors, time lag between locations and reconfiguration delays. 
-%
-%Similar to this work the simulation is run with the same set of fixed parameters to evaluate the impact of the various scenarios. It is observed that prediction errors greatly impact workload allocation where cost penalties due to non-optimal assignments increase quadratically with an increase of forecast errors \cite{de2013study}. Also with increasing number of locations the minimum cost of optimal assignments can be greatly reduced. Greater price volatility is beneficial as well since then price aware assignments will have greater impacts. 
-%
-%A comprehensive study on cost reductions and energy market characteristics in an environment where data centers are placed within the reach of different energy markets is presented at \cite{qureshi2009cutting}. Based on geotemporal variations of energy prices the maximum cost reductions under different scenarios are evaluated. Energy expenses are estimated for various large scale companies like Google and Yahoo to state the actual savings and the amount of reductions in energy costs that would be possible. 
-%They also discuss the impact of considering bandwith constraints and maximum client server distances on cost reductions. 
-%
-%Interestingly enough long term seasonalities in the energy price data has been discovered that spanned multiple energy markets. This is an important fact when training forecasting models since predictions can become a lot more accurate. An important fact that was revealed about energy markets was that data from different energy markets was much less correlated than data from the same area. Thus to take full advantage of energy price differences data centers located at different energy markets should be combined \cite{qureshi2009cutting}. 
-%
-%With different state of the art energy models and simulation constraints a summary of possible cost reduction schemes was presented. However no migration or forecasting of energy price data has been done which could further improve scenarios with longer running jobs. In addition these cost reductions are only valid under specific assumptions that large cloud providers would need to implement such as connection to wholesale energy markets and reasonable server energy elasticity. 
-%
-%
 %
 %
 %\subsection{Server power management}
 %
 %A well known problem in power management is how to accurately and efficiently model a server's power consumption over time. At \cite{horvath2008multi} Horvath et al.~exploit dynamic voltage scaling (DVS) and multiple sleep states to reduce power consumption of a server cluster of about 23\% without significantly impacting performance. They propose that CPU utilization and frequency are the variables that have the most significant impact on the power consumption of a machine. This assumption is also used in other studies, e.g.~\cite{rao2010minimizing, hammadi2014survey, kliazovich2012greencloud}. 
+
 
 
 \section{Virtual machine migration}
@@ -349,7 +371,7 @@ Thus the downtime and cost resulting from a VM migration depends to a great exte
 
 \begin{figure}
 	\centering
-		\includegraphics[width=1.0\textwidth]{figures/state_of_the_art/tracking_writable_working_set.PNG}
+		\includegraphics[width=0.94\textwidth]{figures/state_of_the_art/tracking_writable_working_set.PNG}
 	\caption{WWS curve for a complete run of SPEC CINT2000 (512MB VM) \cite{clark2005live}}
 	\label{fig:tracking_writable_working_set}
 \end{figure}
@@ -366,6 +388,14 @@ Migration downtimes have been evaluated for different sized VMs running various 
 A thorough evaluation of migration performance and resulting migration costs is given by \cite{liu2013performance}. 
 
 The authors provide methods to quantitatively predict migration performance and resulting energy cost. A refined pre-copy approach is used to efficiently transfer memory pages in iterative rounds where in each round the memory pages dirtied in the previous round are re-sent (Figure \ref{fig:VM_migration_precopy}). 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.7\textwidth]{figures/state_of_the_art/VM_migration_precopy.PNG}
+	\caption{Live migration algorithm performs pre-copying in iterative rounds \cite{liu2013performance}}
+	\label{fig:VM_migration_precopy}
+\end{figure}
+
 The pre-copying phase is terminated when any of the following conditions are satisfied:
 
 \begin{enumerate}
@@ -375,28 +405,19 @@ The pre-copying phase is terminated when any of the following conditions are sat
 	\item [4)] total network traffic exceeds a multiple of the VM memory size
 \end{enumerate}
 
-\begin{figure}[htbp]
-	\centering
-		\includegraphics[width=0.7\textwidth]{figures/state_of_the_art/VM_migration_precopy.PNG}
-	\caption{Live migration algorithm performs pre-copying in iterative rounds \cite{liu2013performance}}
-	\label{fig:VM_migration_precopy}
-\end{figure}
-
 Findings in this work include that with incremental data transmission rate (bandwidth) the power consumption progressively increases while the migration latency decreases. Also, power consumption during migrations increase for both source and destination hosts from which the resulting migration energy can be derived. In addition the migration load and time needed for each pre-copy iteration as well as the total migration load and latency are calculated. 
 
 Besides the defined base model a refined migration model is specified which takes into account the size of a workload's writable working set, that is the number of pages dirtied most frequently. The latter model has been empirically evaluated by measuring the WWS on a Xen virtual machine and deriving the maximum sensible pre-copy iteration while continuously checking termination conditions. 
 
-\begin{figure}[htbp]
-	\centering
-		\includegraphics{figures/state_of_the_art/vm_migration_normalized_cost.PNG}
-	\caption{Migration cost savings by using proposed models \cite{liu2013performance}}
-	\label{fig:vm_migration_normalized_cost}
-\end{figure}
-
 Workloads with different sizes for writable working sets have been evaluated in simulations including two hosts running 8 virtual machines. 
 The resulting migration downtime, migration latency, network traffic and energy consumption could be reduced by 72.9\%, 93.5\%, 74.5\% and 73.6\% compared to a random selection technique, respectively (Figure \ref{fig:vm_migration_normalized_cost}). 
 
-
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.5\textwidth]{figures/state_of_the_art/vm_migration_normalized_cost.PNG}
+	\caption{Migration cost savings by using proposed models \cite{liu2013performance}}
+	\label{fig:vm_migration_normalized_cost}
+\end{figure}
 
 
 
@@ -411,21 +432,6 @@ The resulting migration downtime, migration latency, network traffic and energy 
 
 
 %See "`Live Virtual Machine Migration via Asynchronous Replication and State Synchronization"'
-%
-%\begin{figure}[htbp]
-	%\centering
-		%\includegraphics{figures/state_of_the_art/virtual_machine_precopy.PNG}
-	%\caption{Migration process ideal case}
-	%\label{fig:virtual_machine_precopy}
-%\end{figure}
-
-%
-%\begin{figure}[htbp]
-	%\centering
-		%\includegraphics{figures/state_of_the_art/virtual_machine_migration.PNG}
-	%\caption{Virtual machine migration}
-	%\label{fig:virtual_machine_migration}
-%\end{figure}
 
 
 %There are different proposed approaches related to virtual machine migration in distributed cloud environments \cite{celesti2010improving, malet2010resource}. In \cite{celesti2010improving} the so-called Composed Image Cloning (CIC) methodology designed for migration of VMs across federated clouds is introduced. This work aims to reduce the needed bandwidth and migration time by setting up a new virtual machine in the destination cloud and transferring only user data instead of relocating the whole VM disc image. 

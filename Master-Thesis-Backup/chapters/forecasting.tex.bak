@@ -16,7 +16,7 @@ Statistical models have been proven to provide good results and at the same time
 
 Different stochastic models are able to generate forecasts while considering existing seasonality in the data \cite{gould2008forecasting,de2011forecasting}. Examples of models exhibiting these characteristics are SARIMA, HoltWinters and TBATS, all of which are investigated in this work to evaluate their capability of forecasting on different settings and datasets. The best model is then chosen to provide forecasts for all simulations described later in this work. 
 
-In general time series may be decomposed into seasonal, trend and cycle components which can be made use of by forecast models \cite{de2011forecasting}. Some models such as ARIMA and TBATS can handle existing trends in the dataset by applying transformations in a preprocessing step or by decomposing and separately modeling time series components. More simplistic models such as Simple Exponential Smoothing (SES) or pure Autoregressive (AR) models require the dataset to be stationary, i.e.~to exhibit a constant mean and variance \cite{weron2007modeling,hyndman2012forecasting}. In this case the dataset would have to be transformed before applying those models. 
+In general time series may be decomposed into seasonal, trend and cycle components which can be made use of by forecast models \cite{de2011forecasting}. Some models such as ARIMA and TBATS can handle existing trends in the dataset by applying transformations in a preprocessing step or by decomposing and separately modeling time series components. More simplistic models such as Simple Exponential Smoothing (SES) or pure Autoregressive (AR) models require the dataset to be stationary, i.e.~to exhibit zero mean and constant variance \cite{weron2007modeling,hyndman2012forecasting}. In this case the dataset would have to be transformed before applying those models. 
 
 Models should provide good out-of-sample accuracy which means that they need to be trained and tested on different datasets \cite{hyndman2012forecasting}. For example, considering training data from a training period of four weeks of energy price data and test data from a subsequent test period of one week a model is trained based on that training data but tested on the provided test data. Thus real life forecasting scenarios can be established and models are evaluated based on the accuracy on test datasets. A large scale evaluation of forecasting models based on different trainings and test datasets is presented later in this section. 
 
@@ -66,7 +66,7 @@ After successfully determine meaningful seasonalities and their resulting period
 
 
 
-\subsection{Seasonal decomposition} \label{ssec:seasonal_decomposition}
+\subsection{Seasonal decomposition}
 
 Seasonal decomposition describes the process of decomposing a given time series into its components which are trend, seasonal or cyclic and irregular components. Decomposition is done by applying the STL model to the time series and extracting the above mentioned components where STL is defined as Seasonal-Trend decomposition procedure based on Loess \cite{cleveland1990stl}. 
 
@@ -309,7 +309,7 @@ In \cite{nelson1979experience} the autors show that it might not be always possi
 
 Different forecast accuracy methods can be applied to investigate model performance. These methods are based on estimating the overall forecast error for a given model and forecast horizon \cite{hyndman2012forecasting, weron2007modeling}. 
 
-The forecast errors are computed as a function of residuals which are defined as the differences of actual values to forecasts \cite{hyndman2012forecasting}: 
+The forecast errors are computed as a function of residuals which are defined as the differences of actual values to forecasts: 
 
 \begin{equation}
 	e_i = y_i - \hat{y_i}
@@ -319,415 +319,22 @@ The forecast errors are computed as a function of residuals which are defined as
 where $\hat{y_t}$ denotes the one step ahead forecast based on a series of past values $\{y_1,\ldots,y_{t-1}\}$. 
 
 
-\subsubsection{Scale-dependent error measures}
+\section{Model generation}
 
-Scale dependent errors are absolute error measures depending on the scale of the examined dataset. Therefore when comparing these types of error measures they should be applied to data showing the same scale. 
 
-\paragraph{Mean error}
-The mean error (ME) denotes a measure of the mean value of forecast errors over a given period of time. 
-It can be seen as indication of the symmetry of the forecast error distribution. 
 
-\begin{equation}
-\frac{1}{n} \sum_{i=1}^{n} \hat{y}_i - y_i
-\label{eq:acc_me}
-\end{equation}
 
-where $n$ is the number of observations, $\hat{y}_i$ is the forecast for observation $i$ and $y_i$ denotes the actual value for observation $i$. 
 
-\paragraph{Mean absolute error}
-The mean absolute error (MAE) shows the mean of all absolute errors over the forecast horizon where the absolute error is defined by the absolute difference between a value of the dataset and its forecasted value. The mean absolute error provides a means for retrieving a measure proportional to actual forecast errors. 
 
-\begin{equation}
-\frac{1}{n} \sum_{i=1}^{n} |\hat{y}_i - y_i|
-\label{eq:acc_mae}
-\end{equation}
+\subsection{White noise tests}
 
+White noise tests are typically applied during a model generation process to test if the model's residuals exhibit some form of correlations. Residuals (difference between forecasted and actual values) should show no correlations and thus resemble the properties of white noise. 
 
+To test for white noise properties different statistical tests may be applied such as the Box-Pierce test and the Ljung Box test \cite{weron2007modeling, hyndman2012forecasting}. 
 
-\paragraph{Root mean squared error}
-The root mean squared error (RMSE) takes the root of the sum of the squared forecast errors which puts more emphasis on possible outliers in residual values. 
 
-\begin{equation}
-	\sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}
-\label{eq:acc_rmse}
-\end{equation}
-
-
-\subsubsection{Percentage based error measures}
-
-Percentage based error measures have the advantage of providing scale independent measures for comparing forecast errors across different time series. However a significant disadvantage of percentage errors is their inability to handle zero values in time series. Also numerical compuations become unstable when values get closer to zero. 
-
-
-\paragraph{Mean percentage error}
-
-The mean percentage error (MPE) is dependent on the symmetry of the forecast error distribution as positive and negative value differences might cancel each other out. This can be compared to the mean error which shows the same behavior as a scale dependent measure. 
-
-
-\begin{equation}
-\frac{1}{n} \sum_{i=1}^{n} \frac{\hat{y}_i - y_i}{y_i}
-\label{eq:acc_mpe}
-\end{equation}
-
-
-
-\paragraph{Mean absolute percentage error}
-
-The mean absolute percentage error (MAPE) shows similar to the mean absolute error the mean of all absolute errors but as percentage error relative to the corresponding actual value. 
-
-\begin{equation}
-\frac{1}{n} \sum_{i=1}^{n} \left|\frac{\hat{y}_i - y_i}{y_i}\right|
-\label{eq:acc_mape}
-\end{equation}
-
-
-
-
-\section{Model generation} \label{sec:model_generation}
-
-In this section the procedure of generating an ARIMA model is described. Since ARIMA models are classical time series models which showed reasonable results in energy price forecasting \cite{aggarwal2009electricity,weron2005forecasting} they have been investigated in detail to provide a better understanding of the model generation process. 
-
-In addition to the well known Box Jenkins approach (see section \ref{ssec:arima_models_to_predict_next_day_prices}) a custom model selection process is proposed for manual ARIMA model selection \cite{hyndman2012forecasting}. This process is outlined in Figure \ref{fig:manual_arima_forecasting_procedure}.
-
-\begin{figure}[htbp]
-	\centering
-		\includegraphics[width=0.70\textwidth]{figures/forecasting/manual_arima_forecasting_procedure.png}
-	\caption{Manual ARIMA model generation process \cite{hyndman2012forecasting}}
-	\label{fig:manual_arima_forecasting_procedure}
-\end{figure}
-
-In this case a manual model generation process is conducted. The data based on which a model will be generated together with diagnostic plots (ACF, PACF) is shown in Figure \ref{fig:tsdiag_prices_acf_pacf}. 
-
-\begin{figure}[htbp]
-	\centering
-		\includegraphics[width=0.95\textwidth]{figures/forecasting/tsdiag_prices_acf_pacf.png}
-	\caption{Two weeks of hourly day ahead prices with ACF and PACF plots (Nord Pool Spot, Helsinki from July 7th to July 21st in 2014)}
-	\label{fig:tsdiag_prices_acf_pacf}
-\end{figure}
-
-The dataset consists of two weeks of hourly day ahead prices amounting to a total of 336 hours. Figure \ref{fig:tsdiag_prices_acf_pacf} shows three plots, at the top a time series plot showing the energy price time series is depicted, on the bottom left an autocorrelation plot (ACF) is shown and on the bottom right a partial autocorrelation plot (PACF) is printed. 
-As already discussed in section \ref{ssec:seasonal_decomposition} this data exhibits daily and weekly seasonality which is clearly visible on the time series plot. 
-
-As ARIMA models require data to be stationary (i.e.~it exhibits no trend or seasonality) the proposed method to transform a series into a stationary series is to apply one or more levels of differencing or seasonal differencing. The resulting residuals of the model should show no autocorrelations and should exhibit a zero mean \cite{hyndman2012forecasting}. Ideally residuals have constant variance and exhibit a normal distribution as well. 
-
-ACF and PACF plots are diagnostic plots to examine correlations within the dataset \cite{nist2012handbook,nau2016statistical}. 
-Both ACF and PACF plots display individual lags on the x-coordinate while on the y-coordinate the values of the autocorrelation and partial autocorrelation functions are displayed for ACF and PACF plots, respectively. The dashed blue lines denote the 95\% confidence interval for white noise, i.e.~lag values contained within this interval do not reject the white noise hypothesis. 
-Values exceeding the confidence bounds are "`significant"' regarding correlations in the data. 
-%However 1 in 20 lags is allowed to exceed the significance bounds without violating the white noise assumption. 
-
-The ACF plot displays the ``coefficients of correlation between a time series and lags of itself'' whereas the PACF plot shows the ``partial correlation coefficients between the series and lags of itself'' \cite{nau2016statistical}. 
-Correlation coefficients for autocorrelations are said to be interdependent which means that the value of an autocorrelation at lag $h$ depends on correlations of all previous lags $1,\ldots,h-1$. In contrast, partial autocorrelations only include correlations specific to lag $h$ without considering correlations at lower order lags. 
-
-According to the model generation process in Figure \ref{fig:manual_arima_forecasting_procedure} data should be differenced if necessary to make the series stationary. In this case a seasonal difference might be appropriate due to the obvious seasonality in the time series. 
-
-The ACF plot above shows a decay of significant autocorrelations whereas the PACF plot depicts several significant spikes with most significant ones at lags 2 and 25. 
-As the spike at lag 25 in the PACF plot is close to the assumed seasonal period of 24 this may suggest adding a seasonal AR(1) term with a period of 24. The peak value at lag 24 in the ACF plot may be another indicator of seasonal correlation.
-Therefore, the suggested intermediate ARIMA model is ARIMA(0,0,0)(1,1,0)[24] with a seasonal AR term and one level of seasonal differencing with a period of 24. 
-
-The resulting model residuals are depicted in Figure \ref{fig:residuals_arima_000_110}. 
-
-\begin{figure}[htbp]
-	\centering
-		\includegraphics[width=0.95\textwidth]{figures/forecasting/residuals_arima_000_110.png}
-	\caption{Intermediate ARIMA(0,0,0)(1,1,0)[24] model with seasonal difference}
-	\label{fig:residuals_arima_000_110}
-\end{figure}
-
-Figure \ref{fig:residuals_arima_000_110} depicts residuals with removed hourly seasonality and zero mean. However the series can not be regarded as stationary as significant deviations exist from the mean in the time series. Apart from the weekly seasonality further correlations can be identified. 
-
-According to \cite{nau2016statistical} a cut-off (rapid decrease of correlation values) at the PACF plot indicates adding an AR term with an order corresponding to the number of the last significant lag of this occurrence. Conversely a cut-off at the ACF plot indicates the addition of a MA term with the number of the last significant lag in the ACF plot. 
-
-Since Figure \ref{fig:residuals_arima_000_110} shows a slow decay in the ACF and a small but significant coefficient at lag 2 in the PACF we recognize a cut-off at this lag in the PACF and add a (non-seasonal) AR(2) term to the model. 
-Thus the resulting model is ARIMA(2,0,0)(1,1,0)[24] which is shown in Figure \ref{fig:residuals_arima_200_110}. 
-
-\begin{figure}[htbp]
-	\centering
-		\includegraphics[width=0.95\textwidth]{figures/forecasting/residuals_arima_200_110.png}
-	\caption{Residuals of ARIMA(2,0,0)(1,1,0)[24]}
-	\label{fig:residuals_arima_200_110}
-\end{figure}
-
-The time series of residuals above can be assumed to be stationary as no significant deviations from the mean are visible. 
-
-There is only one significant spike at lag 24 remaining which might indicate still some seasonal information in the data, however it could be as well regarded as outlier as 1 in 20 spikes is said to be significant by chance alone \cite{hyndman2012forecasting}. 
-
-
-%
-%The autocorrelation function determines the existence or non-existence of correlation between lagged variables within a time series \cite{nist2012handbook}. 
-%That is, the correlation between a point in the time series to another point in the same time series is calculated where the gap between the two points is fixed by the given lag (hence the name \textit{auto}-correlation). 
-%
-%The autocorrelation function is defined as the autocorrelation coefficient $R_h$ (equation \ref{eq:autocorr_coeff})
-%
-%\begin{equation}
-%R_h = \frac{C_h}{C_0}
-%\label{eq:autocorr_coeff}
-%\end{equation}
-%
-%
-%where $C_h$ denotes the autocovariance function and $C_0$ defines the variance function 
-%(see equations \ref{eq:autocov_func} and \ref{eq:variance_func}). 
-%
-%
-%\begin{equation}
-%C_h = \frac{1}{N} \sum\limits_{t=1}^{N-h} (Y_t - \bar{Y}) (Y_{t+h} - \bar{Y})
-%\label{eq:autocov_func}
-%\end{equation}
-%
-%
-%\begin{equation}
-%C_0 = \frac{1}{N} \sum\limits_{t=1}^{N} (Y_t - \bar{Y})^2
-%\label{eq:variance_func}
-%\end{equation}
-%
-%with $\bar{Y}$ denoting the mean of the series, $N$ defines the sample size, $Y_t$ the observation at time $t$ and $Y_{t+h}$ the observation $h$ steps ahead from $t$. 
-%The autocovariance function determines the mean of covariance between variables with fixed lag $h$ while the variance function determines the mean variance over all timestamps $N$. 
-
-
-
-\subsection{Model validation}
-
-
-
-The corrected Akaike Information Criterion (AICc) is a well known goodness of fit measure for stochastic models \cite{weron2007modeling}. It provides a relative quality measure for models such that models with lower AICc values are assumed to better capture the characteristics of the underlying data. 
-Equation \ref{eq:aicc_test} defines the metric. 
-
-\begin{equation}
-	AICc = -2 \log \mathcal{L} + \frac{2dn}{n - d - 1}
-\label{eq:aicc_test}
-\end{equation}
-
-with $\log \mathcal{L}$ being the log-likelihood, $d$ the model size (number of parameters) and $n$ denotes the sample size. Note that the model size $d$ is present in order to penalize models having too many parameters. The log-likelihood function estimates how well the model fits the data. 
-
-After a model has been chosen by evaluating the AICc value the model residuals should be checked for existing correlations. As shown in the last section this can be done by verifying the ACF and PACF plots but tests are available for automated testing against randomness \cite{weron2007modeling,hyndman2012forecasting}. 
-
-One of these tests is the Ljung Box test which tests a given number of autocorrelations if they fall outside the significance bounds \cite{weron2007modeling}. The test is defined in Equation \ref{eq:ljung_box_test}. 
-
-%for probability of showing non-white noise properties 
-\begin{equation}
-	Q = n(n + 2) \sum_{j=1}^{h} \frac{\hat{\rho}^2 (j)}{n - j}
-\label{eq:ljung_box_test}
-\end{equation}
-
-with $n$ as the sample size, $h$ as number of lags and $\hat{\rho}^2 (j)$ as the squared autocorrelation at lag $j$. 
-Its distribution can be approximated by the $\chi^2$ distribution with $h$ degrees of freedom. The white noise hypothesis is rejected if $Q > \chi_{1-\alpha}^2 (h)$ with a defined significance level $\alpha$ with $\chi_{1-\alpha}^2$ being the $(1 - \alpha)$ quantile of the $\chi^2$ distribution with $h$ degrees of freedom. 
-
-
-\subsection{Model evaluation} \label{ssec:model_evaluation}
-
-In order to assess the quality and goodness of fit of the models generated in section \ref{sec:model_generation} they are validated and compared to a model generated by an automatic model generation procedure. 
-
-In addition to the manual model selection procedure shown in the last section automatic model generation procedures exist to detect the model with best goodness of fit parameters by iterating over a set of candidate models. 
-
-For generating ARIMA models the \textit{auto.arima} function may be used \cite{hyndman2012forecasting,r2016language}. 
-
-It is defined by the following steps \cite{hyndman2012forecasting}: 
-
-\begin{enumerate}
-	\item Determine the number of differences $d$ by applying a unit root test (e.g.~KPSS test).
-	\item A set of candidate models is generated starting with the following models: 
-				
-				ARIMA(2,d,2) \\
-				ARIMA(0,d,0) \\
-				ARIMA(1,d,0) \\
-				ARIMA(0,d,1) 
-				
-				Model parameters $p$ and $q$ are modified by adding $\pm 1$ where the best model is set as reference. 
-				Repeat the last line until no model with a lower AICc value can be found. 
-
-\end{enumerate}
-
-A model has been generated using auto.arima based on the same data as used for manual model selection in section \ref{sec:model_generation}. 
-The resulting models with corresponding model parameters are outlined in table \ref{tab:model_names_and_parameters}. 
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{l|l}
- Model Name & Model Parameters \\ 
-  \hline
-	Intermediate Model	& ARIMA(0,0,0)(1,1,0)[24] \\ 
-	Final Model 				& ARIMA(2,0,0)(1,1,0)[24] \\ 
-	Automatic Model 		& ARIMA(2,0,3)(1,0,2)[24] \\ 
-\end{tabular}
-\caption{Model names and parameters}
-\label{tab:model_names_and_parameters}
-\end{table}
-
-AICc and Ljung Box values have been calculated for each model defined above. For Ljung Box tests a 95\% confidence interval has been used
-such that resulting p-values greater than 0.05 indicate white noise properties of the residuals. Thus a high Ljung Box test value gives 
-high probability of a series resembling white noise. 
-
-The AICc and Ljung Box values are outlined in table \ref{tab:model_aicc_and_ljung_box_values}. 
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{r|r|r|r}
- & Intermediate Model & Final Model & Automatic Model \\ 
-  \hline
-	AICc 			& 1868.01 & \textbf{1400.22} & 1457.26 \\ 
-  Ljung Box & < 2.2e-16 & 0.1523 & \textbf{0.9927} \\ 
-\end{tabular}
-\caption{AICc and Ljung Box values}
-\label{tab:model_aicc_and_ljung_box_values}
-\end{table}
-
-Results show that it is possible for manually selected models to outperform automatically generated models, i.e.~the Final Model shows a lower AICc value than the Automatic Model. This is presumably due to the manual model using explicit seasonal differencing which the automatic nodel does not use. However the Ljung Box test values indicate a different result where the Automatic Model results in a higher p-value and thus exhibits less correlations than the Final Model. As both models exceed the significance bounds of 0.05 this is only of minor importance as both exhibit white noise characteristics. If in doubt the AICc value should be given precedence over Ljung Box test results. 
 
 \section{Model selection algorithm}
-
-An automated model selection algorithm has been implemented to provide aid in finding suitable ARIMA models for a given trainings dataset. 
-The process consists of several data preprocessing steps with generation and comparison of different ARIMA models and model evaluation based on a weighted function of AICc and Ljung Box test values. 
-
-The model selection algorithm consists of three separate functions each contributing a different part to model generation. These functions are \textit{GenerateArimaModel} as the base function for model generation, \textit{AutomatedBoxTest} for determining the right parameters for the Ljung Box tests and \textit{SeasonalPeriods} for estimation of possibly existing seasonal periods within the data. 
-
-%They will be referred to each other as soon as they are called. 
-
-\subsection{Function GenerateArimaModel}
-
-\begin{enumerate}
-	\item Get trainingsdata
-	
-	\begin{enumerate}
-		\item Read time series of energy prices from given location
-		\item Define trainings period by start and end date
-	\end{enumerate}
-	\item Determine seasonality
-	
-	\begin{enumerate}
-		\item Call \textit{SeaonalPeriods} to retrieve seasonal periods from the data
-	\end{enumerate}
-	
-	\item Create time series objects
-	
-	\begin{enumerate}
-		\item For each seasonal period found create a time series object based on that period
-	\end{enumerate}
-	
-	\item Calculate the Box-Cox transformation parameters
-	
-	\begin{enumerate}
-		\item Compute the Box Cox parameters for each of the created time series objects
-	\end{enumerate}
-	
-	\item Create models
-	
-	\begin{enumerate}
-		\item Create model(s) without BoxCox transformation
-		
-		\begin{enumerate}
-			\item Generate model with auto.arima for each of the created time series objects 
-		\end{enumerate}
-		
-		\item Create model(s) with BoxCox transformation
-		
-		\begin{enumerate}
-			\item Generate model with auto.arima and previously defined lambda (Box-Cox) parameter for each of the created time series objects if Box-Cox parameter is not equal to 1 (then it would have no effect)
-		
-		\end{enumerate}
-		
-	\end{enumerate}
-	
-	\item Execute Ljung Box test for each of the models
-	
-	\begin{enumerate}
-		\item Call \textit{AutomatedBoxTest} to retrieve the Ljung Box p-values for each model
-	\end{enumerate}
-	
-	\item Saving models, boxtests, AICc values and p-values in vectors
-	
-	\item Model Evaluation
-
-	\begin{enumerate}
-		
-		\item Check model goodness of fit via AICc value comparison
-		
-		\begin{enumerate}
-			\item $p_{aicc_i} = \frac{1}{| AIC_{min} - AIC_i | + 2}$
-			%\item p_aicc = 1 / (abs(AICmin – AIC(i)) + 2)
-			\item ``+2'' -> moderate the decrease of values due to the inverse function
-		\end{enumerate}
-		
-		\item Compare p-values of Ljung Box tests to check residual characteristics
-		
-		\begin{enumerate}
-			\item p-values range from 0 to 1 -> determine difference in relation to full range
-			\item $p_{ljung} = \frac{p_{value} - 0.05}{1 - 0.05}$
-		\end{enumerate}
-		
-	\end{enumerate}
-
-	\item Model selection
-
-	\begin{enumerate}
-		\item Calculate weighted result based on goodness of fit values with user defined weights
-		\item $F_i = w_{aicc_i} p_{aicc_i} + w_{ljung_i} p_{ljung_i}$ for each model $i \in M$
-	\end{enumerate}
-	
-	\item Return model with the highest goodness of fit value $F_i$
-
-\end{enumerate}
-
-
-\subsection{SeasonalPeriods}
-
-	\begin{enumerate}
-		\item If target period is specified and enforced
-		
-		\begin{enumerate}
-			\item return a list of (targetPeriod, defaultPeriod) 
-		\end{enumerate}
-		
-		\item Else 
-		
-		\begin{enumerate}
-			\item Get the x most frequent periods sorted by number of occurrences descending, where x is a user defined number (apply periodogram)
-			\item If a max period limit has been specified, discard any periods above this limit
-			\item If the number of occurrences of a period falls below the white noise threshold, discard the period
-			
-			\item If the target period is specified and has been found
-			
-			\begin{enumerate}
-				\item return a list of (targetPeriod, defaultPeriod) 
-			\end{enumerate}
-			
-			\item Otherwise
-			
-			\begin{enumerate}
-				\item add the defaultPeriod (=1) to the list of periods and return the list
-			\end{enumerate}
-		\end{enumerate}
-	\end{enumerate}
-
-
-\subsection{AutomatedBoxTest}
-
-\begin{enumerate}
-	\item Determine the most suitable value for the lag based on the sample size and 
-	whether seasonal periods are existing in the dataset. 
-	
-	\begin{enumerate}
-		\item The following rules of thumb have been established to determine a suitable value for the lag of the test \cite{hyndman2014blog}: 
-		
-		\begin{enumerate}
-			\item for non-seasonal time series a lag value of $h=min(10,T/5)$ should be used
-			\item for seasonal time series a lag value of $h=min(2m,T/5)$ should be used,
-				where $T$ denotes the sample size and $m$ the seasonal period
-		\end{enumerate}
-		
-		\item The number of determined lags is reduced by the number of parameters in the model
-		
-		\item The box test is executed and result is returned
-	\end{enumerate}
-	
-\end{enumerate}
-
-
-\subsection{Discussion}
-
-The core of the model selection algorithm are steps 8 and 9 of Function GenerateArimaModel where relative measures for both AICc and Ljung Box values have been developed to be able to integrate them into a weighted function. Thus it is possible to define weights to define the impact of each validation measure on forecast model selection. 
-As mentionend before (Section \ref{ssec:model_evaluation}) AICc value results should in general be given precedence over Ljung Box values since AICc values are considered more stable. 
-
-Another thing to note is the so called \textit{target period} in function \textit{SeasonalPeriods}. This is a user estimated period which is assumed to be contained in the dataset. If it is found it is given precedence over other periods returned. There is also the possibility of ``enforcing'' the period in which case it is taken without calculating other periods. 
-
-
 
 
 

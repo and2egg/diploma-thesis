@@ -1,15 +1,929 @@
 
 \section{Introduction}
 
+As outlined in \ref{sec:electricity_price_forecasting} different types of models have been investigated for forecasting spot electricity prices. In this work forecasting models should be used that exhibit the following characteristics: 
+
+\begin{itemize}
+	\item computationally lightweight
+	\item capable of modeling seasonality
+	\item capable of recognizing trends in the dataset
+	\item good out-of-sample accuracy based on day ahead and real time electricity prices
+	\item capable of being part of an automated model generation process
+	\item accurate modeling of different energy price characteristics
+\end{itemize}
+
+Statistical models have been proven to provide good results and at the same time keeping the computational effort low \cite{aggarwal2009electricity,bunn2003forecasting}. In contrast structural or non-parametric models require additional input data and perform more complex operations such that they might not be the optimal choice for dynamic forecast environments. Therefore models in this work have been chosen from the well known set of parsimonious stochastic models. 
+
+Different stochastic models are able to generate forecasts while considering existing seasonality in the data \cite{gould2008forecasting,de2011forecasting}. Examples of models exhibiting these characteristics are SARIMA, HoltWinters and TBATS, all of which are investigated in this work to evaluate their capability of forecasting on different settings and datasets. The best model is then chosen to provide forecasts for all simulations described later in this work. 
+
+In general time series may be decomposed into seasonal, trend and cycle components which can be made use of by forecast models \cite{de2011forecasting}. Some models such as ARIMA and TBATS can handle existing trends in the dataset by applying transformations in a preprocessing step or by decomposing and separately modeling time series components. More simplistic models such as Simple Exponential Smoothing (SES) or pure Autoregressive (AR) models require the dataset to be stationary, i.e.~to exhibit a constant mean and variance \cite{weron2007modeling,hyndman2012forecasting}. In this case the dataset would have to be transformed before applying those models. 
+
+Models should provide good out-of-sample accuracy which means that they need to be trained and tested on different datasets \cite{hyndman2012forecasting}. For example, considering training data from a training period of four weeks of energy price data and test data from a subsequent test period of one week a model is trained based on that training data but tested on the provided test data. Thus real life forecasting scenarios can be established and models are evaluated based on the accuracy on test datasets. A large scale evaluation of forecasting models based on different trainings and test datasets is presented later in this section. 
+
+Building an automated model generation process is important for automatic model evaluation and model selection for simulations running over a longer period of time. As extensive simulations including forecasts represent a core contribution of this work an automated model generation process has been defined including preprocessing steps and model evaluation to find the best suited model for a given dataset. 
+
+Inclusion of energy price characteristics such as mean reversion and price spikes into forecast model generation has been studied extensively considering different types of forecast models \cite{weron2008forecasting,bunn2003forecasting,aggarwal2009electricity}. Mean reversion denotes the characteristic that a time series returns to its mean after significant deviation. This characteristic is modeled by a AR(1) process and can be incorporated e.g.~into an ARIMA model. For handling price spikes three approaches have been defined in literature \cite{weron2008forecasting}: 1) Using models that allow spikes in input datasets 2) Remove price spikes completely from the data 3) Recognize and dampen observed spikes to mitigate their impact on out-of-sample forecasts. For simplicity reasons price spikes have not been modeled explicitly in this work meaning they are not dampened or removed from the datasets. 
+
+
 
 \section{Methodology}
 
+In this section the various methodologies used in the forecasting framework are discussed. 
+
+%It presents seasonality estimation, time series decomposition, selected forecast models, model selection algorithm, the forecast simulation framework and a forecast model evaluation implemented on a large scale. 
 
 
-\section{Model generation}
+\subsection{Seasonality estimation and periodogram}
 
+Estimating seasonality is an important pre-processing step when building forecasting models. As most models are not able to automatically detect seasonality in the given data it is vital to determine possible seasonality cycles beforehand. 
+
+One way of detecting seasonality in the data is by doing a spectral analysis for exploration of cyclical patterns. 
+During the process the data is decomposed into underlying sinusoidal (sine and cosine) functions with particular wavelengths \cite{weron2007modeling}. 
+The wavelength is commonly described as frequency which is the number of cycles per unit time. 
+
+The frequency $\omega$ and the period $T$ have a reciprocal relationship $\omega = \frac{1}{T}$. Thus the period $T$ denotes the number of unit time stamps required to complete one period which in case of daily seasonality in a time series of hourly observations can be 24 time stamps, i.e.~24 hours. 
+
+In order to visualize common frequencies a \textit{periodogram} may be generated which can be regarded as a tool for retrieving the most common frequencies from the dataset. As existing seasonality patterns in the data are likely to be detected by the periodogram as high valued frequencies it can be used to extract these frequencies and calculate the reciprocal as the seasonal period $T$. 
+
+The formula of a periodogram for a vector of observations $\{x_1,\ldots,x_n\}$ is defined as \cite{weron2007modeling}:
+
+		\[ I_n (w_k) = \frac{1}{n} \left| \sum_{t=1}^{n}{x_t  e^{-i(t-1) \omega_k} } \right|^2 \]
+		
+		where $\omega_k = 2 \pi (k/n)$ denote the Fourier frequencies in radians per unit time, $k = 1,\ldots,[n/2]$ and $[x]$ describes the largest integer value less than or equal to $x$. 
+
+Figure \ref{fig:periodogram_July_2014} shows a periodogram of two weeks of hourly day ahead prices from the Nord Pool Spot power market. 
+On the x-axis frequencies from 0 to 0.5 are displayed, on the y-axis each frequency's corresponding value is depicted, proportional to the number of occurrences of this frequency. In case of a random signal the frequencies should be uniformly distributed across the frequency scale. In this case clearly two frequency values stand out where the values are of magnitudes $\omega_1 = 0.0416$ and $\omega_2 = 0.0833$. This results in periods $T_1 = 24$ and $T_2 = 12$, which means that the underlying series exhibits a strong daily seasonality of 24 hourly prices with a so called \textit{harmonic} of 12 periods which denotes a multiple of the 24 hour period. 
+
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.8\textwidth]{figures/forecasting/periodogram_July_2014.png}
+	\caption{Periodogram of hourly day ahead prices of Nord Pool Spot, Helsinki from July 7th to July 21st in 2014}
+	\label{fig:periodogram_July_2014}
+\end{figure}
+
+After successfully determine meaningful seasonalities and their resulting periods from the dataset this information can be used to build forecast models that consider the respective seasonal periods in the model generation process. 
+
+
+
+\subsection{Seasonal decomposition} \label{ssec:seasonal_decomposition}
+
+Seasonal decomposition describes the process of decomposing a given time series into its components which are trend, seasonal or cyclic and irregular components. Decomposition is done by applying the STL model to the time series and extracting the above mentioned components where STL is defined as Seasonal-Trend decomposition procedure based on Loess \cite{cleveland1990stl}. 
+
+The decomposition of a time series can be formalized as follows \cite{cleveland1990stl}: 
+
+	\[ Y_v = T_v + S_v + R_v \]
+	
+where $Y_v$ denotes the original time series, $T_v$ the trend component, $S_v$ the seasonal component and $R_v$ the remainder component. $v \in \{ 1,\ldots,N \}$ denotes an individual time stamp in the series where $N$ is the number of unit time stamps in the time series. 
+
+A sample seasonal decomposition of hourly time series is depicted in Figure \ref{fig:stl_decomposition_July_2014}. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=1.00\textwidth]{figures/forecasting/stl_decomposition_July_2014.png}
+	\caption{STL decomposition of hourly day ahead time series, Nord Pool Spot, Helsinki from July 7th to July 21st in 2014}	
+	\label{fig:stl_decomposition_July_2014}
+\end{figure}
+
+The plot consists of four rows with each row containing a different time series component. 
+The first row shows the original time series with hourly prices over a time period of two weeks. There are evident daily and weekly seasonal periods visible in the time series. Daily seasonality can be observed by the repetitive pattern of highs and lows over each day whereas weekly seasonality is evident due to the recognizable decline of prices towards the end of each week. 
+
+The second row represents the extracted daily seasonal component which depicts the daily variation in prices. STL is only capable of extracting a single seasonality pattern. In case both daily and weekly seasonal periods should be extracted a BATS or TBATS model can be used (these models are discussed later in this section). 
+
+In the third row the trend component is displayed. It shows a seemingly repetitive pattern over one week, which denotes the weekly seasonal period observable from the original time series. 
+
+Finally in the last row the remaining irregular component is shown which contains all remaining variations in the time series. 
+
+The grey bars at the right hand side of each plot aim to provide a relative comparison of scales over all plots, i.e.~the height of the bars show the same value range in different scales. Thus the whole value range of the trend component is equivalent with the value range of about one third of the original time series. 
+
+
+
+
+\subsection{Forecast models}
+
+Different statistical forecast models have been chosen to be investigated on a large scale. The selection of forecast models includes simpler models such as Simple Exponential Smoothing and more advanced models such as ARIMA and TBATS and variants thereof. The purpose of the evaluation is to provide insights into the performance of different forecast models when applied to electricity price time series. 
+
+\subsubsection{Mean forecast}
+
+The mean forecast is a simple model based on previous observations of a time series. It calculates the mean over a training data set and uses this mean as forecast for all future values \cite{hyndman2012forecasting}. 
+
+It can be formally defined as in equation \ref{eq:mean_forecast}
+
+%\begin{equation}
+%\hat{Y}_{t+i} = Y_t
+%\label{eq:naive_forecast}
+%\end{equation}
+
+\begin{equation}
+\hat{y}_{T+h|T} = \frac{1}{T} \sum_{i=1}^T y_i
+\label{eq:mean_forecast}
+\end{equation}
+
+where $T$ denotes the number of observations in the trainings dataset, $y_i$ denote historical values and $\hat{y}_{T+h|T}$ denotes a forecast of $h$ values into the future beginning at the value of $y_T$. 
+
+Even though the mean forecast only includes simple calculations it can be effective to forecast random or near random time series or time series that exhibit strong volatility. As it is the simplest of the proposed models it should serve as a baseline model to which other models' performance can be compared. 
+
+\subsubsection{Simple Exponential Smoothing}
+
+The Simple Exponential Smoothing model (SES) belongs to the category of exponential smoothing models which calculate the weighted average over historical observations where weights are exponentially decreased for observations in the past. 
+
+As the name implies this model is the simplest of exponential smoothing models which is designed to provide forecast for time series without trend or seasonal components. Similar to the mean forecast model past values of a time series are processed but with given weights that decrease exponentially over time \cite{hyndman2012forecasting,weron2007modeling}. 
+
+The corresponding formula is depicted in Equation \ref{eq:ses_forecast} 
+
+\begin{equation}
+\hat{y}_{T+1|T} = \sum_{i=0}^{T-1} \alpha (1 - \alpha)^i y_{T-i}
+\label{eq:ses_forecast}
+\end{equation}
+
+where $\alpha$ with $0 \le \alpha \le 1$ denotes the smoothing parameter that determines the influence of past observations through setting the corresponding weights. Thus by modifying values of $\alpha$ the resulting impact of past values to forecasted values can be defined. 
+
+\subsubsection{Holt's Exponential Smoothing}
+
+Holt's Exponential Smoothing (Holt's ES) is a linear trend method which extends Simple Exponential Smoothing by including trends in the model generation process \cite{hyndman2012forecasting}. The model consists of two separately modeled components which are level and trend components. These are combined to obtain forecasts for a given time series. It can be formalized by the following equations:
+
+\begin{align}
+ \hat{y}_{t+h|t} &= l_t + h b_t \label{eq:holts_forecast} \\
+ l_t &= \alpha y_t + (1 - \alpha) (l_{t-1} + b_{t-1})\label{eq:holts_level_component} \\
+ b_t &= \beta (l_t - l_{t-1}) + (1 - \beta) b_{t-1}\label{eq:holts_trend_component}
+\end{align}
+
+Equation \ref{eq:holts_forecast} denotes the forecast value $\hat{y}_{t+h|t}$ which is forecasted $h$ steps into the future beginning from time stamp $t$. It consists of a combination of the level $l_t$ at time $t$ and the trend $b_t$ at time $t$ continued over the next $h$ time intervals. 
+
+The level component is described in Equation \ref{eq:holts_level_component} which denotes a linear combination of the actual value $y_t$ at time $t$ and the level forecast constructed from previous time stamp's level $l_{t-1}$ and trend $b_{t-1}$ components. 
+
+Equation \ref{eq:holts_trend_component} depicts the trend component which is a linear combination of the difference of the current and previous levels ($l_t, l_{t-1}$) and the estimated trend component $b_{t-1}$ from the previous point in time. 
+
+$\alpha$ and $\beta$ exhibit characteristics $0 \le \alpha \le 1$ and $0 \le \beta \le 1$ and denote the smoothing parameters for the level and trend components, respectively.
+
+\subsubsection{Seasonal HoltWinter's model}
+
+The Seasonal HoltWinter's model is the first of the discussed models which is capable of modeling seasonality in the dataset. It further extends the capabilities of the SES and Holt's ES models by an additional seasonal component. Thus besides the level and trend components $l_t$ and $b_t$ a seasonal component $s_t$ is introduced, with smoothing parameters $\alpha, \beta, \gamma$, respectively \cite{hyndman2012forecasting}. 
+
+The corresponding equations are defined as
+
+\begin{align}
+ \hat{y}_{t+h|t} &= l_t + h b_t + s_{t-m+h_m^+} \label{eq:holtwinter_forecast} \\
+ l_t &= \alpha (y_t - s_{t-m}) + (1 - \alpha) (l_{t-1} + b_{t-1})\label{eq:holtwinter_forecast_level_component} \\
+ b_t &= \beta (l_t - l_{t-1}) + (1 - \beta) b_{t-1}\label{eq:holtwinter_forecast_trend_component} \\
+ s_t &= \gamma (y_t - l_{t-1} - b_{t-1}) + (1 - \gamma) s_{t-m}\label{eq:holtwinter_forecast_seasonal_component}
+\end{align}
+
+where $m$ denotes the period of seasonality (e.g.~$m=12$ for monthly data when one year is the base unit) and $h_m^+ = \left\lfloor (h-1) \mod m\right\rfloor + 1$ represents the additional number of steps ahead required to model the corresponding seasonal period $m$. Therefore $s_{t-m+h_m^+}$ denotes the previously occurred seasonal period which is added to the forecast equation in Equation \ref{eq:holtwinter_forecast}. 
+
+The level component in Equation \ref{eq:holtwinter_forecast_level_component} is adjusted by the level of the last occurred seasonal period $s_{t-m}$ to consider seasonal differences. The equation for the trend component $b_t$ is taken directly from the one of Holt's ES in Equation \ref{eq:holts_trend_component} whereas the seasonal component is defined in Equation \ref{eq:holtwinter_forecast_seasonal_component}. 
+
+The seasonal component is denoted as a weighted sum of the current value $y_t$ substracted by previous level and trend components and the value of the seasonal component exactly $m$ periods before. 
+
+The smoothing parameters $\alpha, \beta$ and $\gamma$ are estimated by minimizing the squared one-step prediction error to appropriately weigh the different components to yield best results \cite{r2016language}. 
+
+
+\subsubsection{ARIMA models}
+
+ARIMA models or Auto Regressive Integrated Moving Average models are highly adjustable time series models that can incorporate a number of features from the dataset. They are capable of modeling correlations in the data as well as provide a smoothing method to dampen the impact of extreme outliers. 
+
+ARIMA models may consist of both autoregressive (AR) and moving average (MA) terms to accurately model the underlying dataset \cite{hyndman2012forecasting,weron2007modeling}. 
+
+\paragraph{AR model} The autoregressive component is used to model dependencies in the data such that correlations within the dataset are reduced. It is defined as a weighted sum of past values of an observation. An AR(p) model is shown in Equation \ref{eq:ar_component}.
+
+\begin{equation}
+	y_t = c + \sum_{i=1}^p \phi_i y_{t-i} + e_t
+\label{eq:ar_component}
+\end{equation}
+
+where $y_t$ is modeled as the sum of the past $p$ values of $y$ plus an additional error component $e_t$ and a constant $c$. AR coefficients $\phi_1,\ldots,\phi_p$ are used to weight past observations and need to be estimated in the model generation process. 
+
+\paragraph{MA model} The moving average component models a time series as a moving average of past error terms. Equation \ref{eq:ma_component} gives the formal definition: 
+
+\begin{equation}
+	y_t = c + e_t + \sum_{i=1}^q \theta_i e_{t-i}
+\label{eq:ma_component}
+\end{equation}
+
+where $e_t$ denotes the forecast error at time $t$ and the error terms are weighted by MA coefficients $\theta_1,\ldots,\theta_q$.
+
+\paragraph{ARIMA model} An ARIMA model consist of both AR and MA terms. In addition ARIMA models are able to model non-stationary time series by applying differencing operations to the dataset. ARIMA(p,d,q) denotes a model consisting of $p$ number of AR terms, $q$ MA terms and $d$ number of differences. 
+It can be described as the sum of AR and MA terms:
+
+\begin{equation}
+	y_t = \sum_{i=1}^p \phi_i y_{t-i} + \sum_{i=1}^q \theta_i e_{t-i} + e_t + c
+\label{eq:arima_model}
+\end{equation}
+
+When applying the model the possible applied differences during data preprocessing are reversed by integrating the results which refers to the \textit{Integrating} part of the model. 
+
+ARIMA models can be enhanced to model seasonal periods which are defined as ARIMA (p,d,q)(P,D,Q)\textsubscript{m} also denoted as SARIMA models. 
+In addition to non-seasonal parameters $p, d$ and $q$ the seasonal parameters $P$, $D$ and $Q$ denote the seasonal AR, differencing and MA components, respectively. 
+
+
+
+\subsubsection{BATS and TBATS models}
+
+Multiple seasonal periods can be applied by models such as BATS and TBATS \cite{r2016language}. This can be done by applying a BATS or TBATS model to the time series, identifying different seasonal and trend components and modeling each component separately \cite{de2011forecasting}. 
+
+Both BATS and TBATS models are able to handle multiple seasonalities in the data, i.e.~considering both daily and weekly seasonal periods where TBATS models are capable of modeling non-integer periods as well (e.g.~365.25 for annual seasonality). 
+
+\paragraph{BATS model} BATS stands for Box-Cox transform, ARMA errors, Trend, and Seasonal components. TBATS can then be regarded as the trigonometric version of BATS. 
+
+The definition of BATS is outlined in the following equations: 
+
+
+\begin{equation}
+	y_t^{(\omega)} = 
+	\begin{cases}
+		\frac{y_t^\omega - 1}{\omega}, & \omega \neq 0 \\
+		\log y_t, & \omega = 0
+	\end{cases}
+\end{equation}
+
+
+%\begin{equation}
+	%y_t^{(\omega)} = 
+	%\begin{cases}
+		%\frac{y_t^\omega - 1}{\omega}, & \text{if}\ a=1 \\
+		%\log y_t, & \text{otherwise}
+	%\end{cases}
+%\end{equation}
+
+
+\begin{align}
+	y_t^{(\omega)} &= l_{t-1} + \phi b_{t-1} + \sum_{i=1}^T s_{t-m_i}^{(i)} + d_t\label{eq:bats_model} \\
+	l_t &= l_{t-1} + \phi b_{t-1} + \alpha d_t \\
+	b_t &= (1 - \phi) b + \phi b_{t-1} + \beta d_t \\
+	s_t^{(i)} &= s_{t-m_i}^{(i)} + \gamma_i d_t\label{eq:bats_seasonal} \\
+	d_t &= \sum_{i=1}^p \Phi_i d_{t-i} + \sum_{i=1}^q \theta_i e_{t-i} + e_t
+\end{align}
+
+where $y_t^{(\omega)}$ denotes the Box-Cox transformed value with parameter $\omega$ where $y_t$ is the current value at time $t$ (See also Box-Cox transform in \ref{ssec:box_cox_transformation}). 
+
+$l_t$ describes the level, $b$ denotes the long term trend, $b_t$ represents the trend, $e_t$ is gaussian white noise with zero mean and constant variance and $s_t^{(i)}$ denotes the i-th seasonal component. $\phi$ denotes the damping parameter for the trend and defines the impact of short and long term trends. All of these components are adjusted by a weighted ARMA component $d_t$ and coefficients $\alpha$, $\beta$ and $\gamma$, respectively. 
+
+A BATS model is parameterized by BATS($\omega$,$\phi$,$p$,$q$,$m_1$,\ldots,$m_T$) with the Box-Cox parameter $\omega$, damping parameter $\phi$, ARMA parameters $p$ and $q$ and seasonal periods $m_1,\ldots,m_T$. A double seasonal model (e.g.~daily and weekly) with an AR(1) component can be described as BATS(1,1,1,0,$m_1$,$m_2$) with default Box-Cox and damping parameters. 
+
+\paragraph{TBATS model} As BATS models possibly result in a large number of states and only pure integer seasonal periods may be modeled, the TBATS model has been developed \cite{de2011forecasting}. This model enhances the BATS model with trigonometric expressions:
+
+\begin{align}
+	s_t^{(i)} &= \sum_{j=1}^{k_i} s_{j,t}^{(i)}\label{eq:tbats_seasonal} \\
+	s_{j,t}^{(i)} &= s_{j,t-1}^{(i)} \cos \lambda_j^{(i)} + s_{j,t-1}^{*(i)} \sin \lambda_j^{(i)} + \gamma_1^{(i)} d_t \\
+	s_{j,t}^{*(i)} &= - s_{j,t-1} \sin \lambda_j^{(i)} + s_{j,t-1}^{*(i)} \cos \lambda_j^{(i)} + \gamma_2^{(i)} d_t 
+\end{align}
+
+where $s_{j,t}^{(i)}$ describes the stochastic level of the i-th seasonal component and $s_{j,t}^{*(i)}$ represents the stochastic growth in the level of the i-th seasonal component which can be described as the change of value of the seasonal component over a period of time. $k_i$ is the number of harmonics required for the ith seasonal component, $\gamma_1^{(i)}$ and $\gamma_2^{(i)}$ are smoothing parameters and $\lambda_j^{(i)} = \frac{2 \pi j}{m_i}$ the trigonometric parameter which depends on the corresponding seasonal period $m_i$. 
+
+Finally the model can be obtained by replacing $s_t^{(i)}$ in equation \ref{eq:bats_seasonal} by the trigonometric expression in equation \ref{eq:tbats_seasonal} and replacing $s_{t-m_i}^{(i)}$ in equation \ref{eq:bats_model} by $s_{t-1}^{(i)}$. 
+
+
+\subsection{Box Cox transformation} \label{ssec:box_cox_transformation}
+
+Box cox transformations are used to transform non-normal data to exhibit a normal distribution like behavior \cite{box1964analysis}. Since most statistical time series models (e.g.~ARIMA) require data to have constant variance this technique can be used as a preprocessing step before applying data to forecasting models \cite{nelson1979experience}. 
+
+The formula for box cox transformations is as follows: 
+
+
+\begin{equation}
+	y^{(\lambda)} = 
+	\begin{cases}
+		\frac{y^\lambda - 1}{\lambda}, & \lambda \neq 0 \\
+		\log y, & \lambda = 0
+	\end{cases}
+	\label{eq:box_cox_transform}
+\end{equation}
+
+\begin{equation}
+	y^{(\lambda)} = 
+	\begin{cases}
+		\frac{(y + c)^\lambda - 1}{\lambda}, & \lambda \neq 0 \\
+		\log (y + c), & \lambda = 0
+	\end{cases}
+	\label{eq:box_cox_transform_with_constant}
+\end{equation}
+
+where conditions $y > 0$ and $y > -c$ apply to equations \ref{eq:box_cox_transform} and \ref{eq:box_cox_transform_with_constant}, respectively. 
+
+Since the value of $\lambda$ can be less than one $y$ has to be positive and thus a constant term $c > 0$ is required in case $y < 0$ (equation  \ref{eq:box_cox_transform_with_constant}). 
+
+In \cite{nelson1979experience} the autors show that it might not be always possible to transform a series to show a normal distribution and that the application of the procedure can be costly. Still some improvements to forecasts can be achieved by applying Box-Cox transformation to non-normal distributions as a preprocessing step to model generation. 
+
+
+\subsection{Forecast accuracy measures} \label{ssec:forecast_acc_measures}
+
+Different forecast accuracy methods can be applied to investigate model performance. These methods are based on estimating the overall forecast error for a given model and forecast horizon \cite{hyndman2012forecasting, weron2007modeling}. 
+
+The forecast errors are computed as a function of residuals which are defined as the differences of actual values to forecasts \cite{hyndman2012forecasting}: 
+
+\begin{equation}
+	e_i = y_i - \hat{y_i}
+\label{eq:residuals}
+\end{equation}
+
+where $\hat{y_t}$ denotes the one step ahead forecast based on a series of past values $\{y_1,\ldots,y_{t-1}\}$. 
+
+
+\subsubsection{Scale-dependent error measures}
+
+Scale dependent errors are absolute error measures depending on the scale of the examined dataset. Therefore when comparing these types of error measures they should be applied to data showing the same scale. 
+
+\paragraph{Mean error}
+The mean error (ME) denotes a measure of the mean value of forecast errors over a given period of time. 
+It can be seen as indication of the symmetry of the forecast error distribution. 
+
+\begin{equation}
+\frac{1}{n} \sum_{i=1}^{n} \hat{y}_i - y_i
+\label{eq:acc_me}
+\end{equation}
+
+where $n$ is the number of observations, $\hat{y}_i$ is the forecast for observation $i$ and $y_i$ denotes the actual value for observation $i$. 
+
+\paragraph{Mean absolute error}
+The mean absolute error (MAE) shows the mean of all absolute errors over the forecast horizon where the absolute error is defined by the absolute difference between a value of the dataset and its forecasted value. The mean absolute error provides a means for retrieving a measure proportional to actual forecast errors. 
+
+\begin{equation}
+\frac{1}{n} \sum_{i=1}^{n} |\hat{y}_i - y_i|
+\label{eq:acc_mae}
+\end{equation}
+
+
+
+\paragraph{Root mean squared error}
+The root mean squared error (RMSE) takes the root of the sum of the squared forecast errors which puts more emphasis on possible outliers in residual values. 
+
+\begin{equation}
+	\sqrt{\frac{1}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)^2}
+\label{eq:acc_rmse}
+\end{equation}
+
+
+\subsubsection{Percentage based error measures}
+
+Percentage based error measures have the advantage of providing scale independent measures for comparing forecast errors across different time series. However a significant disadvantage of percentage errors is their inability to handle zero values in time series. Also numerical compuations become unstable when values get closer to zero. 
+
+
+\paragraph{Mean percentage error}
+
+The mean percentage error (MPE) is dependent on the symmetry of the forecast error distribution as positive and negative value differences might cancel each other out. This can be compared to the mean error which shows the same behavior as a scale dependent measure. 
+
+
+\begin{equation}
+\frac{1}{n} \sum_{i=1}^{n} \frac{\hat{y}_i - y_i}{y_i}
+\label{eq:acc_mpe}
+\end{equation}
+
+
+
+\paragraph{Mean absolute percentage error}
+
+The mean absolute percentage error (MAPE) shows similar to the mean absolute error the mean of all absolute errors but as percentage error relative to the corresponding actual value. 
+
+\begin{equation}
+\frac{1}{n} \sum_{i=1}^{n} \left|\frac{\hat{y}_i - y_i}{y_i}\right|
+\label{eq:acc_mape}
+\end{equation}
+
+
+
+
+\section{Model generation} \label{sec:model_generation}
+
+In this section the procedure of generating an ARIMA model is described. Since ARIMA models are classical time series models which showed reasonable results in energy price forecasting \cite{aggarwal2009electricity,weron2005forecasting} they have been investigated in detail to provide a better understanding of the model generation process. 
+
+In addition to the well known Box Jenkins approach (see section \ref{ssec:arima_models_to_predict_next_day_prices}) a custom model selection process is proposed for manual ARIMA model selection \cite{hyndman2012forecasting}. This process is outlined in Figure \ref{fig:manual_arima_forecasting_procedure}.
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.70\textwidth]{figures/forecasting/manual_arima_forecasting_procedure.png}
+	\caption{Manual ARIMA model generation process \cite{hyndman2012forecasting}}
+	\label{fig:manual_arima_forecasting_procedure}
+\end{figure}
+
+In this case a manual model generation process is conducted. The data based on which a model will be generated together with diagnostic plots (ACF, PACF) is shown in Figure \ref{fig:tsdiag_prices_acf_pacf}. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.95\textwidth]{figures/forecasting/tsdiag_prices_acf_pacf.png}
+	\caption{Two weeks of hourly day ahead prices with ACF and PACF plots (Nord Pool Spot, Helsinki from July 7th to July 21st in 2014)}
+	\label{fig:tsdiag_prices_acf_pacf}
+\end{figure}
+
+The dataset consists of two weeks of hourly day ahead prices amounting to a total of 336 hours. Figure \ref{fig:tsdiag_prices_acf_pacf} shows three plots, at the top a time series plot showing the energy price time series is depicted, on the bottom left an autocorrelation plot (ACF) is shown and on the bottom right a partial autocorrelation plot (PACF) is printed. 
+As already discussed in section \ref{ssec:seasonal_decomposition} this data exhibits daily and weekly seasonality which is clearly visible on the time series plot. 
+
+As ARIMA models require data to be stationary (i.e.~it exhibits no trend or seasonality) the proposed method to transform a series into a stationary series is to apply one or more levels of differencing or seasonal differencing. The resulting residuals of the model should show no autocorrelations and should exhibit a zero mean \cite{hyndman2012forecasting}. Ideally residuals have constant variance and exhibit a normal distribution as well. 
+
+ACF and PACF plots are diagnostic plots to examine correlations within the dataset \cite{nist2012handbook,nau2016statistical}. 
+Both ACF and PACF plots display individual lags on the x-coordinate while on the y-coordinate the values of the autocorrelation and partial autocorrelation functions are displayed for ACF and PACF plots, respectively. The dashed blue lines denote the 95\% confidence interval for white noise, i.e.~lag values contained within this interval do not reject the white noise hypothesis. 
+Values exceeding the confidence bounds are "`significant"' regarding correlations in the data. 
+%However 1 in 20 lags is allowed to exceed the significance bounds without violating the white noise assumption. 
+
+The ACF plot displays the ``coefficients of correlation between a time series and lags of itself'' whereas the PACF plot shows the ``partial correlation coefficients between the series and lags of itself'' \cite{nau2016statistical}. 
+Correlation coefficients for autocorrelations are said to be interdependent which means that the value of an autocorrelation at lag $h$ depends on correlations of all previous lags $1,\ldots,h-1$. In contrast, partial autocorrelations only include correlations specific to lag $h$ without considering correlations at lower order lags. 
+
+According to the model generation process in Figure \ref{fig:manual_arima_forecasting_procedure} data should be differenced if necessary to make the series stationary. In this case a seasonal difference might be appropriate due to the obvious seasonality in the time series. 
+
+The ACF plot above shows a decay of significant autocorrelations whereas the PACF plot depicts several significant spikes with most significant ones at lags 2 and 25. 
+As the spike at lag 25 in the PACF plot is close to the assumed seasonal period of 24 this may suggest adding a seasonal AR(1) term with a period of 24. The peak value at lag 24 in the ACF plot may be another indicator of seasonal correlation.
+Therefore, the suggested intermediate ARIMA model is ARIMA(0,0,0)(1,1,0)[24] with a seasonal AR term and one level of seasonal differencing with a period of 24. 
+
+The resulting model residuals are depicted in Figure \ref{fig:residuals_arima_000_110}. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.95\textwidth]{figures/forecasting/residuals_arima_000_110.png}
+	\caption{Intermediate ARIMA(0,0,0)(1,1,0)[24] model with seasonal difference}
+	\label{fig:residuals_arima_000_110}
+\end{figure}
+
+Figure \ref{fig:residuals_arima_000_110} depicts residuals with removed hourly seasonality and zero mean. However the series can not be regarded as stationary as significant deviations exist from the mean in the time series. Apart from the weekly seasonality further correlations can be identified. 
+
+According to \cite{nau2016statistical} a cut-off (rapid decrease of correlation values) at the PACF plot indicates adding an AR term with an order corresponding to the number of the last significant lag of this occurrence. Conversely a cut-off at the ACF plot indicates the addition of a MA term with the number of the last significant lag in the ACF plot. 
+
+Since Figure \ref{fig:residuals_arima_000_110} shows a slow decay in the ACF and a small but significant coefficient at lag 2 in the PACF we recognize a cut-off at this lag in the PACF and add a (non-seasonal) AR(2) term to the model. 
+Thus the resulting model is ARIMA(2,0,0)(1,1,0)[24] which is shown in Figure \ref{fig:residuals_arima_200_110}. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.95\textwidth]{figures/forecasting/residuals_arima_200_110.png}
+	\caption{Residuals of ARIMA(2,0,0)(1,1,0)[24]}
+	\label{fig:residuals_arima_200_110}
+\end{figure}
+
+The time series of residuals above can be assumed to be stationary as no significant deviations from the mean are visible. 
+
+There is only one significant spike at lag 24 remaining which might indicate still some seasonal information in the data, however it could be as well regarded as outlier as 1 in 20 spikes is said to be significant by chance alone \cite{hyndman2012forecasting}. 
+
+
+%
+%The autocorrelation function determines the existence or non-existence of correlation between lagged variables within a time series \cite{nist2012handbook}. 
+%That is, the correlation between a point in the time series to another point in the same time series is calculated where the gap between the two points is fixed by the given lag (hence the name \textit{auto}-correlation). 
+%
+%The autocorrelation function is defined as the autocorrelation coefficient $R_h$ (equation \ref{eq:autocorr_coeff})
+%
+%\begin{equation}
+%R_h = \frac{C_h}{C_0}
+%\label{eq:autocorr_coeff}
+%\end{equation}
+%
+%
+%where $C_h$ denotes the autocovariance function and $C_0$ defines the variance function 
+%(see equations \ref{eq:autocov_func} and \ref{eq:variance_func}). 
+%
+%
+%\begin{equation}
+%C_h = \frac{1}{N} \sum\limits_{t=1}^{N-h} (Y_t - \bar{Y}) (Y_{t+h} - \bar{Y})
+%\label{eq:autocov_func}
+%\end{equation}
+%
+%
+%\begin{equation}
+%C_0 = \frac{1}{N} \sum\limits_{t=1}^{N} (Y_t - \bar{Y})^2
+%\label{eq:variance_func}
+%\end{equation}
+%
+%with $\bar{Y}$ denoting the mean of the series, $N$ defines the sample size, $Y_t$ the observation at time $t$ and $Y_{t+h}$ the observation $h$ steps ahead from $t$. 
+%The autocovariance function determines the mean of covariance between variables with fixed lag $h$ while the variance function determines the mean variance over all timestamps $N$. 
+
+
+
+\subsection{Model validation}
+
+
+
+The corrected Akaike Information Criterion (AICc) is a well known goodness of fit measure for stochastic models \cite{weron2007modeling}. It provides a relative quality measure for models such that models with lower AICc values are assumed to better capture the characteristics of the underlying data. 
+Equation \ref{eq:aicc_test} defines the metric. 
+
+\begin{equation}
+	AICc = -2 \log \mathcal{L} + \frac{2dn}{n - d - 1}
+\label{eq:aicc_test}
+\end{equation}
+
+with $\log \mathcal{L}$ being the log-likelihood, $d$ the model size (number of parameters) and $n$ denotes the sample size. Note that the model size $d$ is present in order to penalize models having too many parameters. The log-likelihood function estimates how well the model fits the data. 
+
+After a model has been chosen by evaluating the AICc value the model residuals should be checked for existing correlations. As shown in the last section this can be done by verifying the ACF and PACF plots but tests are available for automated testing against randomness \cite{weron2007modeling,hyndman2012forecasting}. 
+
+One of these tests is the Ljung Box test which tests a given number of autocorrelations if they fall outside the significance bounds \cite{weron2007modeling}. The test is defined in Equation \ref{eq:ljung_box_test}. 
+
+%for probability of showing non-white noise properties 
+\begin{equation}
+	Q = n(n + 2) \sum_{j=1}^{h} \frac{\hat{\rho}^2 (j)}{n - j}
+\label{eq:ljung_box_test}
+\end{equation}
+
+with $n$ as the sample size, $h$ as number of lags and $\hat{\rho}^2 (j)$ as the squared autocorrelation at lag $j$. 
+Its distribution can be approximated by the $\chi^2$ distribution with $h$ degrees of freedom. The white noise hypothesis is rejected if $Q > \chi_{1-\alpha}^2 (h)$ with a defined significance level $\alpha$ with $\chi_{1-\alpha}^2$ being the $(1 - \alpha)$ quantile of the $\chi^2$ distribution with $h$ degrees of freedom. 
+
+
+\subsection{Model evaluation}
+
+In order to assess the quality and goodness of fit of the models generated in section \ref{sec:model_generation} they are validated and compared to a model generated by an automatic model generation procedure. 
+
+In addition to the manual model selection procedure shown in the last section automatic model generation procedures exist to detect the model with best goodness of fit parameters by iterating over a set of candidate models. 
+
+For generating ARIMA models the \textit{auto.arima} function may be used \cite{hyndman2012forecasting,r2016language}. 
+
+It is defined by the following steps \cite{hyndman2012forecasting}: 
+
+\begin{enumerate}
+	\item Determine the number of differences $d$ by applying a unit root test (e.g.~KPSS test).
+	\item A set of candidate models is generated starting with the following models: 
+				
+				ARIMA(2,d,2) \\
+				ARIMA(0,d,0) \\
+				ARIMA(1,d,0) \\
+				ARIMA(0,d,1) 
+				
+				Model parameters $p$ and $q$ are modified by adding $\pm 1$ where the best model is set as reference. 
+				Repeat the last line until no model with a lower AICc value can be found. 
+
+\end{enumerate}
+
+A model has been generated using auto.arima based on the same data as used for manual model selection in section \ref{sec:model_generation}. 
+The resulting models with corresponding model parameters are outlined in table \ref{tab:model_names_and_parameters}. 
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{l|l}
+ Model Name & Model Parameters \\ 
+  \hline
+	Intermediate Model	& ARIMA(0,0,0)(1,1,0)[24] \\ 
+	Final Model 				& ARIMA(2,0,0)(1,1,0)[24] \\ 
+	Automatic Model 		& ARIMA(2,0,3)(1,0,2)[24] \\ 
+\end{tabular}
+\caption{Model names and parameters}
+\label{tab:model_names_and_parameters}
+\end{table}
+
+AICc and Ljung Box values have been calculated for each model defined above. For Ljung Box tests a 95\% confidence interval has been used
+such that resulting p-values greater than 0.05 indicate white noise properties of the residuals. Thus a high Ljung Box test value gives 
+high probability of a series resembling white noise. 
+
+The AICc and Ljung Box values are outlined in table \ref{tab:model_aicc_and_ljung_box_values}. 
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{r|r|r|r}
+ & Intermediate Model & Final Model & Automatic Model \\ 
+  \hline
+	AICc 			& 1868.01 & \textbf{1400.22} & 1457.26 \\ 
+  Ljung Box & < 2.2e-16 & 0.1523 & \textbf{0.9927} \\ 
+\end{tabular}
+\caption{AICc and Ljung Box values}
+\label{tab:model_aicc_and_ljung_box_values}
+\end{table}
+
+Results show that it is possible for manually selected models to outperform automatically generated models, i.e.~the Final Model shows a lower AICc value than the Automatic Model. This is presumably due to the manual model using explicit seasonal differencing which the automatic nodel does not use. However the Ljung Box test values indicate a different result where the Automatic Model results in a higher p-value and thus exhibits less correlations than the Final Model. As both models exceed the significance bounds of 0.05 this is only of minor importance as both exhibit white noise characteristics. If in doubt the AICc value should be given precedence over Ljung Box test results. 
 
 \section{Model selection algorithm}
+
+An automated model selection algorithm has been implemented to provide aid in finding suitable ARIMA models for a given trainings dataset. 
+The process consists of several data preprocessing steps with generation and comparison of different ARIMA models and model evaluation based on a weighted function of AICc and Ljung Box test values. 
+
+The model selection algorithm consists of three separate functions each contributing a different part to model generation. These functions are \textit{GenerateArimaModel} as the base function for model generation, \textit{AutomatedBoxTest} for determining the right parameters for the Ljung Box tests and \textit{SeasonalPeriods} for estimation of possibly existing seasonal periods within the data. 
+
+%They will be referred to each other as soon as they are called. 
+
+\subsection{Function GenerateArimaModel}
+
+\begin{enumerate}
+	\item Get trainingsdata
+	
+	\begin{enumerate}
+		\item Read time series of energy prices from given location
+		\item Define trainings period by start and end date
+	\end{enumerate}
+	\item Determine seasonality
+	
+	\begin{enumerate}
+		\item Call \textit{SeaonalPeriods} to retrieve seasonal periods from the data
+	\end{enumerate}
+	
+	\item Create time series objects
+	
+	\begin{enumerate}
+		\item For each seasonal period found create a time series object based on that period
+	\end{enumerate}
+	
+	\item Calculate the Box-Cox transformation parameters
+	
+	\begin{enumerate}
+		\item Compute the Box Cox parameters for each of the created time series objects
+	\end{enumerate}
+	
+	\item Create models
+	
+	\begin{enumerate}
+		\item Create model(s) without BoxCox transformation
+		
+		\begin{enumerate}
+			\item Generate model with auto.arima for each of the created time series objects 
+		\end{enumerate}
+		
+		\item Create model(s) with BoxCox transformation
+		
+		\begin{enumerate}
+			\item Generate model with auto.arima and previously defined lambda (Box-Cox) parameter for each of the created time series objects if Box-Cox parameter is not equal to 1 (then it would have no effect)
+		
+		\end{enumerate}
+		
+	\end{enumerate}
+	
+	\item Execute Ljung Box test for each of the models
+	
+	\begin{enumerate}
+		\item Call \textit{AutomatedBoxTest} to retrieve the Ljung Box p-values for each model
+	\end{enumerate}
+	
+	\item Saving models, boxtests, AICc values and p-values in vectors
+	
+	\item Model Evaluation
+
+	\begin{enumerate}
+		
+		\item Check model goodness of fit via AICc value comparison
+		
+		\begin{enumerate}
+			\item $p_{aicc_i} = \frac{1}{| AIC_{min} - AIC_i | + 2}$
+			%\item p_aicc = 1 / (abs(AICmin – AIC(i)) + 2)
+			\item ``+2'' -> moderate the decrease of values due to the inverse function
+		\end{enumerate}
+		
+		\item Compare p-values of Ljung Box tests to check residual characteristics
+		
+		\begin{enumerate}
+			\item p-values range from 0 to 1 -> determine difference in relation to full range
+			\item $p_{ljung} = \frac{p_{value} - 0.05}{1 - 0.05}$
+		\end{enumerate}
+		
+	\end{enumerate}
+
+	\item Model selection
+
+	\begin{enumerate}
+		\item Calculate weighted result based on goodness of fit values with user defined weights
+		\item $F_i = w_{aicc_i} p_{aicc_i} + w_{ljung_i} p_{ljung_i}$ for each model $i \in M$
+	\end{enumerate}
+	
+	\item Return model with the highest goodness of fit value $F_i$
+
+\end{enumerate}
+
+
+\subsection{SeasonalPeriods}
+
+	\begin{enumerate}
+		\item If target period is specified and enforced
+		
+		\begin{enumerate}
+			\item return a list of (targetPeriod, defaultPeriod) 
+		\end{enumerate}
+		
+		\item Else 
+		
+		\begin{enumerate}
+			\item Get the x most frequent periods sorted by number of occurrences descending, where x is a user defined number (apply periodogram)
+			\item If a max period limit has been specified, discard any periods above this limit
+			\item If the number of occurrences of a period falls below the white noise threshold, discard the period
+			
+			\item If the target period is specified and has been found
+			
+			\begin{enumerate}
+				\item return a list of (targetPeriod, defaultPeriod) 
+			\end{enumerate}
+			
+			\item Otherwise
+			
+			\begin{enumerate}
+				\item add the defaultPeriod (=1) to the list of periods and return the list
+			\end{enumerate}
+		\end{enumerate}
+	\end{enumerate}
+
+
+\subsection{AutomatedBoxTest}
+
+\begin{enumerate}
+	\item Determine the most suitable value for the lag based on the sample size and 
+	whether seasonal periods are existing in the dataset. 
+	
+	\begin{enumerate}
+		\item The following rules of thumb have been established to determine a suitable value for the lag of the test \cite{hyndman2014blog}: 
+		
+		\begin{enumerate}
+			\item for non-seasonal time series a lag value of $h=min(10,T/5)$ should be used
+			\item for seasonal time series a lag value of $h=min(2m,T/5)$ should be used,
+				where $T$ denotes the sample size and $m$ the seasonal period
+		\end{enumerate}
+		
+		\item The number of determined lags is reduced by the number of parameters in the model
+		
+		\item The box test is executed and result is returned
+	\end{enumerate}
+	
+	
+	
+	
+	
+\end{enumerate}
+
+
+%\begin{algorithm}
+    %\caption{Generate ARIMA model algorithm}
+    %\begin{algorithmic}[1]
+		%%\Require $lista[1,...,x_n]$: lista en la que se va a buscar, $elem$: elemento que se va a buscar
+		%%\Ensure $encontrado$: booleano que indica si se encontr\'o el elemento
+		%\Procedure{GenerateArimaModel}{$d$, $tP$, $per$, $topP$, $maxL$, $wA$, $wL$, $bc$, $app$, $sw$, $eT$}
+			%\If{$eT$ AND $tP \neq Null$}
+				%\State $per \gets (tP, 1)$
+			%\Else
+				%\State $per \gets \Call{GetPeriods}{d, tP, maxL}$
+			%\EndIf
+			%
+			%\State $lenp \gets len(per)$
+			%
+			%\State $d\_ts \gets vector(lenp)$
+			%\State $bc\_ts \gets vector(lenp)$
+			%\State $m \gets vector(lenp)$
+			%\State $m\_bc \gets vector(lenp)$
+			%\State $l \gets vector(lenp)$
+			%\State $l\_bc \gets vector(lenp)$
+			%
+			%
+			%\For{$i \leftarrow 1, lenp$}
+				%\State $d\_ts(i) \gets \Call{TimeSeries}{d,per(i)}$
+				%\State $bc\_ts(i) \gets \Call{BoxCox.Lambda}{d\_ts(i)}$
+				%\State $m(i) \gets \Call{Auto.Arima}{d\_ts(i), app, sw}$
+				%\State $l(i) \gets \Call{CustomBoxTest}{m(i)}$
+				%
+				%\If{$bc\_ts(i) \neq 1$ AND $bc = TRUE$}
+					%\State $m\_bc(i) \gets \Call{Auto.Arima}{d\_ts(i), bc\_ts(i), app, sw}$
+					%\State $l\_bc(i) \gets \Call{CustomBoxTest}{m\_bc(i)}$
+				%\EndIf
+			%\EndFor
+			%
+			%\If {$condition$ $1$ OR $condition$ $2$ OR $condition$ $3$}
+        %\State $break$
+			%\EndIf
+				%\State $encontrado \gets False$
+				%\For{i}{1}{n}
+						%\If{$lista[i]=elem$}
+								%\State $encontrado \gets True$
+						%\EndIf
+				%\EndFor
+				%\Return $encontrado$			
+		%\EndProcedure
+		%
+		%\Procedure{GetPeriods}{}
+		%
+		%\EndProcedure
+    %\end{algorithmic}
+%\end{algorithm}
+
+
+%\begin{algorithm}
+    %\caption{Buscar elemento en una lista}
+    %\begin{algorithmic}[1]
+%\Require $lista[1,...,x_n]$: lista en la que se va a buscar, $elem$: elemento que se va a buscar
+%\Ensure $encontrado$: booleano que indica si se encontr\'o el elemento
+        %\Procedure{Buscar}{$lista$, $elem$}
+            %\State $encontrado \gets False$
+            %\For{i}{1}{n}
+                %\If{$lista[i]=elem$}
+                    %\State $encontrado \gets True$
+                %\EndIf
+            %\EndFor
+            %\Return $encontrado$
+        %\EndProcedure
+    %\end{algorithmic}
+%\end{algorithm}
+
+
+%\begin{algorithm}
+  %\caption{Algorithm for finding server indices using OFG}
+%
+  %\begin{algorithmic}
+    %\Statex \Comment { \%comment: servers[] contains the index of servers whose         data rate are sorted in descending order\%}
+    %\State servers[]= index(of all servers) 
+    %\State serverIndex[]=servers[0..K]
+    %\State linearlyIndependentServerIndex[]=0
+    %\State $[Z] \leftarrow 0$
+    %\For  {$i=0$ to $serverIndex.length$} 
+    %\Statex\Comment{ \%comment: find the equation corresponding the serverIndex        from the mapping at the File Server\%} 
+    %\State        $eqn= equation(serverIndex[i])$ 
+    %\Statex\Comment{ \%comment: try insert equation into Z using OFG\%} 
+%
+    %\EndFor end for 
+    %\While{ ( linearlyIndependentServerIndex.length!=K ) } 
+    %\Statex\Comment{\%comment: remove all the server index which were not inserted in Z\%}  
+    %\State temp[]=serverIndex[]-linearlyIndependentServerIndex 
+    %\If{  (linearlyIndependentServerIndex.length=K) }
+    %\State break
+    %\EndIf  
+    %\EndWhile  
+  %\end{algorithmic}
+%\end{algorithm}
+
+
+
+%\begin{algorithmic}
+%\If {$i\geq maxval$}
+    %\State $i\gets 0$
+%\Else
+    %\If {$i+k\leq maxval$}
+        %\State $i\gets i+k$
+    %\EndIf
+%\EndIf
+%\end{algorithmic}
+
+%\begin{algorithm}
+%\caption{The Bellman-Kalaba algorithm}
+%\begin{algorithmic}[1]
+%\Begin
+%<body>
+%\End
+%\end{algorithmic}
+%\end{algorithm}
+
+%\begin{algorithm}
+%\caption{The Bellman-Kalaba algorithm}
+%\begin{algorithmic}[1]
+%\Procedure {BellmanKalaba}{$G$, $u$, $l$, $p$}
+%\ForAll {$v \in V(G)$}
+%\State $l(v) \leftarrow \infty$
+%\EndFor
+%\State $l(u) \leftarrow 0$
+%\Repeat
+%\For {$i \leftarrow 1, n$}
+%\State $min \leftarrow l(v_i)$
+%\For {$j \leftarrow 1, n$}
+%\If {$min > e(v_i, v_j) + l(v_j)$}
+%\State $min \leftarrow e(v_i, v_j) + l(v_j)$
+%\State $p(i) \leftarrow v_j$
+%\EndIf
+%\EndFor
+%\State $l’(i) \leftarrow min$
+%\EndFor
+%\State $changed \leftarrow l \not= l’$
+%\State $l \leftarrow l’$
+%\Until{$\neg changed$}
+%\EndProcedure
+%\Statex
+%\Procedure {FindPathBK}{$v$, $u$, $p$}
+%\If {$v = u$}
+%\State \textbf{Write} $v$
+%\Else
+%\State $w \leftarrow v$
+%\While {$w \not= u$}
+%\State \textbf{Write} $w$
+%\State $w \leftarrow p(w)$
+%\EndWhile
+%\EndIf
+%\EndProcedure
+%\end{algorithmic}
+%\end{algorithm}
+
+
+
+%R generate_model explained
+%1)	Get trainingsdata
+%a.	Read time series of energy price time series from given location
+%b.	Define trainings period by start and end date
+%2)	Determine seasonality
+%a.	Get frequency of data if available (see section Retrieve Period)
+%b.	If Target period is specified
+%i.	if found, period = target period
+%ii.	else, go to c.
+%c.	If Target period is not specified
+%i.	generate time series objs with x most frequent periods
+%3)	Create time series object 
+%a.	Target period found -> with target period
+%b.	Otherwise -> one ts object for each of the returned periods
+%4)	Calculate the Box-Cox transformation parameter (for possible BoxCox Transformation)
+%a.	Automatic selection of Box Cox transformation parameter (see formula)
+%b.	Define upper / lower values for the parameter (default -1 to 2)
+%5)	Create model(s) without BoxCox transformation
+%a.	auto.arima with approximation and stepwise parameters
+%6)	Create model(s) with BoxCox transformation (if boxCox param != 1)
+%a.	auto.arima with previously defined lambda (BoxCox transformation) parameter
+%7)	Create baseline models TODO
+%(optional, just for comparison! – with and without BoxCox transformation)
+%a.	Create SES model
+%b.	Create meanfc model
+%c.	Create HW model (in case of seasonality?)
+%8)	Execute Ljung Box test for each of the models to determine if the model residuals exhibit a white noise distribution (more probable when the resulting “p-value” is high)
+%a.	determine the most suitable value for the lag (see section Automated Box test)
+%9)	Saving models, boxtests, aic values and p-values in vectors
+%10)	Model Evaluation
+%Provide weighted function to balance AICc with Ljung Box test evaluation
+%a.	Check model goodness of fit via AICc value comparison
+%i.	p_aicc = 1 / (abs(AICmin – AIC(i)) + 2), OR 
+%p_aicc = 1 / (ln(abs(AICmin-AIC(i)) + 1) + 1)
+%ii.	“+2” -> moderate the decrease of values due to the inverse function
+%b.	Compare p-values of Ljung Box tests to check white noise characteristics of residuals
+%i.	p-values range from 0 to 1 -> determine difference in relation to full range
+%ii.	p_ljung = (p-value – 0.05) / (1 – 0.05)  -> can be negative (lower utility value)
+%11)	Calculate weighted result based on goodness of fit values with user defined weights:
+%a.	F(i) = w_aicc_i p_aicc_i + w_ljung_i p_ljung_i
+%12)	Return model with the highest goodness of fit value F(m)
+
+
 
 
 
@@ -22,365 +936,47 @@
 
 
 
+
+%  Generated from R function getRMSEResults: Get results from forecast simulation 
+% -----------------------
+% Get results from forecast simulation for the given location
+% over a time range of 3 years, generate models in intervals of 1 week
+% with 2,3 and 4 weeks of trainings data periods
+% 5 locations are available from the forecast simulation (Application server):
+%  1) Hamina, locationId 1, DA
+%  2) St.Ghislain, locationId 2, DA
+%  3) Portland, locationId 4, RT
+%  4) Richmond, locationId 6, RT
+%  5) Hatfield, locationId 8, RT
+
+
+
+
+
+
 %%%  General results - all numbers  %%%
 
-%> getRMSEResults(1)
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:56:45 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 14.55 & 14.55 & 14.55 & 14.55 & 14.55 & 14.55 & 14.55 & 14.55 & 14.55 & 14.55 \\ 
-  ses & 2.13 & 3.54 & 5.06 & 15.83 & 16.38 & 14.98 & 14.97 & 14.64 & 15.13 & 13.30 \\ 
-  holts & 1.91 & 3.36 & 9.48 & 30.83 & 38.85 & 44.08 & 58.79 & 74.25 & 137.44 & 228.66 \\ 
-  holtwinters & 3.20 & 7.11 & 13.10 & 26.07 & 36.13 & 45.85 & 65.02 & 85.30 & 166.43 & 288.31 \\ 
-  arima & 2.11 & 3.06 & 4.63 & 13.68 & 13.92 & 12.69 & 12.88 & 12.62 & 13.69 & 12.97 \\ 
-  tbats & 2.15 & 2.89 & 4.35 & 10.63 & 10.85 & 10.00 & 10.16 & 9.90 & 10.66 & 10.30 \\ 
-   \hline
-\end{tabular}
-\end{table}
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:56:45 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 14.78 & 14.78 & 14.78 & 14.78 & 14.78 & 14.78 & 14.78 & 14.78 & 14.78 & 14.78 \\ 
-  ses & 2.14 & 3.56 & 5.06 & 15.84 & 16.38 & 14.98 & 14.97 & 14.63 & 15.14 & 13.31 \\ 
-  holts & 1.91 & 3.38 & 9.51 & 30.88 & 38.90 & 44.15 & 58.90 & 74.39 & 137.77 & 229.23 \\ 
-  holtwinters & 3.08 & 7.08 & 13.15 & 27.16 & 37.14 & 46.56 & 65.62 & 85.74 & 166.63 & 288.04 \\ 
-  arima & 2.06 & 2.88 & 4.31 & 12.94 & 13.08 & 11.89 & 11.97 & 11.66 & 12.71 & 11.79 \\ 
-  tbats & 2.15 & 3.05 & 4.73 & 11.27 & 11.43 & 10.55 & 10.60 & 10.35 & 11.07 & 10.68 \\ 
-   \hline
-\end{tabular}
-\end{table}
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:56:45 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 14.99 & 14.99 & 14.99 & 14.99 & 14.99 & 14.99 & 14.99 & 14.99 & 14.99 & 14.99 \\ 
-  ses & 2.13 & 3.57 & 5.06 & 15.84 & 16.38 & 14.97 & 14.96 & 14.61 & 15.13 & 13.30 \\ 
-  holts & 1.89 & 3.37 & 9.53 & 31.00 & 39.07 & 44.34 & 59.18 & 74.75 & 138.54 & 230.59 \\ 
-  holtwinters & 5.52 & 11.00 & 17.21 & 33.23 & 44.51 & 54.36 & 75.54 & 97.71 & 187.49 & 324.07 \\ 
-  arima & 1.98 & 2.85 & 4.39 & 12.68 & 12.79 & 11.61 & 11.73 & 11.36 & 12.07 & 11.13 \\ 
-  tbats & 2.18 & 3.08 & 4.64 & 10.99 & 11.19 & 10.32 & 10.46 & 10.21 & 10.94 & 10.40 \\ 
-   \hline
-\end{tabular}
-\end{table}
 
-\begin{landscape}
-%> getRMSEResults(2)
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:56:56 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 1.71E+01 & 1.71E+01 & 1.71E+01 & 1.71E+01 & 1.71E+01 & 1.71E+01 & 1.71E+01 & 1.71E+01 & 1.71E+01 & 1.71E+01 \\ 
-  ses & 8.32E+00 & 1.14E+01 & 1.40E+01 & 1.66E+01 & 1.65E+01 & 1.71E+01 & 1.69E+01 & 1.71E+01 & 1.75E+01 & 1.71E+01 \\ 
-  holts & 7.88E+00 & 1.13E+01 & 1.81E+01 & 4.52E+01 & 6.27E+01 & 8.08E+01 & 1.14E+02 & 1.49E+02 & 2.88E+02 & 4.94E+02 \\ 
-  holtwinters & 1.08E+01 & 2.10E+01 & 3.42E+01 & 6.14E+01 & 8.68E+01 & 1.13E+02 & 1.64E+02 & 2.16E+02 & 4.24E+02 & 7.36E+02 \\ 
-  arima & 6.86E+00 & 7.10E+00 & 7.82E+00 & 1.43E+01 & 1.54E+01 & 1.54E+01 & 1.56E+01 & 1.61E+01 & 1.78E+01 & 1.85E+01 \\ 
-  tbats & 4.86E+49 & 1.05E+50 & 1.46E+50 & 1.45E+50 & 1.40E+50 & 1.39E+50 & 1.38E+50 & 1.37E+50 & 1.36E+50 & 1.35E+50 \\ 
-   \hline
-\end{tabular}
-\end{table}
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:56:56 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 17.40 & 17.40 & 17.40 & 17.40 & 17.40 & 17.40 & 17.40 & 17.40 & 17.40 & 17.40 \\ 
-  ses & 8.37 & 11.41 & 14.07 & 16.64 & 16.56 & 17.08 & 16.88 & 17.10 & 17.50 & 17.10 \\ 
-  holts & 7.80 & 11.29 & 18.07 & 45.41 & 63.10 & 81.37 & 114.61 & 150.60 & 290.39 & 497.90 \\ 
-  holtwinters & 10.42 & 18.66 & 31.72 & 61.43 & 86.38 & 114.50 & 167.20 & 220.67 & 434.85 & 756.26 \\ 
-  arima & 6.72 & 6.61 & 7.07 & 13.92 & 15.02 & 14.98 & 15.26 & 15.66 & 17.05 & 17.12 \\ 
-  tbats & 6.09 & 6.52 & 7.11 & 11.94 & 13.16 & 13.39 & 13.70 & 14.09 & 14.96 & 15.05 \\ 
-   \hline
-\end{tabular}
-\end{table}
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:56:56 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 1.76E+01 & 1.76E+01 & 1.76E+01 & 1.76E+01 & 1.76E+01 & 1.76E+01 & 1.76E+01 & 1.76E+01 & 1.76E+01 & 1.76E+01 \\ 
-  ses & 8.38E+00 & 1.15E+01 & 1.41E+01 & 1.67E+01 & 1.66E+01 & 1.71E+01 & 1.69E+01 & 1.71E+01 & 1.75E+01 & 1.71E+01 \\ 
-  holts & 7.82E+00 & 1.13E+01 & 1.81E+01 & 4.51E+01 & 6.27E+01 & 8.07E+01 & 1.14E+02 & 1.49E+02 & 2.88E+02 & 4.94E+02 \\ 
-  holtwinters & 9.68E+00 & 2.09E+01 & 3.43E+01 & 6.09E+01 & 8.59E+01 & 1.12E+02 & 1.64E+02 & 2.16E+02 & 4.24E+02 & 7.35E+02 \\ 
-  arima & 6.82E+00 & 6.91E+00 & 7.56E+00 & 1.41E+01 & 1.50E+01 & 1.49E+01 & 1.51E+01 & 1.54E+01 & 1.65E+01 & 1.64E+01 \\ 
-  tbats & 2.53E+35 & 2.17E+36 & 3.83E+36 & 2.88E+36 & 3.16E+36 & 2.83E+36 & 2.73E+36 & 2.63E+36 & 2.36E+36 & 2.07E+36 \\ 
-   \hline
-\end{tabular}
-\end{table}
-%> getRMSEResults(4)
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:57:07 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 2.42E+01 & 2.42E+01 & 2.42E+01 & 2.42E+01 & 2.42E+01 & 2.42E+01 & 2.42E+01 & 2.42E+01 & 2.42E+01 & 2.42E+01 \\ 
-  ses & 7.92E+00 & 1.07E+01 & 1.29E+01 & 2.11E+01 & 2.76E+01 & 2.84E+01 & 2.83E+01 & 3.03E+01 & 3.40E+01 & 3.49E+01 \\ 
-  holts & 1.67E+01 & 2.63E+01 & 4.25E+01 & 8.45E+01 & 1.20E+02 & 1.50E+02 & 2.10E+02 & 2.74E+02 & 5.28E+02 & 9.06E+02 \\ 
-  holtwinters & 2.20E+01 & 5.02E+01 & 8.13E+01 & 1.39E+02 & 1.96E+02 & 2.50E+02 & 3.58E+02 & 4.71E+02 & 9.18E+02 & 1.59E+03 \\ 
-  arima & 9.61E+00 & 1.36E+01 & 1.59E+01 & 2.00E+01 & 2.59E+01 & 2.68E+01 & 2.71E+01 & 2.93E+01 & 3.43E+01 & 3.77E+01 \\ 
-  tbats & 9.61E+16 & 5.92E+16 & 6.82E+16 & 7.15E+16 & 6.03E+16 & 5.48E+16 & 4.56E+16 & 3.97E+16 & 2.81E+16 & 2.13E+16 \\ 
-   \hline
-\end{tabular}
-\end{table}
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:57:07 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 2.41E+01 & 2.41E+01 & 2.41E+01 & 2.41E+01 & 2.41E+01 & 2.41E+01 & 2.41E+01 & 2.41E+01 & 2.41E+01 & 2.41E+01 \\ 
-  ses & 7.96E+00 & 1.06E+01 & 1.29E+01 & 2.10E+01 & 2.76E+01 & 2.83E+01 & 2.82E+01 & 3.03E+01 & 3.39E+01 & 3.49E+01 \\ 
-  holts & 1.68E+01 & 2.66E+01 & 4.30E+01 & 8.54E+01 & 1.21E+02 & 1.52E+02 & 2.13E+02 & 2.78E+02 & 5.35E+02 & 9.19E+02 \\ 
-  holtwinters & 2.27E+01 & 5.37E+01 & 1.08E+02 & 2.19E+02 & 3.12E+02 & 4.13E+02 & 6.06E+02 & 8.02E+02 & 1.58E+03 & 2.75E+03 \\ 
-  arima & 9.42E+00 & 1.30E+01 & 1.58E+01 & 1.92E+01 & 2.45E+01 & 2.52E+01 & 2.52E+01 & 2.69E+01 & 3.07E+01 & 3.26E+01 \\ 
-  tbats & 2.24E+18 & 2.61E+18 & 2.31E+18 & 1.98E+18 & 1.76E+18 & 1.58E+18 & 1.33E+18 & 1.16E+18 & 8.24E+17 & 6.23E+17 \\ 
-   \hline
-\end{tabular}
-\end{table}
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:57:07 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 2.47E+01 & 2.47E+01 & 2.47E+01 & 2.47E+01 & 2.47E+01 & 2.47E+01 & 2.47E+01 & 2.47E+01 & 2.47E+01 & 2.47E+01 \\ 
-  ses & 7.70E+00 & 1.03E+01 & 1.26E+01 & 2.08E+01 & 2.74E+01 & 2.81E+01 & 2.80E+01 & 3.01E+01 & 3.37E+01 & 3.47E+01 \\ 
-  holts & 1.65E+01 & 2.71E+01 & 4.60E+01 & 9.40E+01 & 1.35E+02 & 1.69E+02 & 2.39E+02 & 3.13E+02 & 6.04E+02 & 1.04E+03 \\ 
-  holtwinters & 1.86E+01 & 4.37E+01 & 7.95E+01 & 1.40E+02 & 2.05E+02 & 2.66E+02 & 3.86E+02 & 5.09E+02 & 9.99E+02 & 1.73E+03 \\ 
-  arima & 8.63E+00 & 1.25E+01 & 1.54E+01 & 1.88E+01 & 2.42E+01 & 2.49E+01 & 2.49E+01 & 2.67E+01 & 3.05E+01 & 3.25E+01 \\ 
-  tbats & 3.55E+31 & 3.00E+32 & 2.59E+32 & 2.40E+32 & 2.34E+32 & 2.31E+32 & 2.27E+32 & 2.25E+32 & 2.18E+32 & 2.11E+32 \\ 
-   \hline
-\end{tabular}
-\end{table}
-%> getRMSEResults(6)
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:57:13 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 \\ 
-  ses & 4.62E+00 & 6.13E+00 & 6.20E+00 & 1.28E+01 & 1.66E+01 & 1.89E+01 & 2.11E+01 & 2.27E+01 & 2.24E+01 & 2.03E+01 \\ 
-  holts & 5.48E+00 & 1.12E+01 & 2.17E+01 & 5.24E+01 & 7.60E+01 & 9.72E+01 & 1.37E+02 & 1.78E+02 & 3.35E+02 & 5.71E+02 \\ 
-  holtwinters & 1.34E+01 & 3.32E+01 & 5.85E+01 & 1.06E+02 & 1.50E+02 & 1.96E+02 & 2.84E+02 & 3.74E+02 & 7.34E+02 & 1.27E+03 \\ 
-  arima & 4.23E+00 & 6.09E+00 & 7.15E+00 & 1.33E+01 & 1.61E+01 & 1.83E+01 & 2.07E+01 & 2.20E+01 & 2.20E+01 & 2.05E+01 \\ 
-  tbats & 4.88E+13 & 3.37E+13 & 6.17E+13 & 1.04E+14 & 1.01E+14 & 8.86E+13 & 8.59E+13 & 8.22E+13 & 7.72E+13 & 7.47E+13 \\ 
-   \hline
-\end{tabular}
-\end{table}
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:57:13 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 & 1.45E+01 \\ 
-  ses & 4.70E+00 & 6.19E+00 & 6.26E+00 & 1.29E+01 & 1.66E+01 & 1.90E+01 & 2.11E+01 & 2.28E+01 & 2.25E+01 & 2.03E+01 \\ 
-  holts & 5.74E+00 & 1.15E+01 & 2.21E+01 & 5.24E+01 & 7.58E+01 & 9.68E+01 & 1.36E+02 & 1.77E+02 & 3.33E+02 & 5.67E+02 \\ 
-  holtwinters & 1.38E+01 & 3.46E+01 & 5.68E+01 & 1.03E+02 & 1.46E+02 & 1.93E+02 & 2.83E+02 & 3.71E+02 & 7.26E+02 & 1.26E+03 \\ 
-  arima & 3.78E+00 & 5.49E+00 & 6.12E+00 & 1.20E+01 & 1.50E+01 & 1.73E+01 & 1.99E+01 & 2.13E+01 & 2.11E+01 & 1.94E+01 \\ 
-  tbats & 2.88E+00 & 4.41E+00 & 4.90E+00 & 1.14E+01 & 1.46E+01 & 1.69E+01 & 1.93E+01 & 2.09E+01 & 2.06E+01 & 1.88E+01 \\ 
-   \hline
-\end{tabular}
-\end{table}
-% latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 21:57:13 2016
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrr}
-  \hline
- & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
-  \hline
-mean & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 \\ 
-  ses & 4.73E+00 & 6.25E+00 & 6.29E+00 & 1.29E+01 & 1.66E+01 & 1.90E+01 & 2.12E+01 & 2.29E+01 & 2.26E+01 & 2.04E+01 \\ 
-  holts & 5.70E+00 & 1.14E+01 & 2.20E+01 & 5.24E+01 & 7.60E+01 & 9.72E+01 & 1.37E+02 & 1.78E+02 & 3.35E+02 & 5.72E+02 \\ 
-  holtwinters & 1.43E+01 & 3.78E+01 & 6.41E+01 & 1.16E+02 & 1.66E+02 & 2.19E+02 & 3.20E+02 & 4.18E+02 & 8.13E+02 & 1.41E+03 \\ 
-  arima & 3.70E+00 & 5.44E+00 & 6.04E+00 & 1.21E+01 & 1.51E+01 & 1.73E+01 & 1.99E+01 & 2.12E+01 & 2.10E+01 & 1.94E+01 \\ 
-  tbats & 5.83E+55 & 2.82E+99 & 1.36E+109 & 9.65E+108 & 7.88E+108 & 6.82E+108 & 5.57E+108 & 4.82E+108 & 3.41E+108 & 2.58E+108 \\ 
-   \hline
-\end{tabular}
-\end{table}
+Four simulations have been run for four different locations over three years of energy price data. 
+For each of these locations three different training periods have been evaluated: two weeks, three weeks and four weeks. 
+Each of these simulations is evaluated for five different accuracy measures (see also section \ref{ssec:forecast_acc_measures}): 
 
-\end{landscape}
+\begin{itemize}
+	\item Mean error (ME)
+	\item Mean absolute error (MAE)
+	\item Root mean squared error (RMSE)
+	\item Mean percentage error (MPE)
+	\item Mean absolute percentage error (MAPE)
+\end{itemize}
+
+In addition, each of these error measures has been evaluated for ten different forecast horizons (in hours): 
+1, 3, 6, 12, 18, 24, 36, 48, 96, 168. 
+
+In the tables below results are shown aggregated by forecast horizon for each accuracy measure. Each table depicts a different training period for the given location. 
 
 
 
-
-
-%%%% aggregated results %%%%
-
-
-%
-%%s <- 1
-%%> data <- forecastAggregateByWeek(simPrefix[s], simPostFix)
-%%> printXTable(data)
-%% latex table generated in R 3.1.1 by xtable 1.8-2 package
-%% Mon Mar 07 23:02:44 2016
-%\begin{table}[ht]
-%\centering
-%\begin{tabular}{rrrrrrr}
-  %\hline
- %& mean & ses & holts & holtwinters & arima & tbats \\ 
-  %\hline
-%2 weeks & 14.55 & 11.60 & 62.76 & 73.65 & 10.23 & 8.19 \\ 
-  %3 weeks & 14.78 & 11.60 & 62.90 & 74.02 & 9.53 & 8.59 \\ 
-  %4 weeks & 14.99 & 11.60 & 63.23 & 85.06 & 9.26 & 8.44 \\ 
-   %\hline
-%\end{tabular}
-%\end{table}
-%%> s <- 2
-%%> data <- forecastAggregateByWeek(simPrefix[s], simPostFix)
-%%> printXTable(data)
-%% latex table generated in R 3.1.1 by xtable 1.8-2 package
-%% Mon Mar 07 23:03:25 2016
-%\begin{table}[ht]
-%\centering
-%\begin{tabular}{rrrrrrr}
-  %\hline
- %& mean & ses & holts & holtwinters & arima & tbats \\ 
-  %\hline
-%2 weeks & 1.71E+01 & 1.52E+01 & 1.27E+02 & 1.87E+02 & 1.35E+01 & 1.27E+50 \\ 
-  %3 weeks & 1.74E+01 & 1.53E+01 & 1.28E+02 & 1.90E+02 & 1.29E+01 & 1.16E+01 \\ 
-  %4 weeks & 1.76E+01 & 1.53E+01 & 1.27E+02 & 1.86E+02 & 1.29E+01 & 2.49E+36 \\ 
-   %\hline
-%\end{tabular}
-%\end{table}
-%%> s <- 3
-%%> data <- forecastAggregateByWeek(simPrefix[s], simPostFix)
-%%> printXTable(data)
-%% latex table generated in R 3.1.1 by xtable 1.8-2 package
-%% Mon Mar 07 23:04:19 2016
-%\begin{table}[ht]
-%\centering
-%\begin{tabular}{rrrrrrr}
-  %\hline
- %& mean & ses & holts & holtwinters & arima & tbats \\ 
-  %\hline
-%2 weeks & 2.42E+01 & 2.36E+01 & 2.36E+02 & 4.07E+02 & 2.40E+01 & 5.45E+16 \\ 
-  %3 weeks & 2.41E+01 & 2.36E+01 & 2.39E+02 & 6.87E+02 & 2.23E+01 & 1.64E+18 \\ 
-  %4 weeks & 2.47E+01 & 2.33E+01 & 2.68E+02 & 4.38E+02 & 2.19E+01 & 2.18E+32 \\ 
-   %\hline
-%\end{tabular}
-%\end{table}
-%%> s <- 4
-%%> data <- forecastAggregateByWeek(simPrefix[s], simPostFix)
-%%> printXTable(data)
-%% latex table generated in R 3.1.1 by xtable 1.8-2 package
-%% Mon Mar 07 23:04:33 2016
-%\begin{table}[ht]
-%\centering
-%\begin{tabular}{rrrrrrr}
-  %\hline
- %& mean & ses & holts & holtwinters & arima & tbats \\ 
-  %\hline
-%2 weeks & 1.45E+01 & 1.52E+01 & 1.49E+02 & 3.22E+02 & 1.50E+01 & 7.57E+13 \\ 
-  %3 weeks & 1.45E+01 & 1.52E+01 & 1.48E+02 & 3.19E+02 & 1.41E+01 & 1.35E+01 \\ 
-  %4 weeks & 1.44E+01 & 1.53E+01 & 1.49E+02 & 3.58E+02 & 1.41E+01 & 5.44E+108 \\ 
-   %\hline
-%\end{tabular}
-%\end{table}
-%
-%
-%
-%%%% aggregated with real values %%%%
-%
-%
-%% latex table generated in R 3.1.1 by xtable 1.8-2 package
-%% Mon Mar 07 23:15:14 2016
-%\begin{table}[ht]
-%\centering
-%\begin{tabular}{rrrrrrr}
-  %\hline
- %& mean & ses & holts & holtwinters & arima & tbats \\ 
-  %\hline
-%2 weeks & 14.55 & 11.60 & 62.76 & 73.65 & 10.23 & 8.19 \\ 
-  %3 weeks & 14.78 & 11.60 & 62.90 & 74.02 & 9.53 & 8.59 \\ 
-  %4 weeks & 14.99 & 11.60 & 63.23 & 85.06 & 9.26 & 8.44 \\ 
-   %\hline
-%\end{tabular}
-%\end{table}
-%% latex table generated in R 3.1.1 by xtable 1.8-2 package
-%% Mon Mar 07 23:15:14 2016
-%\begin{table}[ht]
-%\centering
-%\begin{tabular}{rrrrrrr}
-  %\hline
- %& mean & ses & holts & holtwinters & arima & tbats \\ 
-  %\hline
-%2 weeks & 17.07 & 15.23 & 127.13 & 186.82 & 13.49 & 127083769482826530120880468026666642684682684202440.00 \\ 
-  %3 weeks & 17.40 & 15.27 & 128.05 & 190.21 & 12.94 & 11.60 \\ 
-  %4 weeks & 17.59 & 15.30 & 127.03 & 186.37 & 12.87 & 2489183418470472805280220406686824466.00 \\ 
-   %\hline
-%\end{tabular}
-%\end{table}
-%% latex table generated in R 3.1.1 by xtable 1.8-2 package
-%% Mon Mar 07 23:15:14 2016
-%\begin{table}[ht]
-%\centering
-%\begin{tabular}{rrrrrrr}
-  %\hline
- %& mean & ses & holts & holtwinters & arima & tbats \\ 
-  %\hline
-%2 weeks & 24.22 & 23.61 & 235.84 & 407.06 & 24.03 & 54480307964830568.00 \\ 
-  %3 weeks & 24.14 & 23.56 & 238.92 & 686.95 & 22.26 & 1641463958726746880.00 \\ 
-  %4 weeks & 24.68 & 23.32 & 268.10 & 437.85 & 21.91 & 218087279314998705120640862002240.00 \\ 
-   %\hline
-%\end{tabular}
-%\end{table}
-%% latex table generated in R 3.1.1 by xtable 1.8-2 package
-%% Mon Mar 07 23:15:14 2016
-%\begin{table}[ht]
-%\centering
-%\begin{tabular}{rrrrrrr}
-  %\hline
- %& mean & ses & holts & holtwinters & arima & tbats \\ 
-  %\hline
-%2 weeks & 14.47 & 15.17 & 148.54 & 322.41 & 15.03 & 75718511564550.16 \\ 
-  %3 weeks & 14.46 & 15.23 & 147.77 & 318.61 & 14.14 & 13.46 \\ 
-  %4 weeks & 14.42 & 15.29 & 148.67 & 357.82 & 14.11 & 5436976252839544085822686600406264624462846648628408864880264806208282628200002428820226822648622602228826246.00 \\ 
-   %\hline
-%\end{tabular}
-%\end{table}
-
-
-
-%%% final , summarized %%%
-
-\subsection{Aggregated results by forecast horizon}
+\subsection{Forecast evaluation results}
 
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
 % Mon Mar 07 23:15:14 2016
@@ -395,7 +991,7 @@ mean & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+0
   4 weeks & 14.99 & 11.60 & 63.23 & 85.06 & 9.26 & 8.44 \\ 
    \hline
 \end{tabular}
-\caption{Results of simulation in Hamina, Nord Pool Spot (DA)} 
+\caption{Results of evaluation for Hamina, Nord Pool Spot (DA)} 
 \end{table}
 
 
@@ -412,7 +1008,7 @@ mean & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+0
   4 weeks & 17.59 & 15.30 & 127.03 & 186.37 & 12.87 & 2.49E+36 \\ 
    \hline
 \end{tabular}
-\caption{Results of simulation in St.Ghislain, Belpex (DA)}
+\caption{Results of evaluation for St.Ghislain, Belpex (DA)}
 \end{table}
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
 % Mon Mar 07 23:15:14 2016
@@ -427,7 +1023,7 @@ mean & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+0
   4 weeks & 24.68 & 23.32 & 268.10 & 437.85 & 21.91 & 2.18E+32 \\ 
    \hline
 \end{tabular}
-\caption{Results of simulation in Portland, ISO-NE (RT)}
+\caption{Results of evaluation for Portland, ISO-NE (RT)}
 \end{table}
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
 % Mon Mar 07 23:15:14 2016
@@ -442,138 +1038,8 @@ mean & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+01 & 1.44E+0
   4 weeks & 14.42 & 15.29 & 148.67 & 357.82 & 14.11 & 5.44E+108 \\ 
    \hline
 \end{tabular}
-\caption{Results of simulation in Richmond, PJM (RT)}
+\caption{Results of evaluation for Richmond, PJM (RT)}
 \end{table}
-
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{lrrrrrrr}
-\toprule
-{} &       BFD &       BCU &     BCU\_F &    BCU\_IF &     BCU\_M &    BCU\_MF &   BCU\_MIF \\
-\midrule
-TCP   &  21501.23 &  19938.71 &  19173.33 &  19437.17 &  18978.17 &  18979.72 &  19016.16 \\
-TCC   &    966.04 &    710.59 &    659.92 &    699.13 &    673.24 &    645.01 &    660.06 \\
-ME    &      0.00 &      0.00 &      0.00 &      0.00 &     10.51 &      0.37 &      1.18 \\
-MC    &      0.00 &      0.00 &      0.00 &      0.00 &     73.82 &      2.56 &      8.29 \\
-TCPWM &  21501.23 &  19938.71 &  19173.33 &  19437.17 &  18988.68 &  18980.09 &  19017.34 \\
-TCCWM &    966.04 &    710.59 &    659.92 &    699.13 &    747.06 &    647.57 &    668.35 \\
-TPC   &      0.00 &      0.00 &      0.00 &      0.00 &      0.00 &      0.00 &      0.00 \\
-TDT   &      0.00 &      0.00 &      0.00 &      0.00 &  24578.00 &    773.00 &   3787.00 \\
-NM    &      0.00 &      0.00 &      0.00 &      0.00 &  14401.00 &    476.00 &   1398.00 \\
-TP    &  21501.23 &  19938.71 &  19173.33 &  19437.17 &  18988.68 &  18980.09 &  19017.34 \\
-TC    &    966.04 &    710.59 &    659.92 &    699.13 &    747.06 &    647.57 &    668.35 \\
-\bottomrule
-\end{tabular}
-\caption{Cloud metrics for simulation "`RT Spring"'}
-\end{table}
-
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{lrrrrrrr}
-\toprule
-{} &      BFD &      BCU &    BCU\_F &   BCU\_IF &    BCU\_M &   BCU\_MF &  BCU\_MIF \\
-\midrule
-TCP   &  6922.22 &  6435.57 &  6263.45 &  6343.36 &  6048.94 &  6113.84 &  6198.98 \\
-TCC   &   315.96 &   263.32 &   265.21 &   256.08 &   245.97 &   258.30 &   248.28 \\
-ME    &     0.00 &     0.00 &     0.00 &     0.00 &     3.97 &     0.24 &     0.54 \\
-MC    &     0.00 &     0.00 &     0.00 &     0.00 &    27.90 &     1.69 &     3.81 \\
-TCPWM &  6922.22 &  6435.57 &  6263.45 &  6343.36 &  6052.91 &  6114.08 &  6199.52 \\
-TCCWM &   315.96 &   263.32 &   265.21 &   256.08 &   273.87 &   259.98 &   252.09 \\
-TPC   &     0.00 &     0.00 &     0.00 &     0.00 &     0.00 &     0.00 &     0.00 \\
-TDT   &     0.00 &     0.00 &     0.00 &     0.00 &  9575.00 &   461.00 &  1729.00 \\
-NM    &     0.00 &     0.00 &     0.00 &     0.00 &  5580.00 &   319.00 &   671.00 \\
-TP    &  6922.22 &  6435.57 &  6263.45 &  6343.36 &  6052.91 &  6114.08 &  6199.52 \\
-TC    &   315.96 &   263.32 &   265.21 &   256.08 &   273.87 &   259.98 &   252.09 \\
-\bottomrule
-\end{tabular}
-\caption{Cloud metrics for simulation "`RT Summer"'}
-\end{table}
-
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{lrrrrrrr}
-\toprule
-{} &       BFD &       BCU &     BCU\_F &    BCU\_IF &     BCU\_M &    BCU\_MF &   BCU\_MIF \\
-\midrule
-TCP   &  15338.31 &  14211.48 &  13545.14 &  13789.94 &  13903.81 &  13462.65 &  13794.13 \\
-TCC   &    930.41 &    630.13 &    592.83 &    600.42 &    606.20 &    585.45 &    594.32 \\
-ME    &      0.00 &      0.00 &      0.00 &      0.00 &      2.76 &      0.07 &      0.21 \\
-MC    &      0.00 &      0.00 &      0.00 &      0.00 &     19.42 &      0.53 &      1.49 \\
-TCPWM &  15338.31 &  14211.48 &  13545.14 &  13789.94 &  13906.57 &  13462.72 &  13794.34 \\
-TCCWM &    930.41 &    630.13 &    592.83 &    600.42 &    625.62 &    585.97 &    595.81 \\
-TPC   &      0.00 &      0.00 &      0.00 &      0.00 &      0.00 &      0.00 &      0.00 \\
-TDT   &      0.00 &      0.00 &      0.00 &      0.00 &  12728.00 &    482.00 &   1269.00 \\
-NM    &      0.00 &      0.00 &      0.00 &      0.00 &   3332.00 &     75.00 &    228.00 \\
-TP    &  15338.31 &  14211.48 &  13545.14 &  13789.94 &  13906.57 &  13462.72 &  13794.34 \\
-TC    &    930.41 &    630.13 &    592.83 &    600.42 &    625.62 &    585.97 &    595.81 \\
-\bottomrule
-\end{tabular}
-\caption{Cloud metrics for simulation "`DA Spring"'}
-\end{table}
-
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{lrrrrrrr}
-\toprule
-{} &      BFD &      BCU &    BCU\_F &   BCU\_IF &    BCU\_M &   BCU\_MF &  BCU\_MIF \\
-\midrule
-TCP   &  4984.39 &  4830.12 &  4652.92 &  4731.71 &  4688.42 &  4597.72 &  4685.54 \\
-TCC   &   208.36 &   181.72 &   171.85 &   174.53 &   172.50 &   168.28 &   169.60 \\
-ME    &     0.00 &     0.00 &     0.00 &     0.00 &     1.95 &     0.22 &     0.53 \\
-MC    &     0.00 &     0.00 &     0.00 &     0.00 &    13.69 &     1.58 &     3.70 \\
-TCPWM &  4984.39 &  4830.12 &  4652.92 &  4731.71 &  4690.37 &  4597.95 &  4686.07 \\
-TCCWM &   208.36 &   181.72 &   171.85 &   174.53 &   186.19 &   169.86 &   173.29 \\
-TPC   &     0.00 &     0.00 &     0.00 &     0.00 &     0.00 &     0.00 &     0.00 \\
-TDT   &     0.00 &     0.00 &     0.00 &     0.00 &  8716.00 &  1401.00 &  3499.00 \\
-NM    &     0.00 &     0.00 &     0.00 &     0.00 &  2162.00 &   221.00 &   510.00 \\
-TP    &  4984.39 &  4830.12 &  4652.92 &  4731.71 &  4690.37 &  4597.95 &  4686.07 \\
-TC    &   208.36 &   181.72 &   171.85 &   174.53 &   186.19 &   169.86 &   173.29 \\
-\bottomrule
-\end{tabular}
-\caption{Cloud metrics for simulation "`DA Summer"'}
-\end{table}
-
-
-
-\subsection{Total costs}
-
-
-\begin{table}[ht]
-\centering
-
-\begin{tabular}{lrrrrrrr}
-\toprule
-{} &     BFD &     BCU &   BCU\_F &  BCU\_IF &   BCU\_M &  BCU\_MF &  BCU\_MIF \\
-\midrule
-DA Summer &  208.36 &  181.72 &  171.85 &  174.53 &  186.19 &  \textbf{169.86} &   173.29 \\
-RT Summer &  315.96 &  263.32 &  265.21 &  256.08 &  273.87 &  259.98 &   \textbf{252.09} \\
-DA Spring &  930.41 &  630.13 &  592.83 &  600.42 &  625.62 &  \textbf{585.97} &   595.81 \\
-RT Spring &  966.04 &  710.59 &  659.92 &  699.13 &  747.06 &  \textbf{647.57} &   668.35 \\
-\bottomrule
-\end{tabular}
-\caption{Total costs for different scenarios}
-\end{table}
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{lrrrrrrr}
-\toprule
-{} &  BFD &    BCU &  BCU\_F &  BCU\_IF &  BCU\_M &  BCU\_MF &  BCU\_MIF \\
-\midrule
-DA Summer &    0 &  12.79 &  17.52 &   16.24 &  10.64 &   \textbf{18.48} &    16.83 \\
-RT Summer &    0 &  16.66 &  16.06 &   18.95 &  13.32 &   17.72 &    \textbf{20.21} \\
-DA Spring &    0 &  32.27 &  36.28 &   35.47 &  32.76 &   \textbf{37.02} &    35.96 \\
-RT Spring &    0 &  26.44 &  31.69 &   27.63 &  22.67 &   \textbf{32.97} &    30.82 \\
-\bottomrule
-\end{tabular}
-\caption{Normalized total costs for different scenarios}
-\end{table}
-
-
 
 
 
