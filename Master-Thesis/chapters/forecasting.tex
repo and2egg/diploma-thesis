@@ -571,7 +571,7 @@ The AICc and Ljung Box values are outlined in table \ref{tab:model_aicc_and_ljun
 
 Results show that it is possible for manually selected models to outperform automatically generated models, i.e.~the Final Model shows a lower AICc value than the Automatic Model. This is presumably due to the manual model using explicit seasonal differencing which the automatic nodel does not use. However the Ljung Box test values indicate a different result where the Automatic Model results in a higher p-value and thus exhibits less correlations than the Final Model. As both models exceed the significance bounds of 0.05 this is only of minor importance as both exhibit white noise characteristics. If in doubt the AICc value should be given precedence over Ljung Box test results. 
 
-\section{Model selection algorithm}
+\section{Model selection algorithm} \label{sec:model_selection_algorithm}
 
 An automated model selection algorithm has been implemented to provide aid in finding suitable ARIMA models for a given trainings dataset. 
 The process consists of several data preprocessing steps with generation and comparison of different ARIMA models and model evaluation based on a weighted function of AICc and Ljung Box test values. 
@@ -733,37 +733,190 @@ Another thing to note is the so called \textit{target period} in function \texti
 
 \section{R / Java Simulation Framework}
 
+The R / Java Simulation Framework is responsible for preparation and execution of a large scale simulation of generating and evaluating forecast models over an extended period of time. In this section the architecture and implementation of the simulation framework is presented as well as the interfaces existing between R and Java. 
 
 
-\section{Forecast model evaluation}
+\subsection{Architecture of the simulation framework}
+
+The framework consists of a Java application server connected to a separately running R server on which R commands are executed. R is a statistical program which is able to model complex statistical functions and includes a considerable amount of statistical packages \cite{r2016project}. It became the de-facto standard for stochastic processing and is available free of charge as well as for various platforms. 
+
+The Java application server has been set up as WildFly 8 \cite{red2016wildfly} with Java Enterprise Edition 7 \cite{oracle2016java} and an Oracle Database \cite{oracle2016database} which provides a scalable architecture including the possibility for modeling web service interfaces. 
+
+In this work a collection of web services has been set up for simple access of data for external applications. This can be used e.g.~by the cloud simulator outlined in section \ref{sec:architecture_of_simulation_framework}. The Java application server wraps methods for retrieval and storage of energy price data, forecast model generation and large scale simulations. It utilizes R for complex statistical processing which is included into advanced methods for simulations and model generation. 
+
+\subsubsection{Class diagram}
+
+In order to visualize the most important entities of the framework a class diagram is outlined in Figure \ref{fig:EPMA_class_diagram}.
+
+A basic entity for energy price retrieval is the \textit{Resource} which wraps the retrieved contents of an energy price source. Data retrieval happens over a generic \textit{DataFetch} interface which is able to fetch data from an URL (e.g.~web service) or directly from a file. The parsing of the energy price data is achieved by a generic \textit{Parser} interface which can be implemented by Parsers for different file types (currently XLS and CSV). 
+
+A \textit{ResourceType} stores a reference to a specific DataFetch and Parser implementation. As source types and formats of energy data will be different for each energy market at least one DataFetch and Parser implementation has to be provided for each market. The \textit{ResourceManager} keeps track of all resources associated with a registered energy market. It is implemented by resource managers for day ahead and real time markets, respectively. 
+
+The \textit{MarketData} entity handles all the logic necessary for actually retrieving energy price data for a given Resource. It provides methods to retrieve data from registered energy sources and subsequently parsing and importing the data into the database. Instances of MarketData are used by \textit{RTPricesResourceRESTService} and \textit{DAPricesResourceRESTService} that provide web service interfaces for data retrieval. In turn, \textit{RManagerResourceRESTService} utilizes these web services to retrieve energy price data for model generation and forecast simulations. 
+
+\begin{figure}[htbp]
+	% used to position the image at the horizontal center of the page
+	\hspace*{0.5in}
+		% include the graphic rotated by a 90 degree angle and scale to paperwidth and height
+		\includegraphics[angle=90,width=\paperheight,height=\paperwidth,keepaspectratio=true]{figures/forecasting/EPMA_class_diagram.png}
+	\caption{Class diagram of Energy Price Management Application}
+	\label{fig:EPMA_class_diagram}
+\end{figure}
+
+The \textit{Scheduler} utilizes Java EE scheduling mechanisms to automatically retrieve energy prices from specific locations at defined time intervals (e.g.~each day at 3 pm). Thus for continuous operation a scheduler can be set up for a location and dates when data should be retrieved regularly from defined interfaces. 
+
+Each MarketData instance stores a reference to a specific \textit{Location} of an \textit{EnergyMarket}. Instances of \textit{DAPrice} and \textit{RTPrice} reference the location from which they were retrieved where these price entities each resemble exactly one energy price entity stored in the database.
+
+Finally the \textit{EnergyPriceHandler} provides a generic interface for parsing energy prices with location specific DST (daylight saving time) changes. This interface is extended by specific implementations of energy markets to manage DST dates. The \textit{TimeZoneDSTHandler} provides a method to retrieve exact DST dates for each location and year. Thus energy prices are stored with dates correctly considering DST changes specific to each location. 
+
+\subsubsection{Web Service interfaces}
+
+The \textit{Energy Price Management Application} (EPMA) on the application server provides different types of web service interfaces. 
+
+Web services are grouped by type: 
+%i.e.~management of day ahead prices, real time prices, locations, energy markets and R resources corresponding to classes 
+
+\begin{itemize}
+	\item \textit{DAPricesResourceRESTService} for managing day ahead prices
+	\item \textit{RTPricesResourceRESTService} for managing real time prices
+	\item \textit{LocationResourceRESTService} for managing locations
+	\item \textit{EnergyMarketResourceRESTService} for managing energy markets
+	\item \textit{RManagerResourceRESTService} for managing R resources
+\end{itemize}
+
+Each web service interface is defined by a base path (e.g.~/rtprices), the respective web service name (e.g.~/importall) and mandatory or optional web service parameters. 
+
+%idea: list of all web service methods in the appendix
+%
+%provide tables with following structure: 
+%basepath	web service name		mandatory parameters			optional parameters
+
+
+%\subsubsection{Energy price data retrieval}
 
 
 
+\subsection{R Forecast evaluation}
+
+%fcHorizons <- c("1h","3h","6h","12h","18h","24h","36h","48h","96h","168h")
+%accMeasures <- c("ME","RMSE","MAE","MPE","MAPE")
+%modelNames <- c("mean","ses","holts","holtwinters","arima","tbats")
+
+The forecast model evaluation discussed in Section \ref{sec:forecast_model_evaluation} is based on implementation of an R function which is called and processed by respective methods on the application server. 
+
+The corresponding R function is named \textit{evaluateModels} and takes energy price data as input separated into a trainings and test data sets. It generates different forecast models based on the given trainings set considering possible seasonal periods in the data (see Section \ref{sec:model_selection_algorithm}) and returns aggregated accuracy measures for each model and forecast horizon. 
+
+\subsubsection{Function evaluateModels}
+
+\begin{tabular}{ll}
+\textbf{Input:}  & \textit{pricesTraining} - a list of energy prices taken as trainings data set \\
+								 & \textit{pricesTest} - a list of energy prices taken as test data set \\
+\textbf{Output:} & \textit{modelList} - a list of models generated within the function \\
+								 & \textit{accuracyList} - a list of accuracy measures calculated for each model
+\end{tabular}
 
 
-%  Generated from R function getRMSEResults: Get results from forecast simulation 
-% -----------------------
-% Get results from forecast simulation for the given location
-% over a time range of 3 years, generate models in intervals of 1 week
-% with 2,3 and 4 weeks of trainings data periods
-% 5 locations are available from the forecast simulation (Application server):
-%  1) Hamina, locationId 1, DA
-%  2) St.Ghislain, locationId 2, DA
-%  3) Portland, locationId 4, RT
-%  4) Richmond, locationId 6, RT
-%  5) Hatfield, locationId 8, RT
+\begin{lstlisting}[language=R, caption=Function evaluateModels, label={lst:evaluateModelsR}]
+evaluateModels <- function(pricesTraining, pricesTest)
+{
+  period <- getSeasonalPeriod()
+  pricesTrainingTs <- generateTimeSeries(pricesTraining, period)
+  modelList <- generateModels(Mean,Ses,Holt,HoltWinters, 
+	                              Arima,Tbats)						
+  accuracyList <- list()
+  forecastHorizonList <- (1,3,6,12,18,24,36,48,96,168)
+  for( m in modelList ) {
+    for( h in forecastHorizonList ) {
+      fc <- getForecastForHorizon(m,h)
+      accuracyList(m,h) <- getAccuracyMeasures(fc,pricesTest)
+    }
+  }
+  return list(modelList,accuracyList)
+}
+\end{lstlisting}
+
+In Listing \ref{lst:evaluateModelsR} the function \textit{evaluateModels} is defined. In lines 3 and 4 the most prevailing seasonal period (if any) is determined and 
+a time series object is generated based on that period. In line 5 a series of forecast models is generated that are investigated in the algorithm which are Mean forecast model, SES model, Holt (SES with trend), HoltWinters (SES with trend and seasonality), ARIMA (model generation described in Section \ref{sec:model_generation}) and TBATS (seasonal model). 
+
+Line 8 sets a list of forecast horizons in hours, i.e.~forecasts are generated for horizons from 1 up to 168 hours. In line 11 forecasts are produced for each model and forecast horizon separately and in line 12 the generated forecasts are validated by getting accuracy measures for out-of-sample forecasts based on the test data set. 
+Line 15 returns a compound object of the list of generated models and accuracy measures. 
 
 
 
+\subsection{Java implementation on application server} \label{ssec:java_implementation_on_application_server}
+
+A large scale evaluation of forecasting methods should be conducted where models and corresponding accuracy measures are generated for different training data sets over an extended period of time. 
+Thus the application server implements methods for performing customizable forecasting simulations. 
+
+A java method \textit{evaluateModels} in class \textit{RManager} has been implemented which calls the previously introduced R function \textit{evaluateModels} (Listing \ref{lst:evaluateModelsR}) and saves the result in an internal folder on the application server. 
+This method is in turn called by an identically named method in \textit{RManagerResourceRESTService} which provides the REST service interfaces to external applications for retrieval of results. 
+
+In order to conduct automated large scale simulations additional methods have been implemented in \textit{RManagerResourceRESTService} to perform customizable simulations. The method \textit{runSimulation} performs a simulation based on a number of parameters. The method signature is depicted in Listing \ref{lst:runSimulation}. 
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Java, caption=Method runSimulation, label={lst:runSimulation}]
+runSimulation(String priceType, Long locationId, 
+              String simulationStart, String simulationEnd,
+              String trainingsPeriod, String testPeriod, String intervalPeriod)
+\end{lstlisting}
+\end{minipage}
+
+The \textit{priceType} defines whether the simulation should be based on day ahead or real time prices. Accordingly the parameter is set to either ``da'' or ``rt''. The \textit{locationId} expects an Id of a registered location within the application server. The parameter \textit{simulationStart} expects a date time String containing the start date from where the simulation should be started. The parameter \textit{simulationEnd} describes the end date of the simulation as a date time String, respectively. \textit{trainingsPeriod} is the trainings period for which energy prices should be loaded for model generation, \textit{testPeriod} is the test period against which the models are to be tested and \textit{intervalPeriod} denotes the time interval the simulation should be advanced in each step. 
+
+The corresponding web service interface is given in Listing \ref{lst:runSimulationWebService}. 
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Java, caption=Method runSimulation web service interface, label={lst:runSimulationWebService}]
+/r/simulation/{type}/{loc_id}/{simulationStart}/{simulationEnd}/
+                {trainingsPeriod}/{testPeriod}/{intervalPeriod}
+\end{lstlisting}
+\end{minipage}
+
+The base path of the web service interface is \textit{/r} which is an indicator for web services that are based on R implementations. The name of the web service is \textit{simulation} and parameters have already been described for Listing \ref{lst:runSimulation}. This method or interface is responsible for executing a single simulation with defined start and end dates, trainings-, test- and interval periods. 
+
+A common format has been defined to distinguish different periods and intervals. A regular expression for the format could be described as \textit{\textasciicircum\textbackslash d+[hdw]\$}
+which is a combination of at least one digit and one of \textit{h}, \textit{d} or \textit{w} which means \textit{hour}, \textit{day} and \textit{week}, respectively. 
+Therefore a trainings period of 2w, 1d or 48h means two weeks, one day or 48 hours. The same holds true for test- and interval periods. 
+
+The method \textit{runSimulation} calls the method \textit{evaluateModels} which performs a single model evaluation for a given trainings and test period. Its method signature is depicted in Listing \ref{lst:evaluateModels}. 
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Java, caption=Method evaluateModels, label={lst:evaluateModels}]
+evaluateModels(String simulationName, String priceType, Long locationId, 
+              String startTraining, String endTraining,
+              String startTest, String endTest)
+\end{lstlisting}
+\end{minipage}
+
+This method is responsible for conducting a model evaluation by calling the respective same-named function on the \textit{RManager}. This method is called for each simulation run triggered by the \textit{runSimulation} method, i.e.~it is called for different trainings-, test- and interval periods. In order to distinguish different simulations where each simulation is saved in a folder named after the simulation name the simulationName has been normed (Listing \ref{lst:simulationName_definition}): 
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption=Definition of the simulation name, label={lst:simulationName_definition}]
+Definition of the simulation name: 
+	
+<priceType>_sim_<locationId>_<trainingsPeriod>_<testPeriod>_<intervalPeriod>
+\end{lstlisting}
+\end{minipage}
+
+where \textit{priceType} is the type of energy price (``da'' or ``rt''), \textit{sim} is a delimiter common to all simulations, \textit{locationId} is the id of the location for which to conduct the simulation, \textit{trainingsPeriod} is the encoded form of the trainings period, the same holds true for \textit{testPeriod} and \textit{intervalPeriod}. All parameters are delimited by underscores to clearly distinguish different parameters. 
+
+Therefore a valid simulation name would be \textit{da\_sim\_1\_2w\_1w\_1w} denoting a simulation on day ahead prices for location with Id 1, 2 weeks trainings period, 1 week test period and 1 week interval period. 
+
+The method \textit{runSimulation} calls the method \textit{evaluateModels} repeatedly over the whole simulation time period (simulation start to simulation end) in intervals specified by the \textit{intervalPeriod} with trainings and test periods specified by the \textit{trainingsPeriod} and \textit{testPeriod} parameters. 
+
+The results of each call of evaluateModels are saved in a separate file under a folder named the same as the simulation. Each file has a naming convention of \textit{<simulationName>\_<start\\Training>} where \textit{startTraining} denotes the start date of the trainings period for this simulation. 
 
 
 
-%%%  General results - all numbers  %%%
+\section{Forecast model evaluation} \label{sec:forecast_model_evaluation}
 
+A large scale forecast model evaluation is performed over an extended period of time in order to identify models that show good performance across different sets of energy price time series. Different metrics and forecast horizons are investigated for a thorough evaluation of model performance to derive the best model from the simulations. 
 
-Four simulations have been run for four different locations over three years of energy price data. 
-For each of these locations three different training periods have been evaluated: two weeks, three weeks and four weeks. 
-Each of these simulations is evaluated for five different accuracy measures (see also section \ref{ssec:forecast_acc_measures}): 
+Four simulations have been run based on data from four different energy markets, namely \textit{Nord Pool Spot}, \textit{Belpex}, \textit{ISO New England} and \textit{PJM}. A time period of three years of energy price data has been chosen to be able to make a meaningful statement about forecast performance on energy prices. 
+
+For each of these locations three different training periods have been evaluated: two weeks, three weeks and four weeks. The simulations have been run with intervals of 1 week. The (maximum) test period has been set to 1 week as well. 
+
+The resulting simulations according to the defined format in Section \ref{ssec:java_implementation_on_application_server} are outlined in Table \ref{tab:list_of_conducted_forecast_simulations}. Each of these simulations and models are evaluated for five different accuracy measures to get a broader view of the model performances (see also Section \ref{ssec:forecast_acc_measures}): 
 
 \begin{itemize}
 	\item Mean error (ME)
@@ -774,76 +927,260 @@ Each of these simulations is evaluated for five different accuracy measures (see
 \end{itemize}
 
 In addition, each of these error measures has been evaluated for ten different forecast horizons (in hours): 
-1, 3, 6, 12, 18, 24, 36, 48, 96, 168. 
+1, 3, 6, 12, 18, 24, 36, 48, 96, 168. Thus one goal of the simulations is to evaluate the performance of models when exposed to 
+different forecast horizons. 
 
-In the tables below results are shown aggregated by forecast horizon for each accuracy measure. Each table depicts a different training period for the given location. 
+\begin{table}[ht]
+\centering
+\begin{tabular}{llllll}
+  \hline
+ Simulation Name &  Type & Location & Trainings Period & Test Period & Interval Period \\
+  \hline
+	da\_sim\_1\_2w\_1w\_1w & day ahead & Hamina & 2 weeks & 1 week & 1 week \\
+	da\_sim\_1\_3w\_1w\_1w & day ahead & Hamina & 3 weeks & 1 week & 1 week \\
+	da\_sim\_1\_4w\_1w\_1w & day ahead & Hamina & 4 weeks & 1 week & 1 week \\
+	\hline
+	da\_sim\_2\_2w\_1w\_1w & day ahead & St.Ghislain & 2 weeks & 1 week & 1 week \\
+	da\_sim\_2\_3w\_1w\_1w & day ahead & St.Ghislain & 3 weeks & 1 week & 1 week \\
+	da\_sim\_2\_4w\_1w\_1w & day ahead & St.Ghislain & 4 weeks & 1 week & 1 week \\
+	\hline
+	rt\_sim\_4\_2w\_1w\_1w & real time & Portland & 2 weeks & 1 week & 1 week \\
+	rt\_sim\_4\_3w\_1w\_1w & real time & Portland & 3 weeks & 1 week & 1 week \\
+	rt\_sim\_4\_4w\_1w\_1w & real time & Portland & 4 weeks & 1 week & 1 week \\
+	\hline
+	rt\_sim\_6\_2w\_1w\_1w & real time & Richmond & 2 weeks & 1 week & 1 week \\
+	rt\_sim\_6\_3w\_1w\_1w & real time & Richmond & 3 weeks & 1 week & 1 week \\
+	rt\_sim\_6\_4w\_1w\_1w & real time & Richmond & 4 weeks & 1 week & 1 week \\
+   \hline
+\end{tabular}
+\caption{List of all conducted forecast simulations}
+\label{tab:list_of_conducted_forecast_simulations}
+\end{table}
+
 
 
 
 \subsection{Forecast evaluation results}
 
+For conducting the simulations energy price data has been taken from years 2012 to 2014. As mentioned above model evaluations have been done in intervals of 1 week and forecast errors have been measured based on different trainings and test data sets for various forecast horizons. Each of the forecast error results has been aggregated for the respective trainings-, test period and forecast horizon over the whole time period of the simulation. 
+
+
+\subsubsection{Result tables} \label{sssec:result_tables}
+
+Aggregated RMSE results for Hamina belonging to the Nord Pool Spot power market are shown in Tables \ref{tab:results_hamina_2weeks}, \ref{tab:results_hamina_3weeks} and \ref{tab:results_hamina_4weeks} for 2, 3 and 4 weeks of trainingsdata, respectively. 
+
+
+%> batchRMSEResults(1)
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 23:15:14 2016
+% Fri Mar 25 18:58:38 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrrrr}
+  \hline
+ & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
+  \hline
+mean & 9.30 & 10.66 & 10.79 & 14.78 & 14.22 & 13.02 & 13.21 & 12.58 & 12.99 & 12.18 \\ 
+  ses & 2.13 & 3.54 & 5.06 & 15.83 & 16.38 & 14.98 & 14.97 & 14.64 & 15.13 & 13.30 \\ 
+  holts & 1.91 & 3.36 & 9.48 & 30.83 & 38.85 & 44.08 & 58.79 & 74.25 & 137.44 & 228.66 \\ 
+  holtwinters & 3.22 & 7.15 & 13.18 & 26.22 & 36.32 & 46.07 & 65.31 & 85.66 & 167.14 & 289.51 \\ 
+  arima & 2.11 & 3.08 & 4.65 & 13.66 & 13.89 & 12.67 & 12.87 & 12.61 & 13.68 & 12.98 \\ 
+  tbats & 2.16 & 2.89 & 4.35 & 10.68 & 10.89 & 10.02 & 10.19 & 9.94 & 10.70 & 10.33 \\ 
+   \hline
+\end{tabular}
+\caption{Forecast evaluation results based on RMSE for a trainings period of 2 weeks, Nord Pool Spot, Hamina}
+\label{tab:results_hamina_2weeks}
+\end{table}
+% latex table generated in R 3.1.1 by xtable 1.8-2 package
+% Fri Mar 25 18:58:38 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrrrr}
+  \hline
+ & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
+  \hline
+mean & 9.40 & 10.75 & 10.90 & 15.03 & 14.46 & 13.25 & 13.44 & 12.81 & 13.27 & 12.42 \\ 
+  ses & 2.14 & 3.56 & 5.06 & 15.84 & 16.38 & 14.98 & 14.97 & 14.63 & 15.14 & 13.31 \\ 
+  holts & 1.91 & 3.38 & 9.51 & 30.88 & 38.90 & 44.15 & 58.90 & 74.39 & 137.77 & 229.23 \\ 
+  holtwinters & 3.44 & 7.61 & 14.06 & 27.95 & 38.22 & 47.77 & 67.07 & 87.51 & 169.44 & 292.43 \\ 
+  arima & 2.12 & 2.95 & 4.37 & 13.02 & 13.12 & 11.89 & 11.99 & 11.63 & 12.37 & 11.50 \\ 
+  tbats & 2.15 & 3.04 & 4.73 & 11.23 & 11.41 & 10.51 & 10.57 & 10.33 & 11.05 & 10.67 \\ 
+   \hline
+\end{tabular}
+\caption{Forecast evaluation results based on RMSE for a trainings period of 3 weeks, Nord Pool Spot, Hamina}
+\label{tab:results_hamina_3weeks}
+\end{table}
+% latex table generated in R 3.1.1 by xtable 1.8-2 package
+% Fri Mar 25 18:58:38 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrrrr}
+  \hline
+ & 1h & 3h & 6h & 12h & 18h & 24h & 36h & 48h & 96h & 168h \\ 
+  \hline
+mean & 9.52 & 10.88 & 11.04 & 15.22 & 14.63 & 13.42 & 13.58 & 12.94 & 13.41 & 12.57 \\ 
+  ses & 2.13 & 3.57 & 5.06 & 15.84 & 16.38 & 14.97 & 14.96 & 14.61 & 15.13 & 13.30 \\ 
+  holts & 1.89 & 3.37 & 9.53 & 31.00 & 39.07 & 44.34 & 59.18 & 74.75 & 138.54 & 230.59 \\ 
+  holtwinters & 5.58 & 11.05 & 17.33 & 33.52 & 44.92 & 54.87 & 76.25 & 98.63 & 189.26 & 327.09 \\ 
+  arima & 1.98 & 2.85 & 4.39 & 12.69 & 12.79 & 11.60 & 11.73 & 11.35 & 12.06 & 11.12 \\ 
+  tbats & 2.20 & 3.09 & 4.64 & 10.98 & 11.19 & 10.31 & 10.45 & 10.20 & 10.91 & 10.36 \\ 
+   \hline
+\end{tabular}
+\caption{Forecast evaluation results based on RMSE for a trainings period of 4 weeks, Nord Pool Spot, Hamina}
+\label{tab:results_hamina_4weeks}
+\end{table}
+
+
+Results show that forecasts over different horizons exhibit comparable relative values across almost all forecasting models. That is, values behave in a similar way across forecast models when examining different forecast horizons. 
+
+Notably values stay much in the same value range except for Holts and HoltWinters models where forecast errors increase non-linearly with an increase of forecast horizon. This may be due to their inability to capture short term seasonality. 
+
+From the results it is visible that the forecast periods from 24 hours to 48 hours provide the best results through almost all models. A forecast period of 48 hours seems to provide the best results apart from results for low periods (1 to 6 hours). Small forecast horizons generally exhibit smaller forecast errors as the short period of time does not allow a high value for aggregated deviations from the series. Therefore it can be stated that forecast error results can only be meaningfully compared among forecast windows of a minimum of 12 hours. 
+
+When comparing performance of forecast models the TBATS model clearly exhibits the lowest forecast errors when considering forecast windows from 12 hours upwards. It is followed by the ARIMA model and, suprisingly by the Mean forecast model. For the 2 weeks training period and $>= 48$ forecast periods it even outperforms the ARIMA model. This is possible when the forecasts from advanced models such as ARIMA are less exact and data is closely moving around the mean which benefits mean forecasts. 
+
+
+
+
+\subsubsection{Result graphs}
+
+Results for different forecast error measures are shown for ARIMA and Mean models and different trainings data periods in Figures \ref{fig:da_sim_1_x_1w_1w_arima} and \ref{fig:da_sim_1_x_1w_1w_mean}. Absolute values for different forecast error measures can be very different as depicted in figures below. What becomes apparent is that percentage error measures exhibit significantly higher absolute values than other methods. This can be attributed to their instability when facing low time series values. 
+
+When only comparing RMSE errors (the second bar in each group of bars) the values of ARIMA and Mean forecasts overall appear much in the same time range as already pointed out by the discussion in \ref{sssec:result_tables}. Also for both models values for forecast horizons 24h to 48h appear lower than for other horizons for all forecast error measures which is also consistent with the observation in the result tables. 
+
+All results can be looked up in the Appendix (result tables: \ref{sec:app_result_tables}, result graphs: \ref{sec:app_result_graphs}). 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.85\textwidth]{figures/forecasting/da_sim_1_x_1w_1w_arima.png}
+	\caption{Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}
+	\label{fig:da_sim_1_x_1w_1w_arima}
+\end{figure}
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.85\textwidth]{figures/forecasting/da_sim_1_x_1w_1w_mean.png}
+	\caption{Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}
+	\label{fig:da_sim_1_x_1w_1w_mean}
+\end{figure}
+
+
+The result tables as well as graphs emphasize the observations made previously about model behavior. 
+
+What can be observed by investigating the large scale forecast evaluation over all locations is that very different behaviors and scales of forecast errors exist for the same model over different locations (i.e.~datasets). An extreme example is the difference in forecast error distributions of the Nord Pool Spot and Belpex energy markets (tables \ref{ssec:app_tables_nord_pool_spot} and \ref{ssec:app_tables_belpex}, graphs \ref{ssec:app_graphs_nord_pool_spot} and \ref{ssec:app_graphs_belpex}). 
+
+However, the seemingly extreme difference in forecast error distribution is mainly caused by exorbitant values of the MPE and MAPE error measures. This may be attributed to the occurrence of many low valued energy prices (close to zero) in the Belpex energy market which causes very high values for these methods. 
+
+When comparing models TBATS, ARIMA followed by Mean and SES forecast models achieve the best results. Remarkably Mean forecasts outperform forecasts of SES models for almost all data sets of day ahead energy markets regarding forecast horizons $>= 12$. This behavior is reversed for real time markets where SES generally provides better performance. 
+
+TBATS models exhibit the least forecast errors when they are able to capture seasonality appropriately. Otherwise these models show exponential growth of forecast errors over all measures. Due to this instability ARIMA models may be preferred as they exhibit stable forecast errors over most data sets and forecast horizons. 
+
+Another note to error distribtions is that for the same forecast model similar patterns can be observed despite differences across energy markets. Concerning different trainings periods it can be observed that for most methods errors decrease with increasing trainings period, i.e.~four weeks of trainings data exhibits the least errors in most cases. 
+
+Also different distributions are apparent for different error measures, e.g.~RMSE tend to increase with increasing forecast horizon whereas percentage errors (MPE and MAPE) tend to hit their lowest values for forecast horizons of 24h to 48h apart from horizons below 12h. 
+
+Concerning the forecast error measures a focus has been laid on evaluating Root Mean Squared Errors (RMSE) since this measure has been proven to provide the most stable results. Percentage error measures such as Mean Percentage Error (MPE) and Mean Absolute Percentage Error (MAPE) tend to become numerically unstable for low values. Difference based measures such as Mean Error (ME) with non-absolute value differences provide little insights to the actual occurred forecast errors as positive and negative values might cancel each other out. 
+
+
+
+\subsubsection{Aggregated Results}
+
+Results have been aggregated over all forecast horizons and for each simulation which are shown in Tables \ref{tab:aggregated_results_nord_pool}, \ref{tab:aggregated_results_belpex}, \ref{tab:aggregated_results_isone} and \ref{tab:aggregated_results_pjm}. Best results have been formatted in bold in the tables. 
+
+ARIMA and TBATS models showed superior results over all forecast horizons and training periods. TBATS models show best results when data can be modeled appropriately but exhibit anomalies in other cases. For different training periods a trend can be detected where forecast errors increase with increasing duration of the trainings period. However, ARIMA models show opposite results where forecast errors consistently decrease with increasing trainings period. 
+
+
+% latex table generated in R 3.1.1 by xtable 1.8-2 package
+% Fri Mar 25 19:35:50 2016
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrrrr}
   \hline
  & mean & ses & holts & holtwinters & arima & tbats \\ 
   \hline
-2 weeks & 14.55 & 11.60 & 62.76 & 73.65 & 10.23 & 8.19 \\ 
-  3 weeks & 14.78 & 11.60 & 62.90 & 74.02 & 9.53 & 8.59 \\ 
-  4 weeks & 14.99 & 11.60 & 63.23 & 85.06 & 9.26 & 8.44 \\ 
+2 weeks & 12.37 & 11.60 & 62.76 & 73.98 & 10.22 & \textbf{8.21} \\ 
+  3 weeks & 12.57 & 11.60 & 62.90 & 75.55 & 9.50 & \textbf{8.57} \\ 
+  4 weeks & 12.72 & 11.60 & 63.23 & 85.85 & 9.26 & \textbf{8.43} \\ 
    \hline
 \end{tabular}
 \caption{Results of evaluation for Hamina, Nord Pool Spot (DA)} 
+\label{tab:aggregated_results_nord_pool}
 \end{table}
-
-
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 23:15:14 2016
+% Fri Mar 25 19:35:50 2016
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrrrr}
   \hline
  & mean & ses & holts & holtwinters & arima & tbats \\ 
   \hline
-2 weeks & 17.07 & 15.23 & 127.13 & 186.82 & 13.49 & 1.27E+50 \\ 
-  3 weeks & 17.40 & 15.27 & 128.05 & 190.21 & 12.94 & 11.60 \\ 
-  4 weeks & 17.59 & 15.30 & 127.03 & 186.37 & 12.87 & 2.49E+36 \\ 
+2 weeks & 15.77 & 15.23 & 127.13 & 186.82 & \textbf{13.49} & 1.27E+50 \\ 
+  3 weeks & 16.07 & 15.27 & 128.05 & 190.86 & 12.94 & \textbf{11.61} \\ 
+  4 weeks & 16.25 & 15.30 & 127.03 & 186.37 & \textbf{12.87} & 2.49E+36 \\ 
    \hline
 \end{tabular}
 \caption{Results of evaluation for St.Ghislain, Belpex (DA)}
+\label{tab:aggregated_results_belpex}
 \end{table}
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 23:15:14 2016
+% Fri Mar 25 19:35:50 2016
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrrrr}
   \hline
  & mean & ses & holts & holtwinters & arima & tbats \\ 
   \hline
-2 weeks & 24.22 & 23.61 & 235.84 & 407.06 & 24.03 & 5.45E+16 \\ 
-  3 weeks & 24.14 & 23.56 & 238.92 & 686.95 & 22.26 & 1.64E+18 \\ 
-  4 weeks & 24.68 & 23.32 & 268.10 & 437.85 & 21.91 & 2.18E+32 \\ 
+2 weeks & 26.42 & 23.61 & 235.84 & 417.39 & \textbf{24.11} & 5.45E+16 \\ 
+  3 weeks & 26.36 & 23.56 & 238.92 & 686.95 & \textbf{22.26} & 1.64E+18 \\ 
+  4 weeks & 26.84 & 23.32 & 268.10 & 437.85 & \textbf{21.83} & 2.18E+32 \\ 
    \hline
 \end{tabular}
 \caption{Results of evaluation for Portland, ISO-NE (RT)}
+\label{tab:aggregated_results_isone}
 \end{table}
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
-% Mon Mar 07 23:15:14 2016
+% Fri Mar 25 19:35:50 2016
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrrrrr}
   \hline
  & mean & ses & holts & holtwinters & arima & tbats \\ 
   \hline
-2 weeks & 14.47 & 15.17 & 148.54 & 322.41 & 15.03 & 7.57E+13 \\ 
-  3 weeks & 14.46 & 15.23 & 147.77 & 318.61 & 14.14 & 13.46 \\ 
-  4 weeks & 14.42 & 15.29 & 148.67 & 357.82 & 14.11 & 5.44E+108 \\ 
+2 weeks & 17.41 & 15.17 & 148.54 & 333.32 & \textbf{15.02} & 7.57E+13 \\ 
+  3 weeks & 17.36 & 15.23 & 147.77 & 318.61 & 14.14 & \textbf{ 13.46} \\ 
+  4 weeks & 17.34 & 15.29 & 148.67 & 357.82 & \textbf{14.11} & 5.44E+108 \\  
    \hline
 \end{tabular}
 \caption{Results of evaluation for Richmond, PJM (RT)}
+\label{tab:aggregated_results_pjm}
 \end{table}
+
+
+
+\subsection{Conclusion of results}
+
+From the discussion of the large scale forecast evaluation in the previous section various conclusions may be drawn. 
+
+\paragraph{Model performance}
+
+Concerning model performance ARIMA models showed the best results over different energy markets, trainings periods and forecast horizons. 
+They showed consistently low forecast errors and appeared very stable throughout the simulations. Thus among the observed models ARIMA models may be the best choice considering forecast performance and statbility of results. 
+
+\paragraph{Forecast Horizon}
+
+Concerning forecast horizons it has been observed that horizons from 24 hours to 48 hours provide the best results when considering all models and trainings periods. 
+For low horizons up to 12 hours different models may be suggested, i.e.~Holts model provide considerably lower forecast errors for forecast windows of 1 and 3 hours. 
+For other than very short-term forecasts a forecast window of 24 to 48 hours provides best results. 
+
+\paragraph{Training periods}
+
+Different model training periods provide different results. Forecast errors have been observed to increase with the duration of the trainings period most of the time except for ARIMA models where the opposite behavior has been detected. Thus for ARIMA models a trainings period of 4 weeks is suggested for model generation. 
+
+\paragraph{Forecast error measures}
+
+As discussed before different forecast error methods provide different results for the same dataset. The ME provides an indication of the symmetry of the error distribution but little information about actual forecast performance. The MAE and RMSE provide a way of reliably model forecast errors where they achieve very similar results while the RMSE emphasizes outliers in the data. Percentage error measures have not been found to provide a reliable source of error measurements due to their instability for low values. Thus MAE and RMSE are considered the preferred way of modeling forecast errors. 
+
+
+
 
 
 
