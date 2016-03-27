@@ -44,134 +44,6 @@ In \cite{de2013study} it is shown that the cost of optimal assignment is further
 
 
 
-
-
-\section{Forecasting}
-
-\subsection{Forecasting of electricity prices}
-
-Since the occurrence of competitive energy markets forecasting of energy prices has been vital to utility operators. 
-
-As it will be seen later the consideration of price forecasts in a multi electricity market environment can have beneficial side effects regarding energy costs. 
-
-
-\subsection{General forecasting procedure}
-
-\begin{itemize}
-
-\item Selection of data sets (location, frequency)
-
-\item Investigation of characteristics of the selected data sets (stationarity, variance)
-
-\item Making series stationary, on demand
-
-\item Evaluation of appropriate models to be applied to the given data sets
-
-\item Model generation based on evaluation
-
-\item Model evaluation and comparison (goodness of fit, accuracy, residual characteristics) 
-
-\item Tests on in-sample and out-of-sample data
-
-\item Testing different forecasting horizons
-
-\item Comparison of results for different time sets and locations
-
-\item Conclusion and model selection based on results
-
-\end{itemize}
-
-
-\subsection{Forecast types}
-
-%Forecasting can be done in different ways, each having their own drawbacks and benefits. 
-
-Forecasting methods can be classified into two categories: Qualitative and Quantitative forecasting. 
-
-\subsubsection{Qualitative forecasting}
-Qualitative forecasting methods assume that there is no or no relevant data that can be used to make forecasts. This is the case for forecasts that aim to predict i.e. the first year's sales of a new product line or the expected profit of a newly created startup company. In both examples there is no data available beforehand and the forecast has to be derived from already known conditions also called predictor variables. 
-
-\subsubsection{Quantitative forecasting}
-Quantitative forecasting methods are based on numerical historical data, from which forecasts are derived. It is assumed that the data's pattern over time stays the same or will behave in a similar way in the future. 
-
-Quantitative forecasting methods can again be classified roughly into two categories: Cross-sectional forecasting and Time Series forecasting.
-
-\begin{itemize}
-
-\item Cross-sectional forecasts collect data from a single point in time to predict a value for an item not in the dataset. For example, prices of real estates in a specific area and point in time are collected and the price for another real estate is estimated based on predictor variables (i.e., size of properties and number of floors). 
-
-\item Time series forecasts are solely based on historical data from the value to be predicted. No other variables are considered for the calculation, which on the one hand might miss some influential factors from external conditions but on the other hand appears to be more accurate regarding the output of the forecasts. 
-In case of energy price forecasts external variables that change energy price behavior might include bids in auctions of wholesale energy markets, the current oil price or availability of renewable energy sources. However, in time series forecasts these variables are neglected to set the focus on the time series of historical energy prices. 
-
-\end{itemize}
-
-
-\subsection{Outline of forecasting models}
-
-%TODO
-Discussion of suitable models for price time series from various energy markets. 
-
-
-\subsubsection{Random walk}
-
-A random walk model is best suited for series that exhibit major fluctuations on a short term and where no apparent trend can be recognized \cite{makridakisforecasting}(pg. 461). Thus this model can be described by an accumulation of a random error over time (equation \ref{eq:random_walk}). 
-
-\begin{equation}
-Y_t = \sum e_t
-\label{eq:random_walk}
-\end{equation}
-
-$Y_t$ denotes the value of the time series at time point $t$ whereas $e_t$ is a timeseries of random errors where the errors exhibit no correlation and are normally distributed \cite{makridakisforecasting}(pg. 461). 
-
-In \cite{makridakisforecasting}(pg. 464) it is stated that the behavior of economic and business series in particular can be characterized by a random walk model since they show so-called cycles or random fluctuations around a possible trend. 
-
-As it is impossible to accurately predict upcoming values or cycles of a random walk model by definition one of the most suitable prediction models is the ``naive forecast'' where the forecasted value of the upcoming timestamp is set equal to the last observed value (equation \ref{eq:naive_forecast}).
-
-\begin{equation}
-\hat{Y}_{t+i} = Y_t
-\label{eq:naive_forecast}
-\end{equation}
-
-
-
-\subsubsection{ARIMA models}
-
-\emph{ARIMA model generation}
-
-See Box-Jenkins Methodology. 
-
-
-\subsubsection{Neural Network models}
-
-An approach of using artificial neural networks (ANN) as a model to forecast short term electricity prices is presented in \cite{szkuta1999electricity}. 
-
-
-\paragraph{Forecast competition}
-
-Neural network forecasting competition available from 2008\footnote{\url{http://www.neural-forecasting-competition.com/NN5/}}. 
-
-
-
-
-\subsection{Model selection techniques}
-
-
-\subsubsection{Autocorrelation}
-
-
-
-See \url{http://www.itl.nist.gov/div898/handbook/eda/section3/autocopl.htm}
-
-
-\subsubsection{White noise tests for residuals}
-
-To test if residuals can be regarded as white noise, its auto correlation functions is examined. In case auto correlations are present it means that some values within the series depend on one another. In theory a true white noise series should not exhibit any auto correlations but since we operate on finite time series there will always be a few correlations present in the data\cite{makridakisforecasting}. 
-
-It can be shown that the auto correlations of a white noise series have a sampling distribution similar to a gaussian distribution with zero mean and a standard deviation of $1/\sqrt{n}$ where $n$ denotes the total number of observations in the series\cite{makridakisforecasting}. 
-
-
-
-
 %\subsection{Forecasting in cloud environments}
 
 
@@ -186,6 +58,33 @@ Big cloud providers such as Google or Amazon commonly offer high availability se
 
 
 
+%\subsection{Application Server}
+%
+%Considering the need for easy and generic data handling when dealing with different energy markets and data formats the application server has been set up which is connected to a database to fetch and parse data for later processing. By this means it is possible to execute extended data analysis tasks and aggregate and combine data to get insights into possible relationships between different data sets. Scenarios based on different datasets are easily created to quickly run simulations under changing conditions. Thus it is a flexible way of data handling that also simplifies the whole simulation process. 
+%
+%Another benefit of providing an application server is the possibility to expose web service interfaces that can be called by any external component to utilize data and forecast interfaces. The architecture has been made extensible such that a new energy market location can be added without touching existing interfaces. 
+%Data processing interfaces exist for different data formats which can be extended to provide implementations for different energy price data formats. 
+%
+%\subsubsection{Data management}
+%
+%Interfaces for data management are defined within specialized Java classes that are responsible for the retrieval, import and data query handling. 
+%
+%\subsubsection{Web Services}
+%
+%All publicly exposed interfaces are designed as web services that can be called by any application regardless of its type or implementation. Specifically REST service interfaces have been chosen as it is a simple yet powerful method of providing reliable interfaces for interactions with the server. The underlying Java technology is JAX-RS which is a common implementation for providing REST service interfaces on Java application servers. Data may be passed by Path or Query parameters that are specified at each service interface. 
+%
+%\subsubsection{Scheduling}
+%
+%The application server also includes scheduling services where actions are triggered at each interval. This relates to the continuous and automatic import of data from various energy markets and the subsequent generation of R models. Therefore at each service invocation the respective REST interfaces are called to import the latest data from the markets and trigger the model generation based on that data. This mechanism allows for statistical models to be always up to date and are saved and retrieved based on the last date of the underlying training data. 
+%
+%
+%
+%\subsection{R Server}
+%
+%R is a statistical tool with vast amounts of statistical methods for data analysis and model generation\footnote{\url{https://www.r-project.org/}}. It has been chosen as the statistics engine for this work since it does not require a commercial license and became the de-facto standard for statistical processing over the last decade. 
+%
+%
+%
 
 
 

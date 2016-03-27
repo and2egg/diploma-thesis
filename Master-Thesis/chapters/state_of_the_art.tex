@@ -348,7 +348,7 @@ Thus efficient methods for transferring VM memory pages from the source to the d
 %The non-memory state of the VM is preferably available in a shared storage arrangement accessible by both the source and destination VMs such that it is only required to re-map the source VM's virtual disk to the destination VM. In case no shared storage is available, the source VM's non-memory state has to be transferred to the destination VM before or after the migration depending on the implementation. 
 
 
-\subsection{Live migration of virtual machines}
+\subsection{Live migration of virtual machines} \label{ssec:live_migration_of_virtual_machines}
 
 In \cite{clark2005live} an efficient approach for live migration of virtual machines is presented. This paper targets the migration of entire OS within a virtual machine without noticeable service interruption. 
 
@@ -383,7 +383,7 @@ Results for different kind of workloads indicate that even in the worst case the
 Migration downtimes have been evaluated for different sized VMs running various kinds of workloads. Resulting downtimes range from only 60 ms for small sized VMs (64 MB) and low dirty page rate to 3.5 seconds for large VMs (512 MB) with frequently updated dirty page rates. It is stated that realistic workloads can be migrated with a downtime as low as 210 ms in a virtualized cluster environment. 
 
 
-\subsection{Performance and energy modeling for live Migration of Virtual Machines}
+\subsection{Performance and energy modeling for live Migration of Virtual Machines} \label{ssec:performance_and_energy_modeling_of_virtual_machines}
 
 A thorough evaluation of migration performance and resulting migration costs is given by \cite{liu2013performance}. 
 

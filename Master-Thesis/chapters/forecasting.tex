@@ -119,7 +119,7 @@ It can be formally defined as in equation \ref{eq:mean_forecast}
 \label{eq:mean_forecast}
 \end{equation}
 
-where $T$ denotes the number of observations in the trainings dataset, $y_i$ denote historical values and $\hat{y}_{T+h|T}$ denotes a forecast of $h$ values into the future beginning at the value of $y_T$. 
+where $T$ denotes the number of observations in the training dataset, $y_i$ denote historical values and $\hat{y}_{T+h|T}$ denotes a forecast of $h$ values into the future beginning at the value of $y_T$. 
 
 Even though the mean forecast only includes simple calculations it can be effective to forecast random or near random time series or time series that exhibit strong volatility. As it is the simplest of the proposed models it should serve as a baseline model to which other models' performance can be compared. 
 
@@ -573,7 +573,7 @@ Results show that it is possible for manually selected models to outperform auto
 
 \section{Model selection algorithm} \label{sec:model_selection_algorithm}
 
-An automated model selection algorithm has been implemented to provide aid in finding suitable ARIMA models for a given trainings dataset. 
+An automated model selection algorithm has been implemented to provide aid in finding suitable ARIMA models for a given training dataset. 
 The process consists of several data preprocessing steps with generation and comparison of different ARIMA models and model evaluation based on a weighted function of AICc and Ljung Box test values. 
 
 The model selection algorithm consists of three separate functions each contributing a different part to model generation. These functions are \textit{GenerateArimaModel} as the base function for model generation, \textit{AutomatedBoxTest} for determining the right parameters for the Ljung Box tests and \textit{SeasonalPeriods} for estimation of possibly existing seasonal periods within the data. 
@@ -731,7 +731,7 @@ Another thing to note is the so called \textit{target period} in function \texti
 
 
 
-\section{R / Java Simulation Framework}
+\section{R / Java Simulation Framework} \label{sec:r_java_simulation_framework}
 
 The R / Java Simulation Framework is responsible for preparation and execution of a large scale simulation of generating and evaluating forecast models over an extended period of time. In this section the architecture and implementation of the simulation framework is presented as well as the interfaces existing between R and Java. 
 
@@ -809,7 +809,7 @@ The corresponding R function is named \textit{evaluateModels} and takes energy p
 \subsubsection{Function evaluateModels}
 
 \begin{tabular}{ll}
-\textbf{Input:}  & \textit{pricesTraining} - a list of energy prices taken as trainings data set \\
+\textbf{Input:}  & \textit{pricesTraining} - a list of energy prices taken as training data set \\
 								 & \textit{pricesTest} - a list of energy prices taken as test data set \\
 \textbf{Output:} & \textit{modelList} - a list of models generated within the function \\
 								 & \textit{accuracyList} - a list of accuracy measures calculated for each model
@@ -1043,7 +1043,7 @@ When comparing performance of forecast models the TBATS model clearly exhibits t
 
 \subsubsection{Result graphs}
 
-Results for different forecast error measures are shown for ARIMA and Mean models and different trainings data periods in Figures \ref{fig:da_sim_1_x_1w_1w_arima} and \ref{fig:da_sim_1_x_1w_1w_mean}. Absolute values for different forecast error measures can be very different as depicted in figures below. What becomes apparent is that percentage error measures exhibit significantly higher absolute values than other methods. This can be attributed to their instability when facing low time series values. 
+Results for different forecast error measures are shown for ARIMA and Mean models and different training data periods in Figures \ref{fig:da_sim_1_x_1w_1w_arima} and \ref{fig:da_sim_1_x_1w_1w_mean}. Absolute values for different forecast error measures can be very different as depicted in figures below. What becomes apparent is that percentage error measures exhibit significantly higher absolute values than other methods. This can be attributed to their instability when facing low time series values. 
 
 When only comparing RMSE errors (the second bar in each group of bars) the values of ARIMA and Mean forecasts overall appear much in the same time range as already pointed out by the discussion in \ref{sssec:result_tables}. Also for both models values for forecast horizons 24h to 48h appear lower than for other horizons for all forecast error measures which is also consistent with the observation in the result tables. 
 
@@ -1052,14 +1052,14 @@ All results can be looked up in the Appendix (result tables: \ref{sec:app_result
 \begin{figure}[htbp]
 	\centering
 		\includegraphics[width=0.85\textwidth]{figures/forecasting/da_sim_1_x_1w_1w_arima.png}
-	\caption{Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}
+	\caption{Aggregated accuracy measures for ARIMA model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}
 	\label{fig:da_sim_1_x_1w_1w_arima}
 \end{figure}
 
 \begin{figure}[htbp]
 	\centering
 		\includegraphics[width=0.85\textwidth]{figures/forecasting/da_sim_1_x_1w_1w_mean.png}
-	\caption{Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}
+	\caption{Aggregated accuracy measures for Mean model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}
 	\label{fig:da_sim_1_x_1w_1w_mean}
 \end{figure}
 
@@ -1074,7 +1074,7 @@ When comparing models TBATS, ARIMA followed by Mean and SES forecast models achi
 
 TBATS models exhibit the least forecast errors when they are able to capture seasonality appropriately. Otherwise these models show exponential growth of forecast errors over all measures. Due to this instability ARIMA models may be preferred as they exhibit stable forecast errors over most data sets and forecast horizons. 
 
-Another note to error distribtions is that for the same forecast model similar patterns can be observed despite differences across energy markets. Concerning different trainings periods it can be observed that for most methods errors decrease with increasing trainings period, i.e.~four weeks of trainings data exhibits the least errors in most cases. 
+Another note to error distribtions is that for the same forecast model similar patterns can be observed despite differences across energy markets. Concerning different trainings periods it can be observed that for most methods errors decrease with increasing trainings period, i.e.~four weeks of training data exhibits the least errors in most cases. 
 
 Also different distributions are apparent for different error measures, e.g.~RMSE tend to increase with increasing forecast horizon whereas percentage errors (MPE and MAPE) tend to hit their lowest values for forecast horizons of 24h to 48h apart from horizons below 12h. 
 
