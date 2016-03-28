@@ -88,7 +88,7 @@ At each step the Cloud Evaluator gets current request and migration demands and 
 
 
 
-\section{Modeling migration energy}
+\section{Modeling migration energy} \label{sec:modeling_migration_energy}
 
 Besides the structural outline presented in the previous section important methodologies used by the cloud simulator and scheduler are investigated in detail in the following sections. 
 
@@ -163,6 +163,259 @@ The condition for reaching the defined memory threshold is depicted in Equation 
 
 
 
+
+\section{SLA management} \label{sec:sla_managemenet}
+
+In this work the Service Level Agreement (SLA) is specified as the guaranteed availability of VMs. Cloud providers such as Google or Amazon provide SLAs for different levels of guaranteed availability \cite{google2015compute, amazon2013sla}. In this work the 99.95\% availability contract as depicted on the Google Compute Cloud \cite{google2015compute} has been chosen as a standard metric valid for all VMs in simulations. The cloud provider establishes this contract in accordance with the customer which states that a running VM will have an uptime duration of at least 99.95\% of the total runtime of the VM. If the total runtime exceeds one month (which is the billing period) the percentage of uptime duration is related to this period only. Thus the total downtime of a VM over the applicable time period is not allowed to exceed 0.05\% of that time period (e.g.~the maximum allowed downtime per hour would be $3600s * 0.0005 = 1.8s$). 
+
+In case this criterion can not be met the cloud provider is obliged to pay penalties, depending on the total downtime. The amount of penalties and the relation to the total downtime is depicted in Table \ref{tab:sla_penalties}. 
+
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+  \hline
+	Uptime Percentage & Percentage of penalty relative to a user's total cost	 \\
+  \hline
+	99.00\% - < 99.95\%	& 10\% \\
+	95.00\% - < 99.00\%	& 25\% \\
+	< 95.00\%				& 50\% \\
+   \hline
+\end{tabular}
+\caption{VM downtime vs SLA penalties}
+\label{tab:sla_penalties}
+\end{table}
+
+
+For a VM having an uptime of below 99.95\% but above 99\% the user has to be paid a penalty of 10\% of the total amount the user would have originally paid. Analogously if uptime falls below 99\% but above 95\% the user is paid back 25\% and for uptimes below 95\% of the time the user is refunded 50\% of the price. 
+
+Different SLA availability contracts are available, i.e.~Google storage provide only a reduced availability of 99.9\% or even 99\% \cite{google2015storage}. However these have not been considered in this work. 
+
 \section{Cost optimization based on utility function}
+
+\subsection{Utility function definition}
+
+Problems comprising multiple criteria with different associated weights have been researched in different contexts \cite{angilella2004assessing, dulmin2003supplier}. These kind of problems are commonly referred to as \textit{Multiple Criteria Decision Aid} (MCDA) where for different possibly contradicting criteria the best solution should be determined considering custom criteria weights \cite{dulmin2003supplier}. 
+
+Utility functions have been proposed as a way of solving multi criteria decision problems \cite{angilella2004assessing, afriat1967construction}. 
+For such problems a so called \textit{Decision Maker} (DM) manages a set of choices or alternatives $A = \{a,b,c,\ldots\}$ and a fixed set of $n$ criteria $G = \{g_1,g_2,\ldots,g_i,\ldots,g_n\}$, where $g_i : A \rightarrow \mathfrak{R}$. 
+In \cite{angilella2004assessing} a \textit{marginal weak preference relation} is further defined as $\succsim_i, i = 1,\ldots,n$ on the set of alternatives $A$ such that $\forall a,b \in A, a \succsim_i b$. The meaning of the relation is ``$a$ is at least as good as $b$ regarding criterion $g_i$''. 
+Thus for each $g_i \in G$ and $\forall a,b \in A$ it holds that $g_i(a) \geq g_i(b) \Leftrightarrow a \succsim_i b$. 
+
+A comprehensive weak preference relation $a \succsim b$ is defined as $\forall a,b \in A, a \succsim b$ and means ``$a$ is globally at least as good as
+$b$''. 
+A utility model may be defined from that relation in case it is a complete preorder \cite{angilella2004assessing}:
+
+\begin{align}
+	\forall a,b \in A: U(g(a)) \geq U(g(b)) \Leftrightarrow a \succsim b \label{eq:comprehensive_weak_preference_relation}
+\end{align}	
+
+with $U : \mathfrak{R}^n \rightarrow \mathfrak{R}$ and $U(g(.)) = U(g_1,g_2,\ldots,g_i,\ldots,g_n)$ \\
+As stated in \cite{angilella2004assessing} an additive utility function may be derived from the relation in Equation \ref{eq:comprehensive_weak_preference_relation}:
+
+\begin{equation}
+	U(x) = \lambda_1 u_1 (g_1(x)) + \lambda_2 u_2 (g_2(x)) + \ldots + \lambda_n u_n (g_n(x)), x \in A
+\label{eq:definion_of_additive_utility_function}
+\end{equation}
+
+with $\lambda_1,\lambda_2,\ldots,\lambda_n \in \mathfrak{R}^+$ and $u_i$ defined as non-decreasing marginal utility functions. \\
+\\
+Based on the utility function definition in Equation \ref{eq:definion_of_additive_utility_function} a utility function has been introduced to the Cloud Scheduler with $\lambda_1,\lambda_2,\ldots,\lambda_n \in [0,1]$ denoting the \textit{weights} and $u_i$ denoting functions that normalize criteria values $g_i$ such that $g_1,g_2,\ldots,g_i,\ldots,g_n \in [0,1]$. 
+
+
+
+
+\subsection{Cloud Scheduler and utility function}
+
+The goal of the Cloud Scheduler is to optimize resource scheduling with respect to current and future energy prices. In order to take into account different criteria and choose VMs exhibiting the best fit for migration a utility function has been implemented that evaluates the current cloud state and provides aid in finding VMs with best conditions for migration. 
+
+The utility function definition is outlined in Equation \ref{eq:cloud_scheduler_utility_function}. 
+
+\begin{equation}
+	U(v) = \sum_{i=1}^k w_i c_i (v)
+\label{eq:cloud_scheduler_utility_function}
+\end{equation}
+
+where $w_i$ denote the weights and $c_i$ denote the normalized criteria values which are $\lambda_i$ and $u_i(g_i(x))$ in Equation \ref{eq:definion_of_additive_utility_function}, respectively. Criteria values (and thus the utility function as well) are defined s.t.~a value of 0 denotes the worst result whereas a value of 1 is considered the best result, i.e.~VMs associated with an utility value near 1 are very likely to be migrated. 
+
+In Table \ref{tab:list_of_utility_criteria} all criteria that have been defined in the Cloud Scheduler are displayed. 
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lll}
+  \hline
+	Criteria & Name	& Description \\
+  \hline
+	$c_1$ & probability of SLA penalty & probability that an SLA penalty will occur after migration \\
+																	  && (based on experienced downtime) \\
+	$c_2$ & estimated migration energy & the expected migration energy depending on VM memory, \\
+																		&& bandwidth and dirty page rate \\
+	$c_3$ & remaining VM duration & number of unit time spans the job or VM is still running \\
+	$c_4$ & data center load & load of DC where VM is located, balance load across DCs \\
+	$c_5$ & estimated cost benefit & expected migration benefit (cost savings) given the \\
+																		&& current conditions \\
+   \hline
+\end{tabular}
+\caption{List of utility criteria}
+\label{tab:list_of_utility_criteria}
+\end{table}
+
+Each of the criteria above describes one metric by which a virtual machine running within the cloud simulation can be evaluated such that values for different VMs may be compared and VMs having a utility value greater than a defined threshold may then be considered for migration. Thus a utility threshold $U_{thd}$ is defined s.t.~VMs are scheduled for migration if $U(v) \geq U_{thd}$. 
+
+\subsubsection{Criteria definition}
+
+In the following, each criterion is formalized and described in detail. 
+
+\paragraph{Probability of SLA penalty}
+
+As outlined in Section \ref{sec:sla_managemenet} it is vital for cloud providers to ensure that VM downtimes only occur rarely during their execution. 
+Thus the \textit{probability of an SLA penalty} is an important metric to consider when performing migrations as they may lead to extensive downtimes. 
+
+All parameters used in the following equations are outlined in Table \ref{tab:sla_penalty_parameters}. 
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ll}
+  \hline
+	Parameter & Description	 \\
+  \hline
+	$v_{dur}$ & Total expected duration of VM $v$	 \\
+	$v_{SLA}$ & SLA availability percentage agreed for VM $v$	 \\
+	$v_{SLA_{TH}}$ & Threshold for SLA violation for VM $v$	 \\
+	$loc$ & set of locations included in the simulation	 \\
+	$down_{acc}(v,t)$ & accumulated downtime for VM $v$ \\
+	$cond_{pred}(v,l,t)$ & condition for prediction of down time of VM $v$ \\
+	$dt_{v}(t)$ & function to determine if a down time occurred for VM $v$ at time $t$	 \\
+	$p_{SLA}(v,l,t)$ & probability of SLA penalty for VM $v$ when migrated to location $l$ at time $t$	 \\
+	$pen_{SLA}(v,l,t)$ & adjusted probability of SLA penalty when migrating VM $v$ to location $l$ at time $t$	 \\
+	$best_{SLA}(v,t)$ & minimum probability of SLA penalties when considering all locations \\
+   \hline
+\end{tabular}
+\caption{Parameters used in equations}
+\label{tab:sla_penalty_parameters}
+\end{table}
+
+The corresponding equations are outlined below. 
+
+\begin{align}
+	dt_v(t) &= \left\{
+								\begin{array}{@{}ll@{}}
+									1, & \text{if VM } v \text{ was down at time } t \\
+									0, & \text{otherwise}
+								\end{array}\right. \label{eq:sla_dt_v}\\
+	down_{acc} (v,t) &= \sum_{z=0}^t dt_v(z) \label{eq:sla_down_acc}\\
+	v_{SLA_{TH}} &= v_{dur} \left( 1 - \frac{v_{SLA}}{100} \right) \label{eq:sla_v_sla_th} \\
+	p_{SLA} (v,l,t) &= \frac{down_{acc}(v,t) + T_{down}(v,t)}{v_{SLA_{TH}}} \label{eq:sla_p_sla}\\
+	cond_{pred} (v,l,t) &= down_{acc}(v,t) + T_{down}(v,t) - v_{SLA_{TH}} \label{eq:sla_cond_pred}\\
+	pen_{SLA} (v,l,t) &= \left\{
+													\begin{array}{@{}ll@{}}
+														1, & \text{if}\ cond_{pred} (v,l,t) > 0 \\
+														p_{SLA} (v,l,t), & \text{otherwise}
+													\end{array}\right. \label{eq:sla_pen_sla}\\
+	best_{SLA} (v,t) &= \min_{l \in loc, l \neq v_{loc}} pen_{SLA} (v,l,t) \label{eq:sla_best_sla}\\
+	c_1(v,t) &= 1 - best_{SLA} (v,t)  \label{eq:sla_c_1}
+\end{align}
+
+Equations \ref{eq:sla_dt_v} and \ref{eq:sla_down_acc} show formulas of aggregated downtime of VM $v$ up to time $t$. 
+$v_{SLA_{TH}}$ is the threshold in time periods that describes up to which downtime duration can be tolerated considering the SLA assigned to this VM ($v_{SLA}$). 
+
+A simple probability measure for experiencing an SLA penalty is shown in Equation \ref{eq:sla_p_sla} where the sum of accumulated downtimes $down_{acc}$ and the predicted downtime $T_{down}$ is set in relation to the SLA threshold. If $p_{SLA} \geq 1$ an SLA penalty will occur considering the predicted downtime. 
+The corresponding conditional equation to test expected downtime against SLA threshold is depicted in Equation \ref{eq:sla_cond_pred}. 
+
+$pen_{SLA}$ restricts the outcome of the SLA probability $p_{SLA}$ to the range $[0,1]$. It denotes the probability of SLA penalty when migrating VM $v$ to location $l$ at time $t$ (Equation \ref{eq:sla_pen_sla}). The $best_{SLA}$ metric in Equation \ref{eq:sla_best_sla} calculates the min of $pen_{SLA}$ for all locations except the one where VM $v$ is located to evaluate the best (lowest) probability of SLA penalty at the current point in time. 
+
+Finally the criterion $c_1$ is described by inverting the value of $best_{SLA}$ regarding the range $[0,1]$ (Equation \ref{eq:sla_c_1}). The purpose of that is to provide values closer to one for ``good'' utility values and values close to zero for ``bad'' utility values. 
+
+
+\paragraph{Estimated migration energy}
+
+The \textit{estimated migration energy} for live migration of virtual machines is closely related to the total migration load that is transferred during the process \cite{liu2013performance}. The results are depending greatly on the amount of VM memory to transfer, bandwidth between source and destination hosts and dirty page rate of the application to be transferred. 
+
+This metric uses the formula for migration energy already defined in Section \ref{sec:modeling_migration_energy}. 
+The corresponding equations for this metric are outlined below. 
+
+\begin{align}
+	E_{rel} (v,l) &= \frac{E_{mig}(v,l)}{\max_{v_{mig} \in VM, v_{mig_{loc}} \neq l} (E_{mig}(v_{mig},l))} \label{eq:mig_e_rel} \\
+	E_{best} (v,t) &= \min_{l \in loc, l \neq v_{loc}} E_{rel} (v,l) \label{eq:mig_e_best}\\
+	c_2(v,t) &= 1 - E_{best}(v,t) \label{eq:mig_c_2}
+\end{align}
+
+
+where $VM$ denotes the set of VMs active in the simulation. \\
+The metric $E_{rel}$ (Equation \ref{eq:mig_e_rel}) computes the relative migration energy where the calculated energy for the current VM is related to the maximum of expected migration energy of all VMs when migrated to location $l$. 
+
+$E_{best}$ denotes the minimum relative migration energy when considering migration to all locations (Equation \ref{eq:mig_e_best}). 
+
+$c_2$ is then the additive inverse of $E_{best}$ within the interval $[0,1]$ (Equation \ref{eq:mig_c_2}). 
+
+
+
+\paragraph{Remaining VM duration} \label{par:remaining_vm_duration}
+
+The \textit{remaining VM duration} is a simple metric to have the possibility to favor those VMs that are running for a longer period of time, e.g.~to mitigate SLA penalties. 
+
+It is defined as follows: 
+
+\begin{align}
+	remaining(v,t) &= \frac{v_{rem}(t)}{\max_{vm \in VM} vm_{rem}(t)} \label{eq:remaining_dur} \\
+	c_3 (v,t) &= remaining(v,t) \label{eq:remaining_dur_result}
+\end{align}
+
+where $v_{rem}$ denotes the remaining duration for VM $v$ at time $t$. 
+
+Equation \ref{eq:remaining_dur} is a relative measure of a VM's remaining duration in relation to the maximum of remaining durations of currently running VMs. The result criterion $c_3$ in Equation \ref{eq:remaining_dur_result} is just assigned the metric itself as longer running VMs should be favored. 
+
+
+\paragraph{Data center load}
+
+The \textit{data center load} is a global metric to achieve better load balancing across data centers, i.e.~VMs are favored for migration from data center locations exhibiting very high load. 
+
+\begin{align}
+	load(v,t) &= \frac{load_{DC_v}}{\max_{vm \in VM} load_{DC_{vm}}} \label{eq:load}\\
+	c_4 (v,t) &= load(v,t) \label{eq:load_result}
+\end{align}
+
+where ${load_{DC_v}}$ is the current load at the data center where VM $v$ is currently located. 
+
+The relative load of the data center where VM $v$ is currently located in relation to the maximum load is depicted in Equation \ref{eq:load}. The result criterion $c_4$ in Equation \ref{eq:load_result} is again assigned the previous metric directly as VMs located at data centers exhibiting high load are favored for VM migrations. 
+
+
+
+\paragraph{Estimated cost benefit}
+
+The \textit{estimated cost benefit} can probably be regarded as the most important criterion above all introduced criteria as it allows to optimize VM migrations with respect to resulting costs. 
+
+This metric takes into account future energy prices in case forecasts are enabled within the simulation. Thus the estimated cost benefit is not only calculated based on current energy prices but calculates the mean for each forecast horizon and location and returns the maximum evaluated difference of prices between two locations and forecast horizons. 
+
+Equations are listed below. 
+
+\begin{align}
+	fce(i,j,r) &= \sum_{h=0}^r fc_i(h) - fc_j(h) \label{eq:es_fce}\\
+	max_{fc}(v,t) &= \left\{
+								\begin{array}{@{}ll@{}}
+									\min (v_{rem}(t),fc_{max}), & \text{if } fc_{en} \text{ is true } \\
+									0, & \text{otherwise}
+								\end{array}\right. \label{eq:es_max_fc}\\
+	es(v,t) &= \max_{i \in loc, i \neq v_{loc}} fce(v_{loc},i,max_{fc}(v,t)) \label{eq:es_es} \\
+	cb(v,t) &= \frac{es(v,t)}{\max_{v_{mig} \in VM}  es(v_{mig},t)} \label{eq:es_cb} \\
+	c_5(v,t) &= cb(v,t) \label{eq:es_c_5}
+\end{align}
+
+where $fc_{max}$ is the maximum forecast horizon taken into account, $v_{rem}$ is the remaining duration for VM $v$ (see paragraph in \ref{par:remaining_vm_duration}) and $fc_{en}$ is a logical variable indicating whether forecasts are enabled or not. 
+
+The mean difference (forecast estimation) between each two locations summed up over all forecast horizons up to a defined maximum is given in Equation \ref{eq:es_fce}. For two given locations $i$ and $j$ the mean difference is calculated up to a maximum of $r$ forecast horizons. 
+
+In Equation \ref{eq:es_max_fc} the maximum applicable forecast horizon is determined which is based on the remaining VM duration but can not exceed $fc_{max}$. The remaining duration is taken into account as beneficial price differences can only be taken advantage of as long as the VM is still active. 
+
+Equation \ref{eq:es_es} denotes the maximum estimated cost benefit when migrating VM $v$ at time $t$. It determines the maximum value across all forecast estimations $fce$ for the given VM. 
+The resulting cost benefit is defined in Equation \ref{eq:es_cb} where the estimated cost benefit of VM $v$ is set in relation to the maximum cost benefit of all VMs. 
+
+The criterion for the estimated cost benefit is set to the resulting cost benefit since VMs with the highest expected cost benefit should be more likely to be migrated (Equation \ref{eq:es_c_5}). 
+
+
+\subsubsection{Discussion}
+
+The presented metrics have been chosen to get a diverse set of criteria where different criteria may be emphasized. Some of the criteria are opposite to each other, e.g.~minimization of SLA penalties is orthogonal to cost optimization as one cannot be minimized without affecting the other one. The goal was to provide a flexible means of prioritizing criteria to be able to adjust to different circumstances. Additional criteria may be added to the framework at any time. 
+
 
 
