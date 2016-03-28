@@ -33,9 +33,8 @@
 \contentsline {figure}{\numberline {5.1}{\ignorespaces Architecture Block Diagram}}{67}{figure.5.1}
 \contentsline {figure}{\numberline {5.2}{\ignorespaces Component Diagram}}{68}{figure.5.2}
 \addvspace {10pt}
-\addvspace {10pt}
-\addvspace {10pt}
-\addvspace {10pt}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Map of data center locations for day ahead price simulations}}{79}{figure.6.1}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Map of data center locations for real time price simulations}}{80}{figure.6.2}
 \addvspace {10pt}
 \addvspace {10pt}
 \contentsline {figure}{\numberline {A.1}{\ignorespaces Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{96}{figure.A.1}

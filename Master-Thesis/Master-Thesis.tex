@@ -7,7 +7,8 @@
 %\usepackage[pdfpagelabels]{hyperref}
 %\usepackage[all]{hypcap}			 % for going to the top of an image when a figure reference is clicked
 \usepackage{cleveref}
-\usepackage{listings}
+\usepackage{listings}					% Provide listing environment
+\usepackage{tabularx}					% Line breaks in tables
 \usepackage{graphicx}         % Figures
 \usepackage{verbatim}         % Code-Environment
 \usepackage{amsmath}					% math environment
@@ -20,6 +21,8 @@
 %
 %\usepackage{algpseudocode}
 %\usepackage{algorithm}
+
+\usepackage{ wasysym }				% package to display currency, e.g. cents
 
 \usepackage{url}
 \urlstyle{same}  % important for automatic line breaking in URLs
@@ -206,27 +209,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{chapters/evaluation_and_results}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Methodology}
-\label{ch:methodology}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{chapters/methodology}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Results}
-\label{ch:results}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{chapters/results}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Discussion}
-\label{ch:discussion}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{chapters/discussion}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Conclusion and Future Work}

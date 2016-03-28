@@ -20,11 +20,11 @@
 \contentsline {table}{\numberline {5.3}{\ignorespaces List of utility criteria}}{74}{table.5.3}
 \contentsline {table}{\numberline {5.4}{\ignorespaces Parameters used in equations}}{74}{table.5.4}
 \addvspace {10pt}
-\contentsline {table}{\numberline {6.1}{\ignorespaces Total costs for different scenarios (in \$)}}{79}{table.6.1}
-\contentsline {table}{\numberline {6.2}{\ignorespaces Normalized total cost reductions for different scenarios (in \%)}}{80}{table.6.2}
-\addvspace {10pt}
-\addvspace {10pt}
-\addvspace {10pt}
+\contentsline {table}{\numberline {6.1}{\ignorespaces List of day ahead energy markets and locations}}{80}{table.6.1}
+\contentsline {table}{\numberline {6.2}{\ignorespaces List of real time energy markets and locations}}{81}{table.6.2}
+\contentsline {table}{\numberline {6.3}{\ignorespaces List of cloud metrics in the simulation}}{82}{table.6.3}
+\contentsline {table}{\numberline {6.4}{\ignorespaces Total costs for different scenarios (in \$)}}{87}{table.6.4}
+\contentsline {table}{\numberline {6.5}{\ignorespaces Normalized total cost reductions for different scenarios (in \%)}}{87}{table.6.5}
 \addvspace {10pt}
 \addvspace {10pt}
 \contentsline {table}{\numberline {A.1}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 2 weeks, Nord Pool Spot, Hamina}}{91}{table.A.1}

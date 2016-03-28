@@ -118,7 +118,7 @@ Migration energy, load and downtime metrics have been implemented based on the f
 	T_{down} &= T_n + T_{resume} \label{eq:m_t_down} \\
 	E_{mig} &= E_{sour} + E_{dest} \label{eq:m_e_mig} \\
 	&= (\alpha_s + \alpha_d) V_{mig} + (\beta_s + \beta_d) \nonumber \\
-	&= \alpha V_{mig} + \beta \nonumber \\
+	&= \alpha V_{mig} + \beta = 0.512 V_{mig} + 20.165 J \nonumber \\
 	V_n \le V_{thd} &\Leftrightarrow V_{mem} \lambda^n \le V_{thd} \label{eq:m_v_n}
 \end{align}
 
@@ -153,13 +153,13 @@ Migration energy, load and downtime metrics have been implemented based on the f
 
 Equation \ref{eq:m_lambda} defines $\lambda$ as the convergence coefficient of the migration since it states how fast the migration converges to the final stop-and-copy phase. 
 
-$V_i$ and $T_i$ in Equations \ref{eq:m_v_i} and \ref{eq:m_t_i} denote the migration load and time in iteration $i$ where these metrics depend greatly on the convergence coefficient $\lambda$. If $D < R$ then $\lambda < 1$ and migration load will eventually fall below the defined threshold $V_{thd}$ (assuming a writable working set less than $V_{thd}$). 
+$V_i$ and $T_i$ in Equations \ref{eq:m_v_i} and \ref{eq:m_t_i} denote the migration load and time in pre-copy iteration $i$ whereby these metrics depend greatly on the convergence coefficient $\lambda$. If $D < R$ then $\lambda < 1$ and migration load will eventually fall below the defined threshold $V_{thd}$ (assuming a writable working set less than $V_{thd}$). 
 
-$V_{mig}$ and $T_{mig}$ in Equations \ref{eq:m_v_mig} and \ref{eq:m_t_mig} describe the total migration load and time which is defined as the sum of migration load and time for all iterations $i$ up to the last iteration $n$. Equation \ref{eq:m_n} defines the index of the last pre-copy iteration after which the stop-and-copy phase is executed. 
+$V_{mig}$ and $T_{mig}$ in Equations \ref{eq:m_v_mig} and \ref{eq:m_t_mig} describe the total migration load and time which is defined as the sum of migration load and time for all iterations $i$ up to the last pre-copy iteration $n$. Equation \ref{eq:m_n} defines the index of the last iteration after which the stop-and-copy phase is executed. 
 
-Equation \ref{eq:m_t_down} describes the effective downtime of the migration consisting of the time needed for the last iteration (stop-and-copy phase) and the time needed to resume operation of the newly created VM. Equation \ref{eq:m_e_mig} formalizes migration energy as the sum of source and destination energy ($E_{sour}$ and $E_{dest}$). Model parameters $\alpha$ and $\beta$ can each be defined separately for source and destination (e.g.~$\alpha_s$ and $\alpha_d$). However in this work homogenous parameters have been assumed for both source and destination (last line of the equation). 
+Equation \ref{eq:m_t_down} describes the effective downtime of the migration consisting of the time needed for the last iteration (stop-and-copy phase) and the time needed to resume operation of the newly created VM. Equation \ref{eq:m_e_mig} formalizes migration energy as the sum of source and destination energy ($E_{sour}$ and $E_{dest}$). Model parameters $\alpha$ and $\beta$ can each be defined separately for source and destination (e.g.~$\alpha_s$ and $\alpha_d$). However homogenous parameters have been assumed and estimated as described in \cite{liu2013performance} for both source and destination (last line of Equation \ref{eq:m_e_mig}). 
 
-The condition for reaching the defined memory threshold is depicted in Equation \ref{eq:m_v_n}. As defined before $n$ is the index of the last pre-copy iteration where remaining memory should be below threshold $V_{thd}$ (see definition of condition \ref{itm:condition2}). In case this condition is not met and $n = n_{max}$ the pre-copy phase is aborted and all remaining memory is transferred to the destination host (condition \ref{itm:condition3}). When condition \ref{itm:condition1} is detected data is transferred at once. 
+The condition for reaching the defined memory threshold is depicted in Equation \ref{eq:m_v_n}. As defined before $n$ is the index of the last pre-copy iteration where remaining memory should be below threshold $V_{thd}$ (see definition of condition \ref{itm:condition2}). In case this condition is not met and $n = n_{max}$ the pre-copy phase is aborted and all remaining memory is transferred to the destination host (condition \ref{itm:condition3}). When condition \ref{itm:condition1} is detected the stop-and-copy phase is executed immediately. 
 
 
 
