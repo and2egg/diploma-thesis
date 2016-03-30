@@ -48,7 +48,7 @@ Results show that for the proposed dataset ARX models (AR with exogenous variabl
 The authors in \cite{contreras2003arima} propose the application of ARIMA models for day ahead energy price forecasting based on data in the Spanish and Californian power markets. These models are based on time series analysis and results show that accurate electricity price forecasting for the aforementioned power markets is possible. Depending on the market and selected time range average weekly prediction errors 
 range from 5\% to 10\%. These results are quite reasonable given that prices from the Californian market in the year 2000 have been selected which has been a very volatile and unstable time period due to the market crash in early 2001 \cite{weron2007modeling}. 
 
-The described model generation process consists of five steps: 
+The described model generation process in \cite{contreras2003arima} consists of five steps: 
 
 \begin{itemize}
 	\item[0)] A class of models is formulated assuming certain hypotheses.
@@ -60,9 +60,9 @@ The described model generation process consists of five steps:
 
 This process is taken from the Box Jenkins methodology for forecast model generation \cite{hibon1997arma}:
 
-\textbf{Step 0)} consists of determining a suitable class of models that can be applied to the time series based on observed characteristics, e.g.~high frequency, nonconstant mean and variance, and multiple seasonality. The hypothesis of the model at this step assumes a forecast error term with a normal distribution having a zero mean and constant variance. 
+\textbf{Step 0)} consists of determining a suitable class of models that can be applied to the time series based on observed characteristics, e.g.~high frequency, nonconstant mean and variance, or seasonality patterns. 
 
-\textbf{Step 1)} selects a trial model for which data has to be made stationary. Through application of a logarithmic transformation a more stable variance can be achieved whereas (seasonal) differencing of data may result in a more stable mean. In order to find appropriate autoregressive and moving average coefficients for the resulting ARIMA model autocorrelation (ACF) and partial autocorrelation (PACF) plots may be consulted to retrieve a first fit of the model. 
+\textbf{Step 1)} selects a trial model for which data has to be made stationary. Through application of a logarithmic transformation a more stable variance can be achieved whereas (seasonal) differencing of data may result in a more stable mean. In order to find the appropriate order of the resulting ARIMA model autocorrelation (ACF) and partial autocorrelation (PACF) plots may be consulted to retrieve a first fit of the model. 
 
 \textbf{Step 2)} consists of estimation of parameters which is typically done by applying the maximum likelihood function with respect to the parameters. In order to optimize forecasting performance outlier detection methods may be applied to minimize the impact of single "`spikes"' in the data. 
 

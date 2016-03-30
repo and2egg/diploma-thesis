@@ -35,30 +35,31 @@
 \addvspace {10pt}
 \contentsline {figure}{\numberline {6.1}{\ignorespaces Map of data center locations for day ahead price simulations}}{79}{figure.6.1}
 \contentsline {figure}{\numberline {6.2}{\ignorespaces Map of data center locations for real time price simulations}}{80}{figure.6.2}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Normalized cost vs power values based on the energy utility scenario}}{93}{figure.6.3}
 \addvspace {10pt}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{96}{figure.A.1}
-\contentsline {figure}{\numberline {A.2}{\ignorespaces Aggregated accuracy measures for SES model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{97}{figure.A.2}
-\contentsline {figure}{\numberline {A.3}{\ignorespaces Aggregated accuracy measures for Holts model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{97}{figure.A.3}
-\contentsline {figure}{\numberline {A.4}{\ignorespaces Aggregated accuracy measures for HoltWinters model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{98}{figure.A.4}
-\contentsline {figure}{\numberline {A.5}{\ignorespaces Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{98}{figure.A.5}
-\contentsline {figure}{\numberline {A.6}{\ignorespaces Aggregated accuracy measures for TBATS model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{99}{figure.A.6}
-\contentsline {figure}{\numberline {A.7}{\ignorespaces Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{100}{figure.A.7}
-\contentsline {figure}{\numberline {A.8}{\ignorespaces Aggregated accuracy measures for SES model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{101}{figure.A.8}
-\contentsline {figure}{\numberline {A.9}{\ignorespaces Aggregated accuracy measures for Holts model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{101}{figure.A.9}
-\contentsline {figure}{\numberline {A.10}{\ignorespaces Aggregated accuracy measures for HoltWinters model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{102}{figure.A.10}
-\contentsline {figure}{\numberline {A.11}{\ignorespaces Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{102}{figure.A.11}
-\contentsline {figure}{\numberline {A.12}{\ignorespaces Aggregated accuracy measures for TBATS model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{103}{figure.A.12}
-\contentsline {figure}{\numberline {A.13}{\ignorespaces Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{104}{figure.A.13}
-\contentsline {figure}{\numberline {A.14}{\ignorespaces Aggregated accuracy measures for SES model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{105}{figure.A.14}
-\contentsline {figure}{\numberline {A.15}{\ignorespaces Aggregated accuracy measures for Holts model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{105}{figure.A.15}
-\contentsline {figure}{\numberline {A.16}{\ignorespaces Aggregated accuracy measures for HoltWinters model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{106}{figure.A.16}
-\contentsline {figure}{\numberline {A.17}{\ignorespaces Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{106}{figure.A.17}
-\contentsline {figure}{\numberline {A.18}{\ignorespaces Aggregated accuracy measures for TBATS model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{107}{figure.A.18}
-\contentsline {figure}{\numberline {A.19}{\ignorespaces Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{108}{figure.A.19}
-\contentsline {figure}{\numberline {A.20}{\ignorespaces Aggregated accuracy measures for SES model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{109}{figure.A.20}
-\contentsline {figure}{\numberline {A.21}{\ignorespaces Aggregated accuracy measures for Holts model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{109}{figure.A.21}
-\contentsline {figure}{\numberline {A.22}{\ignorespaces Aggregated accuracy measures for HoltWinters model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{110}{figure.A.22}
-\contentsline {figure}{\numberline {A.23}{\ignorespaces Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{110}{figure.A.23}
-\contentsline {figure}{\numberline {A.24}{\ignorespaces Aggregated accuracy measures for TBATS model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{111}{figure.A.24}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{102}{figure.A.1}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Aggregated accuracy measures for SES model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{103}{figure.A.2}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Aggregated accuracy measures for Holts model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{103}{figure.A.3}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces Aggregated accuracy measures for HoltWinters model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{104}{figure.A.4}
+\contentsline {figure}{\numberline {A.5}{\ignorespaces Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{104}{figure.A.5}
+\contentsline {figure}{\numberline {A.6}{\ignorespaces Aggregated accuracy measures for TBATS model and trainings data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{105}{figure.A.6}
+\contentsline {figure}{\numberline {A.7}{\ignorespaces Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{106}{figure.A.7}
+\contentsline {figure}{\numberline {A.8}{\ignorespaces Aggregated accuracy measures for SES model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{107}{figure.A.8}
+\contentsline {figure}{\numberline {A.9}{\ignorespaces Aggregated accuracy measures for Holts model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{107}{figure.A.9}
+\contentsline {figure}{\numberline {A.10}{\ignorespaces Aggregated accuracy measures for HoltWinters model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{108}{figure.A.10}
+\contentsline {figure}{\numberline {A.11}{\ignorespaces Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{108}{figure.A.11}
+\contentsline {figure}{\numberline {A.12}{\ignorespaces Aggregated accuracy measures for TBATS model and trainings data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{109}{figure.A.12}
+\contentsline {figure}{\numberline {A.13}{\ignorespaces Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{110}{figure.A.13}
+\contentsline {figure}{\numberline {A.14}{\ignorespaces Aggregated accuracy measures for SES model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{111}{figure.A.14}
+\contentsline {figure}{\numberline {A.15}{\ignorespaces Aggregated accuracy measures for Holts model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{111}{figure.A.15}
+\contentsline {figure}{\numberline {A.16}{\ignorespaces Aggregated accuracy measures for HoltWinters model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{112}{figure.A.16}
+\contentsline {figure}{\numberline {A.17}{\ignorespaces Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{112}{figure.A.17}
+\contentsline {figure}{\numberline {A.18}{\ignorespaces Aggregated accuracy measures for TBATS model and trainings data of 2, 3 and 4 weeks, ISO NE, Portland}}{113}{figure.A.18}
+\contentsline {figure}{\numberline {A.19}{\ignorespaces Aggregated accuracy measures for Mean model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{114}{figure.A.19}
+\contentsline {figure}{\numberline {A.20}{\ignorespaces Aggregated accuracy measures for SES model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{115}{figure.A.20}
+\contentsline {figure}{\numberline {A.21}{\ignorespaces Aggregated accuracy measures for Holts model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{115}{figure.A.21}
+\contentsline {figure}{\numberline {A.22}{\ignorespaces Aggregated accuracy measures for HoltWinters model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{116}{figure.A.22}
+\contentsline {figure}{\numberline {A.23}{\ignorespaces Aggregated accuracy measures for ARIMA model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{116}{figure.A.23}
+\contentsline {figure}{\numberline {A.24}{\ignorespaces Aggregated accuracy measures for TBATS model and trainings data of 2, 3 and 4 weeks, PJM, Richmond}}{117}{figure.A.24}
 \addvspace {10pt}

@@ -1,6 +1,6 @@
 
 
-\section{Definition of simulation scenarios}
+\section{Definition of simulation scenarios} \label{sec:definition_of_simulation_scenarios}
 
 In this section the simulation scenarios and settings are described to get a complete picture of the simulated cloud environment. 
 
@@ -81,7 +81,7 @@ A list of real time energy markets and locations is outlined in Table \ref{tab:l
 
 
 
-\subsection{Simulation Configuration Parameters}
+\subsection{Simulation Configuration Parameters} \label{ssec:simulation_configuration_parameters}
 
 \subsubsection{Cloud settings}
 
@@ -109,7 +109,7 @@ As the simulator has been built to be highly configurable \cite{lucanin2015philh
 	cpu resource weight & 0.7 & The weight associated with cpu power when calculating server utilization \\
 	memory resource weight & 0.3 & The weight associated with memory when calculating server utilization \\
 \end{tabularx}
-\caption{List of cloud metrics in the simulation}
+\caption{List of cloud configuration parameters in the simulation}
 \label{tab:list_of_cloud_metrics}
 \end{table}
 
@@ -136,7 +136,195 @@ CPU and memory resource weights have been defined to calculate resulting power c
 
 
 
-\subsubsection{Cost models}
+\subsubsection{Cloud scheduler} \label{sec:cloud_scheduler}
+
+The core of the simulation is represented by the Cloud Scheduler. It is responsible for managing requests and for deciding which VMs should be migrated at which point in time. To make it a flexibel approach and be able to compare different scenarios the scheduler can be configured to run one out of seven different scenarios (Table \ref{tab:existing_scheduling_scenarios}). 
+
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lll}
+\hline
+  & \textbf{Request assignment} & \textbf{Migration handling} \\
+\hline
+	BFD baseline scheduler &  not cost aware, based on load & None \\
+	BCF scheduler & cost aware, no forecasts & None \\
+	BCF scheduler + FC & cost aware, forecasts & None \\
+	BCF scheduler + Ideal FC & cost aware, ideal forecasts & None \\
+	BCU scheduler + M & cost aware, no forecasts & cost aware, no forecasts \\
+	BCU scheduler + M + FC & cost aware, forecasts & cost aware, forecasts \\
+	BCU scheduler + M + ideal FC & cost aware, ideal forecasts & cost aware, ideal forecasts \\
+\hline
+\end{tabular}
+\caption{Existing scheduling scenarios}
+\label{tab:existing_scheduling_scenarios}
+\end{table}
+
+The first scheduler is a \textit{Best Fit Decreasing} (BFD) Scheduler that does no investigations on energy prices at all. It is based on a load balancing approach which aims to assign requests to the least occupied data center and utilize as few servers as possible to save energy costs. The BFD Scheduler is outlined in algorithm \ref{alg:bfd_scheduler}. 
+
+The BFD scheduler iterates over the set of VM requests at the current point in time and aims to optimize placement of VMs by considering resource utilization of VMs and PMs for maximum consolidation. VM requests are sorted by resources in descending order to process VMs exhibiting large resource requirements first (line2). Locations are sorted by utilization ascending to assign requests first to under utilized locations (line 3). Lines 4 and 5 denote sorting of PMs by (free) capacities to consider most occupied servers first. 
+
+\begin{algorithm}[htpb]
+	\SetAlgoLined
+	\SetKwProg{Fn}{Function}{:}{}
+	\Fn{BFD Scheduler}{
+		\KwData{Input Requests}
+		\KwResult{Requests assigned according to BFD Schedule}
+		sort VM requests with resource utilization in descending order\;
+		sort locations by utilization in ascending order\;
+		sort available PMs by location and free capacities in ascending order\;
+		sort inactive PMs by capacities in ascending order\;
+		
+		\ForEach{vm in VM requests}{
+			\While{vm not assigned {\normalfont and} size(available PMs) > 0}{
+				\ForEach{pm in available PMs}{
+					\If{vm fits on pm}{
+						assign vm to pm\;
+						remove vm from available PMs\;
+						break\;
+					}
+				}
+				
+				\eIf{vm not assigned {\normalfont and} size(inactive PMs) > 0}{
+					add first of inactive PMs to available PMs\;
+					sort available PMs by location and free capacities ascending\;
+				}{
+					break\;
+				}			
+			}
+		}
+	}
+\caption{Best fit decreasing scheduler}
+\label{alg:bfd_scheduler}
+\end{algorithm}
+
+The BFD algorithm iterates over the set of requests and tries to assign VMs to hosts as long as non-fully occupied servers are available (line 7,8-14). In case a VM could not be assigned a server from the set of inactive hosts is activated and the aforementioned procedure is executed again (lines 15-17). In case no suitable host could be found or no further hosts are available the loop is exited with the current VM not being assigned (lines 18-19). 
+
+As discussed before Table \ref{tab:existing_scheduling_scenarios} describes further scenarios with different scheduling algorithms. 
+These algorithms are based on the \textit{Best Cost Fit} (BCF) and \textit{Best Cost Utility} (BCU) Scheduler with different variations to include migrations (denoted by \textit{M}), forecasts (denoted by \textit{FC}) and ideal forecasts (denoted by \textit{ideal FC}). 
+
+The next discussed algorithm is the one from the Best Cost Fit scheduler which aims to maximize cost savings when assigning requests utilizing price forecasts. The corresponding algorithm is outlined in \ref{alg:bcf_scheduler}. 
+
+\begin{algorithm}[htpb]
+	\SetAlgoLined
+	\SetKwProg{Fn}{Function}{:}{}
+	\Fn{BCF Scheduler}{
+		\SetKwInOut{Input}{Data}
+    \SetKwInOut{Output}{Result}
+		\Input{Input Requests \\
+						flag for forecasts (FC)\\
+						flag for ideal FC (idealFC)}
+		\KwResult{Requests assigned according to BCF Schedule and given scenario}
+		sort VM requests with resource utilization in descending order\;
+		
+		maxH <- 1\;
+		\If{FC}{maxH <- get max fc horizon from config\;}
+		
+		\ForEach{vm in VM requests}{
+			dur <- get remaining duration for vm\;
+			\eIf{dur <= 1}
+			{FC <- false\;idealFC <- false\;}
+			{maxH <- min(dur,maxH)\;}
+			
+			fcData <- get sorted price and forecast data (FC, idealFC)\;
+		
+			\ForEach{data in fcData}{
+				h <- get forecast horizon (data)\;
+				loc <- get location (data)\;
+				assign to host BFD (vm, loc)\;
+				\If{assigned}{
+					block vm for the next h time periods\;
+					break\;
+				}
+			}
+		}
+	}
+\caption{Best cost fit scheduler}
+\label{alg:bcf_scheduler}
+\end{algorithm}
+
+
+The best cost fit scheduler takes three inputs: The VM requests, a flag denoting whether forecasts should be enabled and a second flag for possible inclusion of ideal forecasts. In line 2 requests are sorted descending by their resource requirements which resembles the step in the BFD scheduler. 
+
+Lines 3-6 determine the maximum forecast horizon that should be taken into account when considering future energy prices (in case forecasts are enabled). From lines 7-11 the set of VM requests is iterated and forecasts are enabled based on the remaining duration. Line 13 determines the forecast horizon that will be applied through a minimum function of the remaining VM duration and the maximum forecast horizon defined previously. 
+
+In line 15 a procedure is called to retrieve locations and best estimated forecast windows for these locations. Thus for each location and forecast horizon the average estimated energy price is calculated and results are sorted by price ascending such that the location with the least expected costs regarding a specific forecast horizon is placed first. 
+
+\begin{algorithm}[htpb]
+	\SetAlgoLined
+	\SetKwProg{Fn}{Function}{:}{}
+	\Fn{BCU Scheduler}{
+		\SetKwInOut{Input}{Data}
+    \SetKwInOut{Output}{Result}
+		\Input{Input Requests \\
+						Current cloud state \\
+						flag for forecasts (FC)\\
+						flag for ideal FC (idealFC)}
+		\KwResult{A list of VMs with resulting utility value above the utility threshold}
+		[slaPen,migEnergy,maxMigEnergy,remDur,maxRemDur,util,estimatedSavings] <- prepare utility function (FC, idealFC)\;
+		
+		uResult <- []\;
+			
+		\ForEach{vm in VM requests}{
+		
+			currentLoc <- getLocation(vm)\;
+			uValue <- []\;
+		
+			\ForEach{loc in locations}{
+				\If{loc != currentLoc}{
+					
+					slaPenalty <- 1 - slaPen[vm][loc]\;
+					migrationEnergy <- 1 - (migEnergy[vm][loc] / maxMigEnergy)\;
+					remainingDur <- remDur[vm] / maxRemDur\;
+					dcLoad <- getRelativeDCLoad (util, currentLoc)\;
+					costSavings <- estimatedSavings[vm][loc]\;
+					
+					result <- wSLA * slaPenalty + wMig * migrationEnergy + wDur * remainingDur + wLoad * dcLoad + wCost * costSavings\;
+					
+					uValue [loc] <- result\;
+				}	
+			}
+			
+			maxUValue <- max(uValue)\;
+			append (uResult, (vm, getLocation(maxUValue), getUtilityValue(maxUValue)))\;
+		}
+		
+		sort uResult by utility value descending\;
+		result <- []\;
+		uTH <- get utility TH from config ()\;
+		
+		\ForEach{r in uResult}{
+			\If{utilityValue(r) > uTH}{
+				append (result, r)\;
+			}
+		}
+		
+		return result\;
+	}
+\caption{Best cost utility scheduler}
+\label{alg:bcu_scheduler}
+\end{algorithm}
+
+In lines 16 to 24 the resulting dataset from line 15 is iterated and the forecast horizon and location from the cheapest to more expensive locations are retrieved. For each of these data it is tried to assign the VM to a host from the given location based on a BFD approach. If the VM could be assigned successfully the VM will be blocked for migrations for the next $h$ time periods to prevent oscillation of VMs between different locations. 
+
+The last scheduler is the Best Cost Utility Scheduler that takes into account VM migrations between different locations based on a utility function (see Section \ref{ssec:cloud_scheduler_and_utility_function} for a definition of the utility function). 
+The algorithm of the BCU scheduler is shown in \ref{alg:bcu_scheduler}. 
+
+Line 2 of the algorithm calls the procedure \textit{prepare utility function} that returns a list of metrics depending on the flags \textit{FC} and \textit{idealFC}. Results of utility calculations are stored in \textit{uResult} in line 3. 
+
+From lines 4-6 start iterating over the set of VM requests and prepare the current location and a list of utility values. In addition lines 7 and 8 start iterating over the set of locations where the current location is skipped for migration. From line 9 to 13 the different criteria values are normalized from the results of the procedure in line 2. A list of criteria regarding this utility function can be found in Section \ref{ssec:cloud_scheduler_and_utility_function}. 
+
+In line 14 the total utility value is calculated where each normalized criteria is weighted with its corresponding weight. The total utility value  is stored in line 15 for the current VM \textit{vm} and location \textit{loc}. Line 18 calculates the maximum utility value for this VM over all locations. That is, the most promising location where VM \textit{vm} could be migrated to is estimated. 
+
+In line 19 a tuple consisting of \textit{(vm, loc, uvalue)} is added to the result utility list where \textit{uvalue} is the maximum of the calculated utility values for VM \textit{vm} associated with location \textit{loc}. 
+Line 21 sorts the result utility list by utility value descending and line 22 and 23 are preparing the final result list and the utility threshold, which is taken from a configuration file. 
+
+Lines 24 to 28 iterate over the resulting utility list and add values to the final result list in case the corresponding utility value exceeds the predefined utility threshold \textit{uTH}. 
+The algorithm is concluded by returning the list of result VMs with total utility values above the utility threshold in line 29. 
+
+
+
+\subsection{Cost models}
 
 Cost models and related metrics are an important base for transforming aggregated power values to actual costs. Therefore a number of formulas have been defined to accurately model the resulting power consumption and energy costs. 
 %These formulas are outlined below. 
@@ -316,10 +504,111 @@ Total cost denote the sum of all cost occurred during simulation which includes 
 \end{equation}
 
 
+
+
+
+
+
+
+
 \section{Utility function optimization}
 
+As explained in Section \ref{sec:cost_optimization_based_on_utility_function} the scheduler incorporates a utility function to provide a means of flexibel adjustments to different cloud criteria. This section aims to optimize the parameters of the utility function regarding both energy cost savings and SLA penalties. The resulting settings will then be used in large scale simulations which will be presented in Section \ref{sec:simulation_results}. 
 
-\section{Simulation Results}
+In the following simulations the scheduler operates on the defined cloud parameters in Section \ref{ssec:simulation_configuration_parameters}. 
+For the utility test scenarios outlined in this section the number of servers and VMs is changed to a total of 1000 servers and 2000 VMs over the whole simulation time period. This gives sufficient opportunity to test the utility function but does not require huge computational resources. 
+
+The simulations run on 5 weeks of energy price data from day ahead markets with locations defined in Section \ref{sec:definition_of_simulation_scenarios}. As a common setting to these simulations the following bandwidth connections have been defined for day ahead scenarios between locations (Table \ref{tab:bandwidth_connections_in_da_markets}). To simplify the scenario all bandwidth connections are symmetric, i.e.~the same in- and outgoing bandwidth connections have been used between each two locations. 
+
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lll}
+\toprule
+	Source & Destination & Bandwidth \\
+\midrule
+	Hamina & Potsdam & 1000 MBit/s \\
+	Hamina & St. Ghislain & 800 MBit/s \\
+	Potsdam & St. Ghislain & 800 MBit/s \\
+	Boston & Portland & 800 MBit/s \\
+	Europe & USA & 400 MBit/s \\
+\bottomrule
+\end{tabular}
+\caption{Bandwidth connections in day ahead market locations}
+\label{tab:bandwidth_connections_in_da_markets}
+\end{table}
+
+The connection Europe to USA denotes connections from any country from Europe to any country in the USA which is mapped to 400 MBit/s. 
+
+In order to easily distinguish between different schedulers a characterizing symbol has been introduced to designate each scheduler. The resulting mapping is shown in Table \ref{tab:scheduler_name_mapping}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lll}
+\toprule
+  Scheduler name & Symbol \\
+\midrule
+	BFD baseline scheduler & BFD \\
+	BCF scheduler & BCF \\
+	BCF scheduler + FC & BCF\_F \\
+	BCF scheduler + Ideal FC & BCF\_IF \\
+	BCU scheduler + M & BCU\_M \\
+	BCU scheduler + M + FC & BCU\_MF \\
+	BCU scheduler + M + ideal FC & BCU\_MIF \\
+\bottomrule
+\end{tabular}
+\caption{Existing scheduling scenarios}
+\label{tab:scheduler_name_mapping}
+\end{table}
+
+
+Three different scenarios have been implemented to show the impact of changing utility parameters on resulting costs and SLA penalties which are outlined below. 
+
+\subsection{Scenario1: Energy utility function}
+
+The first scenario consists of parameters to emphasize the reduction of migration energy consumption whereby less weights have been put on prevention of SLA penalties. 
+The utility criteria and corresponding weights are outlined in Table \ref{tab:list_of_utility_criteria_weights}. 
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lll}
+\toprule
+	Index & Name of criterion	& weight \\
+\midrule
+	$c_1$ & probability of SLA penalty & 0.4 \\
+	$c_2$ & estimated migration energy & 0.7 \\
+	$c_3$ & remaining VM duration & 0.5 \\
+	$c_4$ & data center load & 0.4 \\
+	$c_5$ & estimated cost benefit & 0.8 \\
+	$ut$ & utility threshold & 1.8 \\
+\bottomrule
+\end{tabular}
+\caption{List of utility criteria with associated weights}
+\label{tab:list_of_utility_criteria_weights}
+\end{table}
+
+We can observe that the \textit{estimated cost benefit} and \textit{estimated migration energy} criteria have been given the highest weights whereas other criteria such as \textit{probability of SLA penalty} are set to lower weights. 
+The utility threshold value of 1.8 is the minimum value that has to be reached by a VM in order to be considered eligible for migration. 
+
+Since all criteria values are normalized to the interval $[0,1]$ it can be quite easily estimated which values of the different criteria lead to utility values above the utility threshold. A trivial method of estimating utility weights is to set all criteria values to 1 and calculate the sum of their weights. This should result in a value signficantly greater than the utility threshold. One could also put particularly high emphasis on one criterion by keeping the sum of weights of all other criteria below the weight of this criterion. Then by setting the utility threshold to a value at least as high as that specific criterion it is assured that a sufficiently high value of this criterion is required to get above the utility threshold. 
+
+The results for normalized power vs cost values are depicted in Figure \ref{fig:energy_utility_power_vs_cost}. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=1.00\textwidth]{figures/evaluation_and_results/energy_utility_power_vs_cost.pdf}
+	\caption{Normalized cost vs power values based on the energy utility scenario}
+	\label{fig:energy_utility_power_vs_cost}
+\end{figure}
+
+This graph outlines the resulting power and costs for this utility scenario across all defined schedulers (see Section \ref{sec:cloud_scheduler} for a definition of the schedulers). What can be observed is that power values differ only marginally while energy costs differ substantially. The BFD scheduler is the baseline scheduler to which all other schedulers are compared. 
+
+For this scenario it exhibits the highest power consumption but less total costs than the BCU\_M scheduler. 
+
+%The utility threshold for this scenario has been set to $1.8$ which 
+
+
+\section{Simulation Results} \label{sec:simulation_results}
 
 A detailed presentation of the simulator and scheduler that actually run through the simulation scenarios is given in this section. Then the results from the simulation runs based on different settings and data is presented and scenarios are compared to evaluate the most promising approach in the defined setting. Finally the results are discussed and evaluated to draw conclusions about the possible performance gains when running these scenarios, and how much they differ from the optimal solution. 
 
