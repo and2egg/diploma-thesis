@@ -85,7 +85,7 @@ A list of real time energy markets and locations is outlined in Table \ref{tab:l
 
 \subsubsection{Cloud settings}
 
-As the simulator has been built to be highly configurable \cite{lucanin2015philharmonic} different cloud parameters can be adjusted to run simulations with different settings. In Table \ref{tab:list_of_cloud_metrics} the most relevant simulation parameters are listed. 
+As the simulator has been built to be highly configurable \cite{lucanin2015philharmonic} different cloud parameters can be adjusted to run simulations with different settings. In Table \ref{tab:list_of_cloud_parameters} the most relevant simulation parameters are listed. 
 
 \begin{table}[htbp]
 \centering
@@ -110,7 +110,7 @@ As the simulator has been built to be highly configurable \cite{lucanin2015philh
 	memory resource weight & 0.3 & The weight associated with memory when calculating server utilization \\
 \end{tabularx}
 \caption{List of cloud configuration parameters in the simulation}
-\label{tab:list_of_cloud_metrics}
+\label{tab:list_of_cloud_parameters}
 \end{table}
 
 The number of servers and VMs per simulation has been adjusted such that the resulting utilization is reasonable, e.g.~with 1000 servers and 2000 VMs in total an average utilization of only about 1 \% has been achieved over a simulation period of 5 weeks. Thus raising the number of VMs and in turn reducing number of servers led to a more realistic utilization of 30\% to 40\%. 
@@ -324,7 +324,7 @@ The algorithm is concluded by returning the list of result VMs with total utilit
 
 
 
-\subsection{Cost models}
+\subsection{Cost models} \label{ssec:cost_model_definitions}
 
 Cost models and related metrics are an important base for transforming aggregated power values to actual costs. Therefore a number of formulas have been defined to accurately model the resulting power consumption and energy costs. 
 %These formulas are outlined below. 
@@ -518,7 +518,7 @@ As explained in Section \ref{sec:cost_optimization_based_on_utility_function} th
 In the following simulations the scheduler operates on the defined cloud parameters in Section \ref{ssec:simulation_configuration_parameters}. 
 For the utility test scenarios outlined in this section the number of servers and VMs is changed to a total of 1000 servers and 2000 VMs over the whole simulation time period. This gives sufficient opportunity to test the utility function but does not require huge computational resources. 
 
-The simulations run on 5 weeks of energy price data from day ahead markets with locations defined in Section \ref{sec:definition_of_simulation_scenarios}. As a common setting to these simulations the following bandwidth connections have been defined for day ahead scenarios between locations (Table \ref{tab:bandwidth_connections_in_da_markets}). To simplify the scenario all bandwidth connections are symmetric, i.e.~the same in- and outgoing bandwidth connections have been used between each two locations. 
+The simulation runs in this section are based on 5 weeks of energy price data from day ahead markets with locations defined in Section \ref{sec:definition_of_simulation_scenarios}. As a common setting to these simulations the following bandwidth connections have been defined for day ahead scenarios between locations (Table \ref{tab:bandwidth_connections_in_da_markets}). To simplify the scenario all bandwidth connections are symmetric, i.e.~the same in- and outgoing bandwidth connections have been used between each two locations. 
 
 
 \begin{table}[htbp]
@@ -562,12 +562,43 @@ In order to easily distinguish between different schedulers a characterizing sym
 \end{table}
 
 
-Three different scenarios have been implemented to show the impact of changing utility parameters on resulting costs and SLA penalties which are outlined below. 
+For a reference of all implemented cloud metrics shown in subsequent graphs these metrics are outlined in Table \ref{tab:list_of_cloud_metrics} (see also Section \ref{ssec:cost_model_definitions}). 
+
+
+\begin{table}[htbp]
+\centering
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+  Cloud metric & Symbol & Description \\
+\midrule
+	Total cloud power & TCP & The total power consumed by active servers aggregated over all locations and time periods \\
+	Total cloud cost & TCC & The total costs resulting from applying energy prices to power consumption over the simulation time period \\
+	Migration energy & ME & Migration energy summed up from all migrations over the simulation time period \\
+	Migration cost & MC & Migration costs summed up from all migrations over the simulation time period \\
+	Total cloud power & TCPWM & The total cloud power including the migration energy \\
+	with migrations & & \\
+	Total cloud cost & TCCWM & The total cloud costs including the resulting migration \\
+	with migrations & & costs \\
+	Total penalty cost & TPC & Total penalty costs occurred during the simulation time period \\
+	Total downtime & TDT & Total downtime aggregated over the simulation time period \\
+	Number of migrations & NM & Number of migrations triggered over the simulation time period \\
+	Total power & TP & The total cloud power including the migration energy \\
+	Total cost & TC & The total cloud costs including migration costs and total penalty costs \\
+\bottomrule
+\end{tabularx}
+\caption{List of all measured cloud metrics}
+\label{tab:list_of_cloud_metrics}
+\end{table}
+
+As might be noticed the metrics \textit{Total cloud power with migrations} and \textit{Total power} are defined the same since on the one side no more power values are to be added and on the other side a total metric comparable to the \textit{Total cost} should to be defined. 
+
+
+In the following sections three different scenarios are defined to show the impact of changing utility parameters on resulting costs and SLA penalties.
 
 \subsection{Scenario1: Energy utility function}
 
 The first scenario consists of parameters to emphasize the reduction of migration energy consumption whereby less weights have been put on prevention of SLA penalties. 
-The utility criteria and corresponding weights are outlined in Table \ref{tab:list_of_utility_criteria_weights}. 
+The utility criteria and corresponding weights are outlined in Table \ref{tab:list_of_energy_utility_criteria_weights}. 
 
 \begin{table}[htbp]
 \centering
@@ -583,12 +614,12 @@ The utility criteria and corresponding weights are outlined in Table \ref{tab:li
 	$ut$ & utility threshold & 1.8 \\
 \bottomrule
 \end{tabular}
-\caption{List of utility criteria with associated weights}
-\label{tab:list_of_utility_criteria_weights}
+\caption{List of energy utility criteria with associated weights}
+\label{tab:list_of_energy_utility_criteria_weights}
 \end{table}
 
 We can observe that the \textit{estimated cost benefit} and \textit{estimated migration energy} criteria have been given the highest weights whereas other criteria such as \textit{probability of SLA penalty} are set to lower weights. 
-The utility threshold value of 1.8 is the minimum value that has to be reached by a VM in order to be considered eligible for migration. 
+The utility threshold value of 1.8 is the minimum value that has to be reached by a VM's utility function for the VM to be considered eligible for migration. 
 
 Since all criteria values are normalized to the interval $[0,1]$ it can be quite easily estimated which values of the different criteria lead to utility values above the utility threshold. A trivial method of estimating utility weights is to set all criteria values to 1 and calculate the sum of their weights. This should result in a value signficantly greater than the utility threshold. One could also put particularly high emphasis on one criterion by keeping the sum of weights of all other criteria below the weight of this criterion. Then by setting the utility threshold to a value at least as high as that specific criterion it is assured that a sufficiently high value of this criterion is required to get above the utility threshold. 
 
@@ -601,18 +632,205 @@ The results for normalized power vs cost values are depicted in Figure \ref{fig:
 	\label{fig:energy_utility_power_vs_cost}
 \end{figure}
 
-This graph outlines the resulting power and costs for this utility scenario across all defined schedulers (see Section \ref{sec:cloud_scheduler} for a definition of the schedulers). What can be observed is that power values differ only marginally while energy costs differ substantially. The BFD scheduler is the baseline scheduler to which all other schedulers are compared. 
+This graph outlines the resulting power and costs for this utility scenario across all defined schedulers (see Section \ref{sec:cloud_scheduler} for a definition of the schedulers). What can be observed is that power values differ only marginally while energy costs differ substantially between different schedulers. The BFD scheduler is taken as the baseline scheduler to which all other schedulers are compared. 
 
-For this scenario it exhibits the highest power consumption but less total costs than the BCU\_M scheduler. 
+In this scenario the BFD scheduler exhibits the highest power consumption among all schedulers but less total costs than the BCU\_M scheduler. Overall the BCU schedulers (BCU\_M, BCU\_MF, BCU\_MIF) are not able to reduce costs as much as BCF schedulers (BCF, BCF\_F, BCF\_IF). Thus the utility function which is applied in BCU schedulers is not well calibrated. This behavior can be explained as we put on a high weight for the \textit{estimated cost benefit} criteria but a low weight on \textit{probability of SLA penalties} which allows the use of excessive migrations that can result in increased SLA penalty costs. 
 
-%The utility threshold for this scenario has been set to $1.8$ which 
+The total resulting costs including migration costs and SLA penalty costs is shown in Figure \ref{fig:energy_utility_total_cost}. 
+What is clearly visible are the added penalty and migration costs for the schedulers BCU\_M, BCU\_MF and BCU\_MIF. Therefore even though the cloud cost may be reduced compared to other schedulers the total costs are higher due to these additional costs. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=0.7\textwidth]{figures/evaluation_and_results/energy_utility_total_cost.pdf}
+	\caption{Total resulting costs per scheduler for the energy utility scenario}
+	\label{fig:energy_utility_total_cost}
+\end{figure}
+
+A diagram summarizing all the cloud metrics is depicted in Figure \ref{fig:energy_utility_cloud_metrics}. For a list of cloud metrics see Table \ref{tab:list_of_cloud_metrics}. 
+
+\begin{figure}[bp]
+	\centering
+	\hspace*{-1.6in}
+		\includegraphics[width=1.50\textwidth]{figures/evaluation_and_results/energy_utility_cloud_metrics.pdf}
+	\caption{Cloud metrics calculated for the energy utility over the simulation time period}
+	\label{fig:energy_utility_cloud_metrics}
+\end{figure}
+
+This diagram shows normalized values of cloud metrics over the whole simulation time period. Significant deviations of values can be observed for different schedulers. The results coincide with the graphs shown before as total cloud power values decrease only marginally while total cloud costs are reduced significantly (i.e.~BFD scheduler compared to BCU\_MIF scheduler for metrics TCP and TCC). 
+
+Since migration energy and migration costs are directly proportional the normalized values are exactly the same. They are highest for the BCU\_M scheduler and decrease for BCU\_MF and BCU\_MIF schedulers since the latter ones include forecasts in the calculations. Other schedulers do not exhibit any migration energy or costs since no migrations are performed. 
+
+The total cloud power with migrations (TCPWM) is almost identical to the TCP metric since migration energy only accounts for a very small fraction of the total cloud power. The total cloud costs with migrations (TCCWM) show a significantly different behavior due to the addition of migration costs based mainly on bandwidth costs. 
+
+In the total penalty cost (TPC) metric the BCU\_M scheduler exhibits the highest penalty costs. It shows a similar behavior to the TCCWM metric as higher migration costs and therefore a higher number of migrations generally lead to increased penalty costs. 
+In accordance with the penalty costs and migration costs the total downtime shows similar patterns as penalty costs are directly related to VM downtime. 
+
+The number of migrations (NM) metric again shows similar behavior as the aforementioned metrics all relate to the total number of migrations. The total power (TP) metric is identical to the TCPWM metric and shown on the right for easier comparison to the total cost (TC) metric. 
+
+The total cost metric adds to the pattern of TCCWM as in addition to cloud and migration costs the penalty costs are taken into account. 
+Thus it can be concluded that due to high migration and penalty costs the BCU schedulers result in increased costs compared to the BCF schedulers. 
+
+
+\subsection{Scenario2: Cost utility function}
+
+The cost utility function is defined as utility scenario 2 where the focus has been laid on high cost optimization with other metrics having low priority. 
+
+In Table \ref{tab:list_of_cost_utility_criteria_weights} the weights for the cost utility function are displayed. 
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lll}
+\toprule
+	Index & Name of criterion	& weight \\
+\midrule
+	$c_1$ & probability of SLA penalty & 0.3 \\
+	$c_2$ & estimated migration energy & 0.4 \\
+	$c_3$ & remaining VM duration & 0.2 \\
+	$c_4$ & data center load & 0.1 \\
+	$c_5$ & estimated cost benefit & 1.0 \\
+	$ut$ & utility threshold & 1.4 \\
+\bottomrule
+\end{tabular}
+\caption{List of cost utility criteria with associated weights}
+\label{tab:list_of_cost_utility_criteria_weights}
+\end{table}
+
+A very high value has been set for the \textit{estimated cost benefit} criterion equaling to the sum of all other criteria. The utility threshold has been set to a value higher than the sum of all criteria but the cost benefit, therefore this threshold cannot be reached without a significantly high value of the cost benefit. 
+
+\textit{Probability of SLA penalty} and \textit{estimated migration energy} are weighted higher than other criteria but exhibit still a low value compared to the cost benefit. Thus it is expected that costs will be optimized with still a fraction existing for migration and penalty costs. 
+
+The normalized cost vs power graph is shown in Figure \ref{fig:cost_utility_power_vs_cost}. 
+
+\begin{figure}[htbp]
+	\centering
+		\includegraphics[width=1.00\textwidth]{figures/evaluation_and_results/cost_utility_power_vs_cost.pdf}
+	\caption{Normalized cost vs power values based on the cost utility scenario}
+	\label{fig:cost_utility_power_vs_cost}
+\end{figure}
+
+This graph shows more evenly distributed cost values than the one from scenario 1 (Figure \ref{fig:energy_utility_power_vs_cost}). Thus the BFD scheduler almost reaches the maximum cost value but the BCU\_M scheduler still shows the highest costs of all schedulers. It can be noticed that the BCU schedulers are at the same levels as BCF schedulers with the BCU\_MF scheduler showing only a minor increase in costs in comparison to the BCF\_F scheduler exhibiting the least costs. 
+
+\begin{figure}[bp]
+	\centering
+		\includegraphics[width=0.7\textwidth]{figures/evaluation_and_results/cost_utility_total_cost.pdf}
+	\caption{Total resulting costs per scheduler for the cost utility scenario}
+	\label{fig:cost_utility_total_cost}
+\end{figure}
+
+
+The total costs are depicted in Figure \ref{fig:cost_utility_total_cost}. Compared to the total cost chart of scenario 1 (Figure \ref{fig:energy_utility_total_cost}) the total costs for all schedulers except the BFD scheduler have been reduced. Also the fraction of migration and penalty costs could be reduced except for the BCU\_M scheduler with a slight increase of penalty costs. 
+
+In Figure \ref{fig:cost_utility_cloud_metrics} the resulting cloud metrics are shown. 
+
+\begin{figure}[htbp]
+	\centering
+	\hspace*{-1.2in}
+		\includegraphics[width=1.50\textwidth]{figures/evaluation_and_results/cost_utility_cloud_metrics.pdf}
+	\caption{Cloud metrics calculated for the cost utility over the simulation time period}
+	\label{fig:cost_utility_cloud_metrics}
+\end{figure}
+
+The most obvious changes compared to the energy utility scenario are the decreased migration energy, migration cost, total penalty cost, total downtime and number of migration criteria (ME, MC, TPC, TDT and NM) for the BCU\_MF and BCU\_MIF schedulers in relation to the BCU\_M scheduler. 
+
+Thus fewer migrations lead to fewer downtimes, SLA violations and penalties and also migration energy and costs. The reason that the latter two BCU schedulers perform significantly better than the BCU\_M scheduler is the fact that the \textit{estimated cost benefit} metric has the most impact when applied to an extended time series with forecasts. 
+
+
+
+\subsection{Scenario3: Best utility function}
+
+The best utility function has been defined as the scenario with the highest cost savings compared to other scenarios. It puts emphasis on both reduction of SLA penalties as well as optimization of energy costs during the simulation. 
+
+The defined weights assigned to the different criteria are denoted in Table \ref{tab:list_of_best_utility_criteria_weights}. 
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lll}
+\toprule
+	Index & Name of criterion	& weight \\
+\midrule
+	$c_1$ & probability of SLA penalty & 1.0 \\
+	$c_2$ & estimated migration energy & 0.1 \\
+	$c_3$ & remaining VM duration & 0.2 \\
+	$c_4$ & data center load & 0.1 \\
+	$c_5$ & estimated cost benefit & 1.0 \\
+	$ut$ & utility threshold & 2.0 \\
+\bottomrule
+\end{tabular}
+\caption{List of best utility criteria with associated weights}
+\label{tab:list_of_best_utility_criteria_weights}
+\end{table}
+
+As can be observed the \textit{probability of SLA penalty} and \textit{estimated cost benefit} metrics are given the highest possible weights while other criteria are weighted almost negligibly. The utility threshold amounts to the sum of the two highest weights making sure that only VMs with high relative values for metrics $c_1$ and $c_5$ are considered for migrations. 
+
+\begin{figure}[bp]
+	\centering
+		\includegraphics[width=1.00\textwidth]{figures/evaluation_and_results/best_utility_power_vs_cost.pdf}
+	\caption{Normalized cost vs power values based on the best utility scenario}
+	\label{fig:best_utility_power_vs_cost}
+\end{figure}
+
+The power vs cost chart is given in Figure \ref{fig:best_utility_power_vs_cost}. 
+The normalized costs are more evenly distributed across the schedulers than for scenarios 1 and 2 (Figures \ref{fig:energy_utility_power_vs_cost} and \ref{fig:cost_utility_power_vs_cost}). The BCU\_M scheduler still shows higher costs compared to other schedulers except the BFD scheduler. 
+Power values also show small deviations of up to 2\% where most energy savings can be achieved by the BCU\_M and BCU\_MF schedulers. 
+
+Total costs are depicted in Figure \ref{fig:best_utility_total_cost}. No penalty costs have resulted for this scenario which coincides with the adjustments of utility weights where highest weights were put on \textit{probability of SLA penalty} and \textit{estimated cost benefit} criteria. 
+Also total costs could be reduced for schedulers BCU\_M, BCU\_MF and BCU\_MIF. 
+
+\begin{figure}[tbp]
+	\centering
+		\includegraphics[width=0.7\textwidth]{figures/evaluation_and_results/best_utility_total_cost.pdf}
+	\caption{Total resulting costs per scheduler for the best utility scenario}
+	\label{fig:best_utility_total_cost}
+\end{figure}
+
+In Figure \ref{fig:best_utility_cloud_metrics} the resulting cloud metrics are shown. 
+
+\begin{figure}[htbp]
+	\centering
+	\hspace*{-1.2in}
+		\includegraphics[width=1.50\textwidth]{figures/evaluation_and_results/best_utility_cloud_metrics.pdf}
+	\caption{Cloud metrics calculated for the best utility over the simulation time period}
+	\label{fig:best_utility_cloud_metrics}
+\end{figure}
+
+What can be deduced by this graph is that cost and migration dependent metrics (TCCWM, TPC, TC) show substantially reduced values where no penalty costs are shown at all (TPC). The ME, MC, TDT and NM metrics show lower values as well in relation to the BCU\_M scheduler. 
+Other metrics such as power values do not exhibit significant variations however emphasis have been put on cost rather than power reductions. 
+
+The resulting cost reductions for all scenarios are shown in Table \ref{tab:utility_evaluation_results}. 
+The best utility scenario exhibits the least total costs where substantial cost reductions of up to 15\% (BCU\_M scheduler) have been achieved compared to the energy utility scenario. It also provides the highest cost reductions compared to the energy utility scenario with further decreased costs for the BCU\_M, BCU\_MF and BCU\_MIF schedulers. 
+
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+{} &  energy &   cost &  cost (\%) &   best &  best (\%) \\
+\midrule
+BFD     &   88.47 &  86.84 &     -1.85 &  86.84 &     -1.85 \\
+BCU     &   79.05 &  78.42 &     -0.80 &  78.42 &     -0.80 \\
+BCU\_F   &   75.80 &  74.08 &     -2.27 &  74.08 &     -2.27 \\
+BCU\_IF  &   75.64 &  75.92 &      0.38 &  75.92 &      0.38 \\
+BCU\_M   &   95.82 &  89.72 &     -6.37 &  80.75 &    -15.73 \\
+BCU\_MF  &   81.09 &  74.74 &     -7.83 &  74.66 &     -7.92 \\
+BCU\_MIF &   82.86 &  78.78 &     -4.93 &  75.50 &     -8.88 \\
+\bottomrule
+\end{tabular}
+\caption{Utility evaluation results for all scenarios}
+\label{tab:utility_evaluation_results}
+\end{table}
+
+
+
+
+
 
 
 \section{Simulation Results} \label{sec:simulation_results}
 
 A detailed presentation of the simulator and scheduler that actually run through the simulation scenarios is given in this section. Then the results from the simulation runs based on different settings and data is presented and scenarios are compared to evaluate the most promising approach in the defined setting. Finally the results are discussed and evaluated to draw conclusions about the possible performance gains when running these scenarios, and how much they differ from the optimal solution. 
 
-%%% final , summarized %%%
+
+
 
 
 

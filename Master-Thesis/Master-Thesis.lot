@@ -26,25 +26,29 @@
 \contentsline {table}{\numberline {6.4}{\ignorespaces Existing scheduling scenarios}}{83}{table.6.4}
 \contentsline {table}{\numberline {6.5}{\ignorespaces Bandwidth connections in day ahead market locations}}{91}{table.6.5}
 \contentsline {table}{\numberline {6.6}{\ignorespaces Existing scheduling scenarios}}{91}{table.6.6}
-\contentsline {table}{\numberline {6.7}{\ignorespaces List of utility criteria with associated weights}}{92}{table.6.7}
-\contentsline {table}{\numberline {6.8}{\ignorespaces Total costs for different scenarios (in \$)}}{93}{table.6.8}
-\contentsline {table}{\numberline {6.9}{\ignorespaces Normalized total cost reductions for different scenarios (in \%)}}{93}{table.6.9}
+\contentsline {table}{\numberline {6.7}{\ignorespaces List of all measured cloud metrics}}{92}{table.6.7}
+\contentsline {table}{\numberline {6.8}{\ignorespaces List of energy utility criteria with associated weights}}{93}{table.6.8}
+\contentsline {table}{\numberline {6.9}{\ignorespaces List of cost utility criteria with associated weights}}{95}{table.6.9}
+\contentsline {table}{\numberline {6.10}{\ignorespaces List of best utility criteria with associated weights}}{98}{table.6.10}
+\contentsline {table}{\numberline {6.11}{\ignorespaces Utility evaluation results for all scenarios}}{99}{table.6.11}
+\contentsline {table}{\numberline {6.12}{\ignorespaces Total costs for different scenarios (in \$)}}{100}{table.6.12}
+\contentsline {table}{\numberline {6.13}{\ignorespaces Normalized total cost reductions for different scenarios (in \%)}}{100}{table.6.13}
 \addvspace {10pt}
 \addvspace {10pt}
-\contentsline {table}{\numberline {A.1}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 2 weeks, Nord Pool Spot, Hamina}}{97}{table.A.1}
-\contentsline {table}{\numberline {A.2}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 3 weeks, Nord Pool Spot, Hamina}}{97}{table.A.2}
-\contentsline {table}{\numberline {A.3}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 4 weeks, Nord Pool Spot, Hamina}}{98}{table.A.3}
-\contentsline {table}{\numberline {A.4}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 2 weeks, Belpex, St.Ghislain}}{99}{table.A.4}
-\contentsline {table}{\numberline {A.5}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 3 weeks, Belpex, St.Ghislain}}{99}{table.A.5}
-\contentsline {table}{\numberline {A.6}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 4 weeks, Belpex, St.Ghislain}}{99}{table.A.6}
-\contentsline {table}{\numberline {A.7}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 2 weeks, ISO NE, Portland}}{100}{table.A.7}
-\contentsline {table}{\numberline {A.8}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 3 weeks, ISO NE, Portland}}{100}{table.A.8}
-\contentsline {table}{\numberline {A.9}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 4 weeks, ISO NE, Portland}}{100}{table.A.9}
-\contentsline {table}{\numberline {A.10}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 2 weeks, PJM, Richmond}}{101}{table.A.10}
-\contentsline {table}{\numberline {A.11}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 3 weeks, PJM, Richmond}}{101}{table.A.11}
-\contentsline {table}{\numberline {A.12}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 4 weeks, PJM, Richmond}}{101}{table.A.12}
+\contentsline {table}{\numberline {A.1}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 2 weeks, Nord Pool Spot, Hamina}}{103}{table.A.1}
+\contentsline {table}{\numberline {A.2}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 3 weeks, Nord Pool Spot, Hamina}}{103}{table.A.2}
+\contentsline {table}{\numberline {A.3}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 4 weeks, Nord Pool Spot, Hamina}}{104}{table.A.3}
+\contentsline {table}{\numberline {A.4}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 2 weeks, Belpex, St.Ghislain}}{105}{table.A.4}
+\contentsline {table}{\numberline {A.5}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 3 weeks, Belpex, St.Ghislain}}{105}{table.A.5}
+\contentsline {table}{\numberline {A.6}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 4 weeks, Belpex, St.Ghislain}}{105}{table.A.6}
+\contentsline {table}{\numberline {A.7}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 2 weeks, ISO NE, Portland}}{106}{table.A.7}
+\contentsline {table}{\numberline {A.8}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 3 weeks, ISO NE, Portland}}{106}{table.A.8}
+\contentsline {table}{\numberline {A.9}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 4 weeks, ISO NE, Portland}}{106}{table.A.9}
+\contentsline {table}{\numberline {A.10}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 2 weeks, PJM, Richmond}}{107}{table.A.10}
+\contentsline {table}{\numberline {A.11}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 3 weeks, PJM, Richmond}}{107}{table.A.11}
+\contentsline {table}{\numberline {A.12}{\ignorespaces Forecast evaluation results based on RMSE for a trainings period of 4 weeks, PJM, Richmond}}{107}{table.A.12}
 \addvspace {10pt}
-\contentsline {table}{\numberline {B.1}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}RT Spring\active@dq \dq@prtct {'}}}{119}{table.B.1}
-\contentsline {table}{\numberline {B.2}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}RT Summer\active@dq \dq@prtct {'}}}{120}{table.B.2}
-\contentsline {table}{\numberline {B.3}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}DA Spring\active@dq \dq@prtct {'}}}{120}{table.B.3}
-\contentsline {table}{\numberline {B.4}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}DA Summer\active@dq \dq@prtct {'}}}{121}{table.B.4}
+\contentsline {table}{\numberline {B.1}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}RT Spring\active@dq \dq@prtct {'}}}{125}{table.B.1}
+\contentsline {table}{\numberline {B.2}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}RT Summer\active@dq \dq@prtct {'}}}{126}{table.B.2}
+\contentsline {table}{\numberline {B.3}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}DA Spring\active@dq \dq@prtct {'}}}{126}{table.B.3}
+\contentsline {table}{\numberline {B.4}{\ignorespaces Cloud metrics for simulation \active@dq \dq@prtct {`}DA Summer\active@dq \dq@prtct {'}}}{127}{table.B.4}
