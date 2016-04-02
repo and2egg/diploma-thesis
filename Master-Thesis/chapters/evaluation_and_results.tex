@@ -571,19 +571,19 @@ For a reference of all implemented cloud metrics shown in subsequent graphs thes
 \toprule
   Cloud metric & Symbol & Description \\
 \midrule
-	Total cloud power & TCP & The total power consumed by active servers aggregated over all locations and time periods \\
-	Total cloud cost & TCC & The total costs resulting from applying energy prices to power consumption over the simulation time period \\
-	Migration energy & ME & Migration energy summed up from all migrations over the simulation time period \\
-	Migration cost & MC & Migration costs summed up from all migrations over the simulation time period \\
+	Total cloud power & TCP & The total power consumed by active servers aggregated over all locations and time periods (in kWh)  \\
+	Total cloud cost & TCC & The total costs resulting from applying energy prices to power consumption over simulation times (in \$) \\
+	Migration energy & ME & Migration energy summed up from all migrations over the simulation time period (in kWh) \\
+	Migration cost & MC & Migration costs summed up from all migrations over the simulation time period (in \$) \\
 	Total cloud power & TCPWM & The total cloud power including the migration energy \\
-	with migrations & & \\
+	with migrations & & (in kWh) \\
 	Total cloud cost & TCCWM & The total cloud costs including the resulting migration \\
-	with migrations & & costs \\
-	Total penalty cost & TPC & Total penalty costs occurred during the simulation time period \\
-	Total downtime & TDT & Total downtime aggregated over the simulation time period \\
+	with migrations & & costs (in \$) \\
+	Total penalty cost & TPC & Total penalty costs occurred during the simulation time period (in \$) \\
+	Total downtime & TDT & Total downtime aggregated over the simulation time period (in sec) \\
 	Number of migrations & NM & Number of migrations triggered over the simulation time period \\
-	Total power & TP & The total cloud power including the migration energy \\
-	Total cost & TC & The total cloud costs including migration costs and total penalty costs \\
+	Total power & TP & The total cloud power including the migration energy (in kWh) \\
+	Total cost & TC & The total cloud costs including migration costs and total penalty costs (in \$) \\
 \bottomrule
 \end{tabularx}
 \caption{List of all measured cloud metrics}
@@ -942,9 +942,9 @@ In the following sections each simulation scenario is presented in detail togeth
 
 \subsection{Simulation scenario DA Summer} \label{ssec:simulation_scenario_da_summer}
 
-The first simulation scenario is based on a time period of 5 weeks of day ahead energy price data. 
+The first simulation scenario is based on a time period of 5 weeks of day ahead energy prices. 
 
-The corresponding dataset is shown in Figure \ref{fig:da_sim_2013_5weeks}. The dataset exhibits strong seasonal patterns over each day and week. Locations St. Ghislain and Potsdam show the most stable seasonal periods where Hamina exhibits an almost exponential decline. Portland and Boston show regular seaonal periods as well except for one week in mid of July where the energy price levels increase drastically. 
+The corresponding dataset is shown in Figure \ref{fig:da_sim_2013_5weeks} which exhibits strong seasonal patterns over each day and week. Locations St. Ghislain and Potsdam show the most stable seasonal periods where Hamina exhibits an almost exponential decline. Portland and Boston show regular seaonal periods as well except for one week in mid of July where the energy price levels increase drastically. 
 
 \begin{figure}[htbp]
 	\centering
@@ -976,8 +976,8 @@ The following parameters have been set specifically for this simulation (Table \
 The set of servers is distributed to locations such that each location is assigned to the same number of servers. Thus the number of servers has been chosen to accommodate the need for equal distribution regarding the number of locations. 
 
 
-In this case the average utilization based on the calculation of Equation \ref{eq:average_utilization} would result in 15.7\%. 
-Thus the cloud (number of servers, number of VMs) has been defined such that a sufficient amount of servers are available for VMs at each point in time and a reasonable value of cloud utilization is reached. 
+In this case the maximum utilization based on the calculation of Equation \ref{eq:average_utilization} would result in 15.7\%. 
+Thus the cloud (number of servers, number of VMs) has been defined such that a sufficient amount of servers are available for VMs at each point in time and a reasonable value of cloud utilization can be reached. 
 
 
 Figure \ref{fig:DA_Summer_power_vs_cost} shows the results for normalized power vs cost for each scheduler. 
@@ -1031,7 +1031,7 @@ Different time series show very different behavior in energy price variations. F
 	\label{fig:da_sim_2013_4months}
 \end{figure}
 
-Simulation specific parameters have been set according to Table \ref{tab:da_spring_cloud_parameters}. Thus the number of servers and servers per location has been defined analogously to the DA Summer simulation scenario but the number of virtual machines has been adjusted to accommodate the extended simulation time period. This results in an average utilization (VMs per server and point in time) of 14.9\% across the simulation time period. 
+Simulation specific parameters have been set according to Table \ref{tab:da_spring_cloud_parameters}. Thus the number of servers and servers per location has been defined analogously to the DA Summer simulation scenario but the number of virtual machines has been adjusted to accommodate the extended simulation time period. This results in a maximum utilization (VMs per server and point in time) of 14.9\% across the simulation time period. 
 
 \begin{table}[htbp]
 \centering
@@ -1095,7 +1095,7 @@ Figure \ref{fig:rt_sim_2013_5weeks} shows the corresponding dataset for this sim
 	\label{fig:rt_sim_2013_5weeks}
 \end{figure}
 
-The parameters applicable to this scenario are shown in Table \ref{tab:rt_summer_cloud_parameters}. The number of servers and virtual machines has been adjusted to fit the greater number of locations in this scenario. The resulting average utilization according to Equation \ref{eq:average_utilization} would be 15.7\% which is equal to the utilization of the DA Summer simulation. 
+The parameters applicable to this scenario are shown in Table \ref{tab:rt_summer_cloud_parameters}. The number of servers and virtual machines has been adjusted to fit the greater number of locations in this scenario. The resulting maximum utilization according to Equation \ref{eq:average_utilization} would be 15.7\% which is equal to the maximum utilization of the DA Summer simulation. 
 
 \begin{table}[htbp]
 \centering
@@ -1156,7 +1156,7 @@ The final simulation scenario is based on 4 months of real time energy prices. A
 
 Comparable to the dataset of the RT Summer simulation the locations belonging to the same energy market (see Section \ref{sec:definition_of_simulation_scenarios}) show very similar patterns over time. The PJM market locations experience a significant price spike at the end of January with another substantial increase in price levels in mid of March. The patterns may be similar but not identical, therefore it may still be sensible to migrate between locations of the PJM market. The locations Boston and Portland show similar patterns as their day ahead counterparts (see Section \ref{ssec:simulation_scenario_da_spring}). Thus a significant increase in price levels and variation can be observed from mid of January to mid of February in the graph which may result in less accurate forecasts. 
 
-The cloud parameters specific to this simulation are depicted in Table \ref{tab:da_spring_cloud_parameters}. The relation of number of VMs to number of servers has been set the same as for the DA Spring simulation for a comparable distribution of VMs to servers. Therefore the average cloud utilization for this simulation scenario is 14.9\% which is the same as for the DA Spring simulation. 
+The cloud parameters specific to this simulation are depicted in Table \ref{tab:da_spring_cloud_parameters}. The relation of number of VMs to number of servers has been set the same as for the DA Spring simulation for a comparable distribution of VMs to servers. Therefore the maximum cloud utilization for this simulation scenario is 14.9\% which is the same as for the DA Spring simulation. 
 
 \begin{table}[htbp]
 \centering
@@ -1208,7 +1208,7 @@ The resulting cloud metrics are depicted in Figure \ref{fig:RT_Spring_cloud_metr
 
 
 
-\subsection{Utilization evaluation}
+\subsection{Utilization and forecast evaluation}
 
 In order to better investigate the results presented in the previous sections the actual price time series vs their utilization levels have been investigated. Thus for each simulation scenario and each scheduler the cloud utilization has been printed together with the energy prices and corresponding forecasts. The results for the simulation RT Summer and the BCU\_MF scheduler are shown in Figure \ref{fig:RT_Summer_scenario_6}.
 
@@ -1251,30 +1251,45 @@ Thus ideal forecasts may even lead to sub-optimal scheduling decisions as result
 The simulation scenarios discussed in the previous sections provide a clear hint for the most suitable scheduling algorithm for a given dataset. 
 In case of datasets exhibiting mid to high range volatility the BCU\_MF scheduler results in lowest total costs whereas for datasets with more stable volatility the BCU\_MIF scheduler provides best results. 
 
-%The different graphs provide an insight into energy price and forecasting behavior
+Table \ref{tab:utilization_and_runtimes} displays the average utilization and runtimes of each scheduler and simulation. As pointed out before maximum utilization evolves around 15 percent whereas average utilization stays at around 7 percent. This may be due to insufficient server consolidation which may need to be improved to achieve further cost savings. 
 
-From the investigations 
 
 \begin{table}[htbp]
 \centering
-\begin{tabular}[\textwidth]{ll}
+\begin{tabular}{lrrrrrrrr}
 \toprule
-	Simulation Name & Utilization  \\
+{} & \multicolumn{2}{c}{DA Summer} & \multicolumn{2}{c}{DA Spring} & \multicolumn{2}{c}{RT Summer} & \multicolumn{2}{c}{RT Spring} \\
+{} &  Util &  Runtime &  Util &  Runtime &  Util &  Runtime &  Util &  Runtime \\
 \midrule
-	DA Summer & 15.7 \\
-	DA Spring & 14.9 \\
-	RT Summer & 15.7 \\
-	RT Spring & 14.9 \\
+BFD     &  7.70 &    250.38 &  7.67 &   1375.55 &  7.86 &    425.71 &  7.60 &   2617.22 \\
+BCF     &  7.31 &    271.46 &  7.11 &   1306.38 &  7.22 &    428.04 &  7.13 &   2609.53 \\
+BCF\_F   &  7.12 &    282.85 &  6.89 &   1394.61 &  7.06 &    581.61 &  6.86 &   2809.27 \\
+BCF\_IF  &  7.20 &    288.25 &  6.97 &   1401.16 &  7.10 &    496.77 &  6.94 &   3154.17 \\
+BCU\_M   &  7.12 &    342.54 &  7.00 &   1556.34 &  6.95 &    646.65 &  6.85 &   4168.69 \\
+BCU\_MF  &  7.09 &    311.09 &  6.87 &   1527.99 &  6.98 &    567.82 &  6.83 &   3057.39 \\
+BCU\_MIF &  7.14 &    321.61 &  6.96 &   1554.50 &  7.03 &    553.67 &  6.86 &   3045.05 \\
+\bottomrule
+Total   &  7.24 &       5335.41 &  7.07 &  39421.84 &  7.17 &  10061.16 &  7.01 &  76344.82 \\
 \bottomrule
 \end{tabular}
-\caption{Resulting cloud utilization per simulation scenario}
-\label{tab:cloud_utilization_per_simulation_scenario}
+\caption{Average cloud utilization and runtime per simulation and scheduler}
+\label{tab:utilization_and_runtimes}
 \end{table}
 
-The formula to calculate the average utilization values in Table \ref{tab:cloud_utilization_per_simulation_scenario} is defined in Equation \ref{eq:average_utilization}.
-As the relation of number of VMs to number of servers has been set the same for DA and RT simulations the resulting average cloud utilization are the same for each of the Summer and Spring simulations. 
+Runtimes (in seconds) are highest for the BCU\_M scheduler as it involves excessive migrations. The reason the total runtime shows a higher value than the sum of all runtimes is the fact that the cloud is generated freshly for each simulation and each scheduler. 
+
+
+The tables of all cloud metrics as actual and normalized values can be referred to in the Appendix \ref{sec:app_result_simulation_tables}. 
+
+
+
 
 \subsection{Total costs}
+
+The total resulting costs for each scheduler and simulation scenario are outlined in Table \ref{tab:total_cost_per_simulation}.
+The lowest costs are marked in bold. 
+These values confirm the fact that the BCU\_MF scheduler outperforms other schedulers in terms of costs except for the RT Summer simulation where the BCU\_MIF scheduler exhibits the lowest costs. 
+%results in lowest cost for all but the RT Summer simulations. The cost savings compared to the BFD baseline scheduler are substantial
 
 
 \begin{table}[ht]
@@ -1284,13 +1299,16 @@ As the relation of number of VMs to number of servers has been set the same for 
 {} &     BFD &     BCF &   BCF\_F &  BCF\_IF &   BCU\_M &  BCU\_MF &  BCU\_MIF \\
 \midrule
 DA Summer &  208.36 &  181.72 &  171.85 &  174.53 &  186.19 &  \textbf{169.86} &   173.29 \\
-RT Summer &  315.96 &  263.32 &  265.21 &  256.08 &  273.87 &  259.98 &   \textbf{252.09} \\
 DA Spring &  930.41 &  630.13 &  592.83 &  600.42 &  625.62 &  \textbf{585.97} &   595.81 \\
+RT Summer &  315.96 &  263.32 &  265.21 &  256.08 &  273.87 &  259.98 &   \textbf{252.09} \\
 RT Spring &  966.04 &  710.59 &  659.92 &  699.13 &  747.06 &  \textbf{647.57} &   668.35 \\
 \bottomrule
 \end{tabular}
-\caption{Total costs for different scenarios (in \$)}
+\caption{Total costs for each simulation scenario and cloud scheduler (in \$)}
+\label{tab:total_cost_per_simulation}
 \end{table}
+
+Substantial cost savings could be achieved compared to the BFD baseline scheduler which are shown in Table \ref{tab:total_cost_reduction_per_simulation}. It displays cost reductions in percent relative to the BFD scheduler. The maximum cost reductions across all simulations result in an average of 27 percent where the highest cost reduction could be achieved in the DA Spring simulation with cost savings of over 37 percent in relation to the BFD scheduler. 
 
 \begin{table}[ht]
 \centering
@@ -1299,15 +1317,16 @@ RT Spring &  966.04 &  710.59 &  659.92 &  699.13 &  747.06 &  \textbf{647.57} &
 {} &  BFD &    BCF &  BCF\_F &  BCF\_IF &  BCU\_M &  BCU\_MF &  BCU\_MIF \\
 \midrule
 DA Summer &    0 &  12.79 &  17.52 &   16.24 &  10.64 &   \textbf{18.48} &    16.83 \\
-RT Summer &    0 &  16.66 &  16.06 &   18.95 &  13.32 &   17.72 &    \textbf{20.21} \\
 DA Spring &    0 &  32.27 &  36.28 &   35.47 &  32.76 &   \textbf{37.02} &    35.96 \\
+RT Summer &    0 &  16.66 &  16.06 &   18.95 &  13.32 &   17.72 &    \textbf{20.21} \\
 RT Spring &    0 &  26.44 &  31.69 &   27.63 &  22.67 &   \textbf{32.97} &    30.82 \\
 \bottomrule
 \end{tabular}
 \caption{Normalized total cost reductions for different scenarios (in \%)}
+\label{tab:total_cost_reduction_per_simulation}
 \end{table}
 
-
+These results show that significant cost savings are possible using the proposed approach compared to a non-cost aware approach. 
 
 
 

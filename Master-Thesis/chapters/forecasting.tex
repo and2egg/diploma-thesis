@@ -18,7 +18,7 @@ Different stochastic models are able to generate forecasts while considering exi
 
 In general time series may be decomposed into seasonal, trend and cycle components which can be made use of by forecast models \cite{de2011forecasting}. Some models such as ARIMA and TBATS can handle existing trends in the dataset by applying transformations in a preprocessing step or by decomposing and separately modeling time series components. More simplistic models such as Simple Exponential Smoothing (SES) or pure Autoregressive (AR) models require the dataset to be stationary, i.e.~to exhibit a constant mean and variance \cite{weron2007modeling,hyndman2012forecasting}. In this case the dataset would have to be transformed before applying those models. 
 
-Models should provide good out-of-sample accuracy which means that they need to be trained and tested on different datasets \cite{hyndman2012forecasting}. For example, considering training data from a training period of four weeks of energy price data and test data from a subsequent test period of one week a model is trained based on that training data but tested on the provided test data. Thus real life forecasting scenarios can be established and models are evaluated based on the accuracy on test datasets. A large scale evaluation of forecasting models based on different trainings and test datasets is presented later in this section. 
+Models should provide good out-of-sample accuracy which means that they need to be trained and tested on different datasets \cite{hyndman2012forecasting}. For example, considering training data from a training period of four weeks of energy price data and test data from a subsequent test period of one week a model is trained based on that training data but tested on the provided test data. Thus real life forecasting scenarios can be established and models are evaluated based on the accuracy on test datasets. A large scale evaluation of forecasting models based on different training and test datasets is presented later in this section. 
 
 Building an automated model generation process is important for automatic model evaluation and model selection for simulations running over a longer period of time. As extensive simulations including forecasts represent a core contribution of this work an automated model generation process has been defined including preprocessing steps and model evaluation to find the best suited model for a given dataset. 
 
@@ -583,7 +583,7 @@ The model selection algorithm consists of three separate functions each contribu
 \subsection{Function GenerateArimaModel}
 
 \begin{enumerate}
-	\item Get trainingsdata
+	\item Get trainingdata
 	
 	\begin{enumerate}
 		\item Read time series of energy prices from given location
@@ -804,7 +804,7 @@ Each web service interface is defined by a base path (e.g.~/rtprices), the respe
 
 The forecast model evaluation discussed in Section \ref{sec:forecast_model_evaluation} is based on implementation of an R function which is called and processed by respective methods on the application server. 
 
-The corresponding R function is named \textit{evaluateModels} and takes energy price data as input separated into a trainings and test data sets. It generates different forecast models based on the given trainings set considering possible seasonal periods in the data (see Section \ref{sec:model_selection_algorithm}) and returns aggregated accuracy measures for each model and forecast horizon. 
+The corresponding R function is named \textit{evaluateModels} and takes energy price data as input separated into a training and test data sets. It generates different forecast models based on the given training set considering possible seasonal periods in the data (see Section \ref{sec:model_selection_algorithm}) and returns aggregated accuracy measures for each model and forecast horizon. 
 
 \subsubsection{Function evaluateModels}
 
@@ -857,28 +857,28 @@ In order to conduct automated large scale simulations additional methods have be
 \begin{lstlisting}[language=Java, caption=Method runSimulation, label={lst:runSimulation}]
 runSimulation(String priceType, Long locationId, 
               String simulationStart, String simulationEnd,
-              String trainingsPeriod, String testPeriod, String intervalPeriod)
+              String trainingPeriod, String testPeriod, String intervalPeriod)
 \end{lstlisting}
 \end{minipage}
 
-The \textit{priceType} defines whether the simulation should be based on day ahead or real time prices. Accordingly the parameter is set to either ``da'' or ``rt''. The \textit{locationId} expects an Id of a registered location within the application server. The parameter \textit{simulationStart} expects a date time String containing the start date from where the simulation should be started. The parameter \textit{simulationEnd} describes the end date of the simulation as a date time String, respectively. \textit{trainingsPeriod} is the training period for which energy prices should be loaded for model generation, \textit{testPeriod} is the test period against which the models are to be tested and \textit{intervalPeriod} denotes the time interval the simulation should be advanced in each step. 
+The \textit{priceType} defines whether the simulation should be based on day ahead or real time prices. Accordingly the parameter is set to either ``da'' or ``rt''. The \textit{locationId} expects an Id of a registered location within the application server. The parameter \textit{simulationStart} expects a date time String containing the start date from where the simulation should be started. The parameter \textit{simulationEnd} describes the end date of the simulation as a date time String, respectively. \textit{trainingPeriod} is the training period for which energy prices should be loaded for model generation, \textit{testPeriod} is the test period against which the models are to be tested and \textit{intervalPeriod} denotes the time interval the simulation should be advanced in each step. 
 
 The corresponding web service interface is given in Listing \ref{lst:runSimulationWebService}. 
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=Java, caption=Method runSimulation web service interface, label={lst:runSimulationWebService}]
 /r/simulation/{type}/{loc_id}/{simulationStart}/{simulationEnd}/
-                {trainingsPeriod}/{testPeriod}/{intervalPeriod}
+                {trainingPeriod}/{testPeriod}/{intervalPeriod}
 \end{lstlisting}
 \end{minipage}
 
-The base path of the web service interface is \textit{/r} which is an indicator for web services that are based on R implementations. The name of the web service is \textit{simulation} and parameters have already been described for Listing \ref{lst:runSimulation}. This method or interface is responsible for executing a single simulation with defined start and end dates, trainings-, test- and interval periods. 
+The base path of the web service interface is \textit{/r} which is an indicator for web services that are based on R implementations. The name of the web service is \textit{simulation} and parameters have already been described for Listing \ref{lst:runSimulation}. This method or interface is responsible for executing a single simulation with defined start and end dates, training-, test- and interval periods. 
 
 A common format has been defined to distinguish different periods and intervals. A regular expression for the format could be described as \textit{\textasciicircum\textbackslash d+[hdw]\$}
 which is a combination of at least one digit and one of \textit{h}, \textit{d} or \textit{w} which means \textit{hour}, \textit{day} and \textit{week}, respectively. 
 Therefore a training period of 2w, 1d or 48h means two weeks, one day or 48 hours. The same holds true for test- and interval periods. 
 
-The method \textit{runSimulation} calls the method \textit{evaluateModels} which performs a single model evaluation for a given trainings and test period. Its method signature is depicted in Listing \ref{lst:evaluateModels}. 
+The method \textit{runSimulation} calls the method \textit{evaluateModels} which performs a single model evaluation for a given training and test period. Its method signature is depicted in Listing \ref{lst:evaluateModels}. 
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[language=Java, caption=Method evaluateModels, label={lst:evaluateModels}]
@@ -888,21 +888,21 @@ evaluateModels(String simulationName, String priceType, Long locationId,
 \end{lstlisting}
 \end{minipage}
 
-This method is responsible for conducting a model evaluation by calling the respective same-named function on the \textit{RManager}. This method is called for each simulation run triggered by the \textit{runSimulation} method, i.e.~it is called for different trainings-, test- and interval periods. In order to distinguish different simulations where each simulation is saved in a folder named after the simulation name the simulationName has been normed (Listing \ref{lst:simulationName_definition}): 
+This method is responsible for conducting a model evaluation by calling the respective same-named function on the \textit{RManager}. This method is called for each simulation run triggered by the \textit{runSimulation} method, i.e.~it is called for different training-, test- and interval periods. In order to distinguish different simulations where each simulation is saved in a folder named after the simulation name the simulationName has been normed (Listing \ref{lst:simulationName_definition}): 
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[caption=Definition of the simulation name, label={lst:simulationName_definition}]
 Definition of the simulation name: 
 	
-<priceType>_sim_<locationId>_<trainingsPeriod>_<testPeriod>_<intervalPeriod>
+<priceType>_sim_<locationId>_<trainingPeriod>_<testPeriod>_<intervalPeriod>
 \end{lstlisting}
 \end{minipage}
 
-where \textit{priceType} is the type of energy price (``da'' or ``rt''), \textit{sim} is a delimiter common to all simulations, \textit{locationId} is the id of the location for which to conduct the simulation, \textit{trainingsPeriod} is the encoded form of the training period, the same holds true for \textit{testPeriod} and \textit{intervalPeriod}. All parameters are delimited by underscores to clearly distinguish different parameters. 
+where \textit{priceType} is the type of energy price (``da'' or ``rt''), \textit{sim} is a delimiter common to all simulations, \textit{locationId} is the id of the location for which to conduct the simulation, \textit{trainingPeriod} is the encoded form of the training period, the same holds true for \textit{testPeriod} and \textit{intervalPeriod}. All parameters are delimited by underscores to clearly distinguish different parameters. 
 
 Therefore a valid simulation name would be \textit{da\_sim\_1\_2w\_1w\_1w} denoting a simulation on day ahead prices for location with Id 1, 2 weeks training period, 1 week test period and 1 week interval period. 
 
-The method \textit{runSimulation} calls the method \textit{evaluateModels} repeatedly over the whole simulation time period (simulation start to simulation end) in intervals specified by the \textit{intervalPeriod} with trainings and test periods specified by the \textit{trainingsPeriod} and \textit{testPeriod} parameters. 
+The method \textit{runSimulation} calls the method \textit{evaluateModels} repeatedly over the whole simulation time period (simulation start to simulation end) in intervals specified by the \textit{intervalPeriod} with training and test periods specified by the \textit{trainingPeriod} and \textit{testPeriod} parameters. 
 
 The results of each call of evaluateModels are saved in a separate file under a folder named the same as the simulation. Each file has a naming convention of \textit{<simulationName>\_<start\\Training>} where \textit{startTraining} denotes the start date of the training period for this simulation. 
 
@@ -934,7 +934,7 @@ different forecast horizons.
 \centering
 \begin{tabular}{llllll}
   \hline
- Simulation Name &  Type & Location & Trainings Period & Test Period & Interval Period \\
+ Simulation Name &  Type & Location & Training Period & Test Period & Interval Period \\
   \hline
 	da\_sim\_1\_2w\_1w\_1w & day ahead & Hamina & 2 weeks & 1 week & 1 week \\
 	da\_sim\_1\_3w\_1w\_1w & day ahead & Hamina & 3 weeks & 1 week & 1 week \\
@@ -962,12 +962,12 @@ different forecast horizons.
 
 \subsection{Forecast evaluation results}
 
-For conducting the simulations energy price data has been taken from years 2012 to 2014. As mentioned above model evaluations have been done in intervals of 1 week and forecast errors have been measured based on different trainings and test data sets for various forecast horizons. Each of the forecast error results has been aggregated for the respective trainings-, test period and forecast horizon over the whole time period of the simulation. 
+For conducting the simulations energy price data has been taken from years 2012 to 2014. As mentioned above model evaluations have been done in intervals of 1 week and forecast errors have been measured based on different training and test data sets for various forecast horizons. Each of the forecast error results has been aggregated for the respective training-, test period and forecast horizon over the whole time period of the simulation. 
 
 
 \subsubsection{Result tables} \label{sssec:result_tables}
 
-Aggregated RMSE results for Hamina belonging to the Nord Pool Spot power market are shown in Tables \ref{tab:results_hamina_2weeks}, \ref{tab:results_hamina_3weeks} and \ref{tab:results_hamina_4weeks} for 2, 3 and 4 weeks of trainingsdata, respectively. 
+Aggregated RMSE results for Hamina belonging to the Nord Pool Spot power market are shown in Tables \ref{tab:results_hamina_2weeks}, \ref{tab:results_hamina_3weeks} and \ref{tab:results_hamina_4weeks} for 2, 3 and 4 weeks of trainingdata, respectively. 
 
 
 %> batchRMSEResults(1)
