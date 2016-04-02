@@ -587,7 +587,7 @@ The model selection algorithm consists of three separate functions each contribu
 	
 	\begin{enumerate}
 		\item Read time series of energy prices from given location
-		\item Define trainings period by start and end date
+		\item Define training period by start and end date
 	\end{enumerate}
 	\item Determine seasonality
 	
@@ -861,7 +861,7 @@ runSimulation(String priceType, Long locationId,
 \end{lstlisting}
 \end{minipage}
 
-The \textit{priceType} defines whether the simulation should be based on day ahead or real time prices. Accordingly the parameter is set to either ``da'' or ``rt''. The \textit{locationId} expects an Id of a registered location within the application server. The parameter \textit{simulationStart} expects a date time String containing the start date from where the simulation should be started. The parameter \textit{simulationEnd} describes the end date of the simulation as a date time String, respectively. \textit{trainingsPeriod} is the trainings period for which energy prices should be loaded for model generation, \textit{testPeriod} is the test period against which the models are to be tested and \textit{intervalPeriod} denotes the time interval the simulation should be advanced in each step. 
+The \textit{priceType} defines whether the simulation should be based on day ahead or real time prices. Accordingly the parameter is set to either ``da'' or ``rt''. The \textit{locationId} expects an Id of a registered location within the application server. The parameter \textit{simulationStart} expects a date time String containing the start date from where the simulation should be started. The parameter \textit{simulationEnd} describes the end date of the simulation as a date time String, respectively. \textit{trainingsPeriod} is the training period for which energy prices should be loaded for model generation, \textit{testPeriod} is the test period against which the models are to be tested and \textit{intervalPeriod} denotes the time interval the simulation should be advanced in each step. 
 
 The corresponding web service interface is given in Listing \ref{lst:runSimulationWebService}. 
 
@@ -876,7 +876,7 @@ The base path of the web service interface is \textit{/r} which is an indicator 
 
 A common format has been defined to distinguish different periods and intervals. A regular expression for the format could be described as \textit{\textasciicircum\textbackslash d+[hdw]\$}
 which is a combination of at least one digit and one of \textit{h}, \textit{d} or \textit{w} which means \textit{hour}, \textit{day} and \textit{week}, respectively. 
-Therefore a trainings period of 2w, 1d or 48h means two weeks, one day or 48 hours. The same holds true for test- and interval periods. 
+Therefore a training period of 2w, 1d or 48h means two weeks, one day or 48 hours. The same holds true for test- and interval periods. 
 
 The method \textit{runSimulation} calls the method \textit{evaluateModels} which performs a single model evaluation for a given trainings and test period. Its method signature is depicted in Listing \ref{lst:evaluateModels}. 
 
@@ -898,13 +898,13 @@ Definition of the simulation name:
 \end{lstlisting}
 \end{minipage}
 
-where \textit{priceType} is the type of energy price (``da'' or ``rt''), \textit{sim} is a delimiter common to all simulations, \textit{locationId} is the id of the location for which to conduct the simulation, \textit{trainingsPeriod} is the encoded form of the trainings period, the same holds true for \textit{testPeriod} and \textit{intervalPeriod}. All parameters are delimited by underscores to clearly distinguish different parameters. 
+where \textit{priceType} is the type of energy price (``da'' or ``rt''), \textit{sim} is a delimiter common to all simulations, \textit{locationId} is the id of the location for which to conduct the simulation, \textit{trainingsPeriod} is the encoded form of the training period, the same holds true for \textit{testPeriod} and \textit{intervalPeriod}. All parameters are delimited by underscores to clearly distinguish different parameters. 
 
-Therefore a valid simulation name would be \textit{da\_sim\_1\_2w\_1w\_1w} denoting a simulation on day ahead prices for location with Id 1, 2 weeks trainings period, 1 week test period and 1 week interval period. 
+Therefore a valid simulation name would be \textit{da\_sim\_1\_2w\_1w\_1w} denoting a simulation on day ahead prices for location with Id 1, 2 weeks training period, 1 week test period and 1 week interval period. 
 
 The method \textit{runSimulation} calls the method \textit{evaluateModels} repeatedly over the whole simulation time period (simulation start to simulation end) in intervals specified by the \textit{intervalPeriod} with trainings and test periods specified by the \textit{trainingsPeriod} and \textit{testPeriod} parameters. 
 
-The results of each call of evaluateModels are saved in a separate file under a folder named the same as the simulation. Each file has a naming convention of \textit{<simulationName>\_<start\\Training>} where \textit{startTraining} denotes the start date of the trainings period for this simulation. 
+The results of each call of evaluateModels are saved in a separate file under a folder named the same as the simulation. Each file has a naming convention of \textit{<simulationName>\_<start\\Training>} where \textit{startTraining} denotes the start date of the training period for this simulation. 
 
 
 
@@ -987,7 +987,7 @@ mean & 9.30 & 10.66 & 10.79 & 14.78 & 14.22 & 13.02 & 13.21 & 12.58 & 12.99 & 12
   tbats & 2.16 & 2.89 & 4.35 & 10.68 & 10.89 & 10.02 & 10.19 & 9.94 & 10.70 & 10.33 \\ 
    \hline
 \end{tabular}
-\caption{Forecast evaluation results based on RMSE for a trainings period of 2 weeks, Nord Pool Spot, Hamina}
+\caption{Forecast evaluation results based on RMSE for a training period of 2 weeks, Nord Pool Spot, Hamina}
 \label{tab:results_hamina_2weeks}
 \end{table}
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
@@ -1006,7 +1006,7 @@ mean & 9.40 & 10.75 & 10.90 & 15.03 & 14.46 & 13.25 & 13.44 & 12.81 & 13.27 & 12
   tbats & 2.15 & 3.04 & 4.73 & 11.23 & 11.41 & 10.51 & 10.57 & 10.33 & 11.05 & 10.67 \\ 
    \hline
 \end{tabular}
-\caption{Forecast evaluation results based on RMSE for a trainings period of 3 weeks, Nord Pool Spot, Hamina}
+\caption{Forecast evaluation results based on RMSE for a training period of 3 weeks, Nord Pool Spot, Hamina}
 \label{tab:results_hamina_3weeks}
 \end{table}
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
@@ -1025,7 +1025,7 @@ mean & 9.52 & 10.88 & 11.04 & 15.22 & 14.63 & 13.42 & 13.58 & 12.94 & 13.41 & 12
   tbats & 2.20 & 3.09 & 4.64 & 10.98 & 11.19 & 10.31 & 10.45 & 10.20 & 10.91 & 10.36 \\ 
    \hline
 \end{tabular}
-\caption{Forecast evaluation results based on RMSE for a trainings period of 4 weeks, Nord Pool Spot, Hamina}
+\caption{Forecast evaluation results based on RMSE for a training period of 4 weeks, Nord Pool Spot, Hamina}
 \label{tab:results_hamina_4weeks}
 \end{table}
 
@@ -1074,7 +1074,7 @@ When comparing models TBATS, ARIMA followed by Mean and SES forecast models achi
 
 TBATS models exhibit the least forecast errors when they are able to capture seasonality appropriately. Otherwise these models show exponential growth of forecast errors over all measures. Due to this instability ARIMA models may be preferred as they exhibit stable forecast errors over most data sets and forecast horizons. 
 
-Another note to error distribtions is that for the same forecast model similar patterns can be observed despite differences across energy markets. Concerning different trainings periods it can be observed that for most methods errors decrease with increasing trainings period, i.e.~four weeks of training data exhibits the least errors in most cases. 
+Another note to error distribtions is that for the same forecast model similar patterns can be observed despite differences across energy markets. Concerning different training periods it can be observed that for most methods errors decrease with increasing training period, i.e.~four weeks of training data exhibits the least errors in most cases. 
 
 Also different distributions are apparent for different error measures, e.g.~RMSE tend to increase with increasing forecast horizon whereas percentage errors (MPE and MAPE) tend to hit their lowest values for forecast horizons of 24h to 48h apart from horizons below 12h. 
 
@@ -1086,7 +1086,7 @@ Concerning the forecast error measures a focus has been laid on evaluating Root 
 
 Results have been aggregated over all forecast horizons and for each simulation which are shown in Tables \ref{tab:aggregated_results_nord_pool}, \ref{tab:aggregated_results_belpex}, \ref{tab:aggregated_results_isone} and \ref{tab:aggregated_results_pjm}. Best results have been formatted in bold in the tables. 
 
-ARIMA and TBATS models showed superior results over all forecast horizons and training periods. TBATS models show best results when data can be modeled appropriately but exhibit anomalies in other cases. For different training periods a trend can be detected where forecast errors increase with increasing duration of the trainings period. However, ARIMA models show opposite results where forecast errors consistently decrease with increasing trainings period. 
+ARIMA and TBATS models showed superior results over all forecast horizons and training periods. TBATS models show best results when data can be modeled appropriately but exhibit anomalies in other cases. For different training periods a trend can be detected where forecast errors increase with increasing duration of the training period. However, ARIMA models show opposite results where forecast errors consistently decrease with increasing training period. 
 
 
 % latex table generated in R 3.1.1 by xtable 1.8-2 package
@@ -1162,18 +1162,18 @@ From the discussion of the large scale forecast evaluation in the previous secti
 
 \paragraph{Model performance}
 
-Concerning model performance ARIMA models showed the best results over different energy markets, trainings periods and forecast horizons. 
+Concerning model performance ARIMA models showed the best results over different energy markets, training periods and forecast horizons. 
 They showed consistently low forecast errors and appeared very stable throughout the simulations. Thus among the observed models ARIMA models may be the best choice considering forecast performance and statbility of results. 
 
 \paragraph{Forecast Horizon}
 
-Concerning forecast horizons it has been observed that horizons from 24 hours to 48 hours provide the best results when considering all models and trainings periods. 
+Concerning forecast horizons it has been observed that horizons from 24 hours to 48 hours provide the best results when considering all models and training periods. 
 For low horizons up to 12 hours different models may be suggested, i.e.~Holts model provide considerably lower forecast errors for forecast windows of 1 and 3 hours. 
 For other than very short-term forecasts a forecast window of 24 to 48 hours provides best results. 
 
 \paragraph{Training periods}
 
-Different model training periods provide different results. Forecast errors have been observed to increase with the duration of the trainings period most of the time except for ARIMA models where the opposite behavior has been detected. Thus for ARIMA models a trainings period of 4 weeks is suggested for model generation. 
+Different model training periods provide different results. Forecast errors have been observed to increase with the duration of the training period most of the time except for ARIMA models where the opposite behavior has been detected. Thus for ARIMA models a training period of 4 weeks is suggested for model generation. 
 
 \paragraph{Forecast error measures}
 
