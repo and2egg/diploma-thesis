@@ -922,17 +922,19 @@ Applying different SLA availability levels to VMs has not been considered since 
 
 The utility values for all subsequent simulations will be taken from the \textit{best utility function} evaluated in the previous section. Since it provided promising results on a small scale cloud it is expected to perform well also in larger cloud environments. 
 
-The average cloud utilization is calculated based on the total number of virtual machines, the simulation time period, number of servers and the average runtime of VMs. The corresponding formulas are depicted in Equations \ref{eq:average_utilization} and \ref{eq:average_duration}.
+The maximum cloud utilization is calculated based on the total number of virtual machines, the simulation time period, number of servers and the average runtime of VMs. It describes the maximum possible utilization in case all active servers are fully occupied at all times. The corresponding formulas are depicted in Equations \ref{eq:average_utilization} and \ref{eq:average_duration}.
 
 \begin{align}
-	util_{avg} &=  \frac{|VM| \cdot dur_{avg}}{|T| \cdot |s|} \label{eq:average_utilization} \\
+	util_{max} &=  \frac{|VM| \cdot dur_{avg}}{|T| \cdot |s|} \label{eq:average_utilization} \\
 	dur_{avg} &= \frac{1}{|VM|} \sum_{v \in |VM|} v_{dur} \label{eq:average_duration}
 \end{align}
 
-The average VM runtime $dur_{avg}$ is calculated as the mean of all fixed VM duration values where VM assignments to durations follow the uniform distribution. The average utilization $util_{avg}$ is then the number of VMs multiplied by their average duration  in relation to the number of hourly time periods $|T|$ and the number of servers $|s|$ over all locations. 
+The average VM runtime $dur_{avg}$ is calculated as the mean of all fixed VM duration values where VM assignments to durations follow the uniform distribution. The maximum utilization $util_{max}$ is then the number of VMs multiplied by their average duration in relation to the number of hourly time periods $|T|$ and the number of servers $|s|$ across all locations. 
+
+The forecast model chosen to be used in all simulations is the ARIMA model. As outlined in Section \ref{sec:forecast_model_evaluation} it provided the best results in forecast evaluation. The simulations have been conducted based on ARIMA models trained for each day of the simulation with 2 weeks of training data. Each model was used to generate forecasts for the next 24 hours to generate a seamless series of forecasts to be used in the simulations. 
 
 Each simulation scenario has been run on all schedulers defined in \ref{sec:cloud_scheduler} where all previously defined cloud metrics are evaluated (Section \ref{ssec:simulation_configuration_parameters}). This results in a comprehensive evaluation of the defined schedulers across an extended time period. 
-In addition forecast accuracy will be evaluated based on the simulated data. 
+%In addition forecast accuracy will be evaluated based on the simulated data. 
 
 In the following sections each simulation scenario is presented in detail together with the results. 
 
@@ -946,6 +948,7 @@ The corresponding dataset is shown in Figure \ref{fig:da_sim_2013_5weeks}. The d
 
 \begin{figure}[htbp]
 	\centering
+	\vspace*{-0.4in}
 		\includegraphics[width=1.0\textwidth]{figures/evaluation_and_results/da_sim_2013_5weeks.png}
 	\caption{Day ahead energy prices over 5 weeks in 2013, in \$ per MWh}
 	\label{fig:da_sim_2013_5weeks}
@@ -981,7 +984,7 @@ Figure \ref{fig:DA_Summer_power_vs_cost} shows the results for normalized power 
 It can be noted that this shows very similar behavior to the results of the \textit{best utility function} in Section \ref{ssec:best_utility_function}. However in this simulation the BCU\_MF scheduler shows the least resulting costs relative to the baseline scheduler. This indicates a good performance of the utility function based on energy price forecasts which could outperform all other schedulers in terms of resulting costs. 
 
 Figure \ref{fig:DA_Summer_total_cost} confirms these findings by displaying the total resulting costs for this simulation scenario. 
-In this scenario no penalty costs due to migration downtimes have been resulted from any scheduler which attributes to high valued utility weights regarding SLA penalty and cost metrics. 
+In this scenario no penalty costs due to migration downtimes have been resulted from any scheduler which attributes to high utility weights regarding SLA penalty and cost metrics. 
 
 The resulting cloud metrics are depicted in Figure \ref{fig:DA_Summer_cloud_metrics}. This graph is similar to the cloud metrics of the best utility function with further reduced number of migrations of the BCU\_MF scheduler relative to the BCU\_M scheduler. Also total costs could be reduced due to less migration costs and less total cloud costs which is caused by a reduction of total power consumption. 
 
@@ -1109,7 +1112,7 @@ The parameters applicable to this scenario are shown in Table \ref{tab:rt_summer
 \label{tab:rt_summer_cloud_parameters}
 \end{table}
 
-The normalized cost chart depicted in Figure \ref{fig:RT_Summer_power_vs_cost} shows slightly different patterns than the simulation scenarios presented for day ahead energy prices. In particular the schedulers exhibiting ideal forecasts (BCF\_IF and BCU\_MIF) provide the best results and the most cost reductions. This may be attributed to the fact that the real time price dataset for this simulation does not exhibit as many ``outliers'' or price spikes as the dataset associated with the day ahead simulation over the same time period (DA Summer). Therefore the accurate ideal forecasts are not triggering too many unnecessary migrations and VMs do not need to be rescheduled as often leading to less power consumption and costs. 
+The normalized cost chart depicted in Figure \ref{fig:RT_Summer_power_vs_cost} shows slightly different patterns than the simulation scenarios presented for day ahead energy prices. In particular the schedulers exhibiting ideal forecasts (BCF\_IF and BCU\_MIF) provide the best results and the most cost reductions. This may be attributed to the fact that the real time price dataset for this simulation does not exhibit as many ``outliers'' or price spikes as the dataset associated with the DA Summer simulation over the same time period. Thus in this case the accurate ideal forecasts are not triggering too many unnecessary migrations and VMs do not need to be rescheduled as often leading to less power consumption and costs. 
 
 \begin{figure}[htbp]
 	\centering
@@ -1215,13 +1218,13 @@ Results show substantial variations in utilization levels over the simulation ti
 
 The utilization at this location shows a drop in utilization levels beginning from 16th of July due to increased forecasted prices at this time. Thus the load is moved to other locations exhibiting a reduced energy price at this point in time. The same behavior can be observed for the locations Hatfield and Georgetown where utilization drops around the same time. 
 
-In contrast the location Madison shows more stable utilization levels over time with still a trough around the same time where drops in utilization have been observed for other locations. Locations Boston and Portland have not experienced high utilization on average as the effort of moving resources to these locations is higher due to increased bandwidth (see Table \ref{tab:real_time_bandwidth_mappings}). 
+In contrast location Madison shows more stable utilization levels with still a trough around the same time where drops in utilization have been observed for other locations. Locations Boston and Portland have not experienced high utilization on average as the effort of moving resources to these locations is higher due to lower bandwidth connections (see Table \ref{tab:real_time_bandwidth_mappings}). 
 
-However around the same time at mid of July Portland experiences a substantial increase in load which is shifted from other locations. The reason might be the small drop in energy price forecasts at Portland at 16th of July as well as a lower forecasted average price over the next hours. 
+However around the same time at mid of July Portland experiences a substantial increase in load which is shifted from other locations. The reason might be the small drop in energy price forecasts at this location on the 16th of July as well as a lower forecasted average price over the next hours. 
 
-Utilization levels increase up to 50 percent at times (see location Portland) but average utilization per location goes from very low values to about 25 percent depending on the scenario. As the weights of the utility function (see Section \ref{ssec:best_utility_function}) have been set to high values for SLA penalties and cost reductions but to a low value for data center load the primary reason for VM migration are to mitigate SLA penalties due to VM downtimes and enhance cost reductions based on cheaper energy prices. Load balancing has not been considered as important metric in the presented simulations. 
+Utilization levels increase up to 50 percent at times (see location Portland) but average utilization per location varies from very low values to about 25 percent depending on the scenario. As the weights of the utility function (see Section \ref{ssec:best_utility_function}) have been set to high values for SLA penalties and cost reductions but to a low value for data center load the primary reason for VM migration are to mitigate SLA penalties due to VM downtimes and enhance cost reductions based on cheaper energy prices. Load balancing has not been considered as important metric in the presented simulations. 
 
-The resulting graphs for all locations, all simulations and all schedulers have been placed in the Appendix for reference (\ref{sec:app_result_simulation_graphs}). The BFD scheduler in the RT summer simulation () does not consider any energy price changes in its scheduling decisions and thus load is distributed uniformly over all locations. Average utilization levels for this scheduler evolve around 8 to 10 percent. 
+The resulting graphs for all locations, all simulations and all schedulers have been placed in the Appendix for reference (\ref{sec:app_result_simulation_graphs}). The BFD scheduler in the RT summer simulation does not consider any energy price changes in its scheduling decisions and thus load is distributed uniformly over all locations (see \ref{fig:app_RT_Summer_scenario_1}). This results in similar utilization at all locations where average utilization levels for this scheduler evolve around 8 to 10 percent. 
 
 \begin{figure}[htbp]
 	\centering
@@ -1233,16 +1236,24 @@ The resulting graphs for all locations, all simulations and all schedulers have 
 	\label{fig:RT_Summer_scenario_6}
 \end{figure}
 
-When observing DA Summer simulation results for scheduler BCU\_MF () the relation of forecasts to actual energy prices can be seen more clearly. It seems that the forecasted energy prices ``lag behind'' the actual energy prices by a certain amount of time. Daily seasonality can be clearly spotted also in forecasted energy prices with similar patterns existing in actual energy prices. 
+The BCU\_M scheduler only considers current energy prices for migrations which leads to very high number of migrations and high volatility in the utilization (see \ref{fig:app_RT_Spring_scenario_5}). For the RT Spring simulation this is best visible for location Portland which exhibits a very high number of ``spikes'' in utilization. Thus due to high variations in energy prices a high number of migrations have been performed. 
 
-However for the real time price scenario shown in Figure \ref{fig:RT_Summer_scenario_6} it can be observed that the forecasts do not model the exact price time series but average out price spikes that may occur in the energy price time series. Therefore schedulers incorporating real forecasts in contrast to ideal forecasts can be seen as an advantage as they do not consider each price spike but provide a more holistic view on the energy price time series. Thus ideal forecasts may even lead to sub-optimal scheduling decisions as results showed in DA Spring and RT Spring simulations (see linked Sections \ref{ssec:simulation_scenario_da_spring} and \ref{ssec:simulation_scenario_rt_spring}). 
+When comparing the behavior of the schedulers based on actual and ideal forecasts (BCU\_MF, BCU\_MIF) it can be observed that the BCU\_MIF scheduler exhibits a higher number of migrations (higher volatility of utilization) than the BCU\_MF scheduler (see \ref{fig:app_DA_Spring_scenario_6} and \ref{fig:app_DA_Spring_scenario_7} for locations Hamina and Potsdam). This confirms the fact described before that the BCU\_MIF scheduler is more sensitive to price changes and tends to trigger migrations more frequently. 
 
+When observing simulation results for DA Summer for scheduler BCU\_MF (see \ref{fig:app_DA_Summer_scenario_6}) the relation of forecasts to actual energy prices can be seen more clearly. It seems that the forecasted energy prices ``lag behind'' the actual energy prices by a certain amount of time. Daily seasonality can be clearly spotted also in forecasted energy prices with similar patterns as they exist in actual energy prices, best visible for locations Portland and Boston. 
+
+However for the real time price scenario shown in Figure \ref{fig:RT_Summer_scenario_6} it can be observed that the forecasts do not model the exact price time series but average out price spikes that may occur in the energy price time series. Therefore schedulers incorporating real forecasts in contrast to ideal forecasts can be seen as an advantage for highly volatile price series as they do not consider each price spike but model energy prices more closely to their mean. 
+Thus ideal forecasts may even lead to sub-optimal scheduling decisions as results showed in DA Spring and RT Spring simulations (see linked Sections \ref{ssec:simulation_scenario_da_spring} and \ref{ssec:simulation_scenario_rt_spring}). 
 
 
 \subsection{Simulation results}
 
-When comparing different scenarios the BCU\_MF scheduler of the real time simulation (RT Summer) achieves an additional cost reduction of 15\% in relation to the day ahead simulation (DA Summer) over the same time period. 
-This may be attributed to the higher possibility for cost savings in the real time simulation due to a higher number of locations to migrate to. 
+The simulation scenarios discussed in the previous sections provide a clear hint for the most suitable scheduling algorithm for a given dataset. 
+In case of datasets exhibiting mid to high range volatility the BCU\_MF scheduler results in lowest total costs whereas for datasets with more stable volatility the BCU\_MIF scheduler provides best results. 
+
+%The different graphs provide an insight into energy price and forecasting behavior
+
+From the investigations 
 
 \begin{table}[htbp]
 \centering
