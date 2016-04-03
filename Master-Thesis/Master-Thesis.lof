@@ -63,56 +63,56 @@
 \contentsline {figure}{\numberline {6.28}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation RT Summer and scheduler BCU\_MF}}{115}{figure.6.28}
 \addvspace {10pt}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {A.1}{\ignorespaces Aggregated accuracy measures for Mean model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{126}{figure.A.1}
-\contentsline {figure}{\numberline {A.2}{\ignorespaces Aggregated accuracy measures for SES model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{127}{figure.A.2}
-\contentsline {figure}{\numberline {A.3}{\ignorespaces Aggregated accuracy measures for Holts model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{127}{figure.A.3}
-\contentsline {figure}{\numberline {A.4}{\ignorespaces Aggregated accuracy measures for HoltWinters model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{128}{figure.A.4}
-\contentsline {figure}{\numberline {A.5}{\ignorespaces Aggregated accuracy measures for ARIMA model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{128}{figure.A.5}
-\contentsline {figure}{\numberline {A.6}{\ignorespaces Aggregated accuracy measures for TBATS model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{129}{figure.A.6}
-\contentsline {figure}{\numberline {A.7}{\ignorespaces Aggregated accuracy measures for Mean model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{130}{figure.A.7}
-\contentsline {figure}{\numberline {A.8}{\ignorespaces Aggregated accuracy measures for SES model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{131}{figure.A.8}
-\contentsline {figure}{\numberline {A.9}{\ignorespaces Aggregated accuracy measures for Holts model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{131}{figure.A.9}
-\contentsline {figure}{\numberline {A.10}{\ignorespaces Aggregated accuracy measures for HoltWinters model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{132}{figure.A.10}
-\contentsline {figure}{\numberline {A.11}{\ignorespaces Aggregated accuracy measures for ARIMA model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{132}{figure.A.11}
-\contentsline {figure}{\numberline {A.12}{\ignorespaces Aggregated accuracy measures for TBATS model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{133}{figure.A.12}
-\contentsline {figure}{\numberline {A.13}{\ignorespaces Aggregated accuracy measures for Mean model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{134}{figure.A.13}
-\contentsline {figure}{\numberline {A.14}{\ignorespaces Aggregated accuracy measures for SES model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{135}{figure.A.14}
-\contentsline {figure}{\numberline {A.15}{\ignorespaces Aggregated accuracy measures for Holts model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{135}{figure.A.15}
-\contentsline {figure}{\numberline {A.16}{\ignorespaces Aggregated accuracy measures for HoltWinters model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{136}{figure.A.16}
-\contentsline {figure}{\numberline {A.17}{\ignorespaces Aggregated accuracy measures for ARIMA model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{136}{figure.A.17}
-\contentsline {figure}{\numberline {A.18}{\ignorespaces Aggregated accuracy measures for TBATS model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{137}{figure.A.18}
-\contentsline {figure}{\numberline {A.19}{\ignorespaces Aggregated accuracy measures for Mean model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{138}{figure.A.19}
-\contentsline {figure}{\numberline {A.20}{\ignorespaces Aggregated accuracy measures for SES model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{139}{figure.A.20}
-\contentsline {figure}{\numberline {A.21}{\ignorespaces Aggregated accuracy measures for Holts model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{139}{figure.A.21}
-\contentsline {figure}{\numberline {A.22}{\ignorespaces Aggregated accuracy measures for HoltWinters model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{140}{figure.A.22}
-\contentsline {figure}{\numberline {A.23}{\ignorespaces Aggregated accuracy measures for ARIMA model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{140}{figure.A.23}
-\contentsline {figure}{\numberline {A.24}{\ignorespaces Aggregated accuracy measures for TBATS model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{141}{figure.A.24}
+\contentsline {figure}{\numberline {A.1}{\ignorespaces Aggregated accuracy measures for Mean model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{128}{figure.A.1}
+\contentsline {figure}{\numberline {A.2}{\ignorespaces Aggregated accuracy measures for SES model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{129}{figure.A.2}
+\contentsline {figure}{\numberline {A.3}{\ignorespaces Aggregated accuracy measures for Holts model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{129}{figure.A.3}
+\contentsline {figure}{\numberline {A.4}{\ignorespaces Aggregated accuracy measures for HoltWinters model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{130}{figure.A.4}
+\contentsline {figure}{\numberline {A.5}{\ignorespaces Aggregated accuracy measures for ARIMA model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{130}{figure.A.5}
+\contentsline {figure}{\numberline {A.6}{\ignorespaces Aggregated accuracy measures for TBATS model and training data of 2, 3 and 4 weeks, Nord Pool Spot, Hamina}}{131}{figure.A.6}
+\contentsline {figure}{\numberline {A.7}{\ignorespaces Aggregated accuracy measures for Mean model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{132}{figure.A.7}
+\contentsline {figure}{\numberline {A.8}{\ignorespaces Aggregated accuracy measures for SES model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{133}{figure.A.8}
+\contentsline {figure}{\numberline {A.9}{\ignorespaces Aggregated accuracy measures for Holts model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{133}{figure.A.9}
+\contentsline {figure}{\numberline {A.10}{\ignorespaces Aggregated accuracy measures for HoltWinters model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{134}{figure.A.10}
+\contentsline {figure}{\numberline {A.11}{\ignorespaces Aggregated accuracy measures for ARIMA model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{134}{figure.A.11}
+\contentsline {figure}{\numberline {A.12}{\ignorespaces Aggregated accuracy measures for TBATS model and training data of 2, 3 and 4 weeks, Belpex, St.Ghislain}}{135}{figure.A.12}
+\contentsline {figure}{\numberline {A.13}{\ignorespaces Aggregated accuracy measures for Mean model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{136}{figure.A.13}
+\contentsline {figure}{\numberline {A.14}{\ignorespaces Aggregated accuracy measures for SES model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{137}{figure.A.14}
+\contentsline {figure}{\numberline {A.15}{\ignorespaces Aggregated accuracy measures for Holts model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{137}{figure.A.15}
+\contentsline {figure}{\numberline {A.16}{\ignorespaces Aggregated accuracy measures for HoltWinters model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{138}{figure.A.16}
+\contentsline {figure}{\numberline {A.17}{\ignorespaces Aggregated accuracy measures for ARIMA model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{138}{figure.A.17}
+\contentsline {figure}{\numberline {A.18}{\ignorespaces Aggregated accuracy measures for TBATS model and training data of 2, 3 and 4 weeks, ISO NE, Portland}}{139}{figure.A.18}
+\contentsline {figure}{\numberline {A.19}{\ignorespaces Aggregated accuracy measures for Mean model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{140}{figure.A.19}
+\contentsline {figure}{\numberline {A.20}{\ignorespaces Aggregated accuracy measures for SES model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{141}{figure.A.20}
+\contentsline {figure}{\numberline {A.21}{\ignorespaces Aggregated accuracy measures for Holts model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{141}{figure.A.21}
+\contentsline {figure}{\numberline {A.22}{\ignorespaces Aggregated accuracy measures for HoltWinters model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{142}{figure.A.22}
+\contentsline {figure}{\numberline {A.23}{\ignorespaces Aggregated accuracy measures for ARIMA model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{142}{figure.A.23}
+\contentsline {figure}{\numberline {A.24}{\ignorespaces Aggregated accuracy measures for TBATS model and training data of 2, 3 and 4 weeks, PJM, Richmond}}{143}{figure.A.24}
 \addvspace {10pt}
-\contentsline {figure}{\numberline {B.1}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BFD}}{147}{figure.B.1}
-\contentsline {figure}{\numberline {B.2}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCF}}{148}{figure.B.2}
-\contentsline {figure}{\numberline {B.3}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCF\_F}}{149}{figure.B.3}
-\contentsline {figure}{\numberline {B.4}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCF\_IF}}{150}{figure.B.4}
-\contentsline {figure}{\numberline {B.5}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCU\_M}}{151}{figure.B.5}
-\contentsline {figure}{\numberline {B.6}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCU\_MF}}{152}{figure.B.6}
-\contentsline {figure}{\numberline {B.7}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCU\_MIF}}{153}{figure.B.7}
-\contentsline {figure}{\numberline {B.8}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BFD}}{155}{figure.B.8}
-\contentsline {figure}{\numberline {B.9}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCF}}{156}{figure.B.9}
-\contentsline {figure}{\numberline {B.10}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCF\_F}}{157}{figure.B.10}
-\contentsline {figure}{\numberline {B.11}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCF\_IF}}{158}{figure.B.11}
-\contentsline {figure}{\numberline {B.12}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCU\_M}}{159}{figure.B.12}
-\contentsline {figure}{\numberline {B.13}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCU\_MF}}{160}{figure.B.13}
-\contentsline {figure}{\numberline {B.14}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCU\_MIF}}{161}{figure.B.14}
-\contentsline {figure}{\numberline {B.15}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BFD}}{163}{figure.B.15}
-\contentsline {figure}{\numberline {B.16}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCF}}{164}{figure.B.16}
-\contentsline {figure}{\numberline {B.17}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCF\_F}}{165}{figure.B.17}
-\contentsline {figure}{\numberline {B.18}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCF\_IF}}{166}{figure.B.18}
-\contentsline {figure}{\numberline {B.19}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCU\_M}}{167}{figure.B.19}
-\contentsline {figure}{\numberline {B.20}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCU\_MF}}{168}{figure.B.20}
-\contentsline {figure}{\numberline {B.21}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCU\_MIF}}{169}{figure.B.21}
-\contentsline {figure}{\numberline {B.22}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BFD}}{171}{figure.B.22}
-\contentsline {figure}{\numberline {B.23}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCF}}{172}{figure.B.23}
-\contentsline {figure}{\numberline {B.24}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCF\_F}}{173}{figure.B.24}
-\contentsline {figure}{\numberline {B.25}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCF\_IF}}{174}{figure.B.25}
-\contentsline {figure}{\numberline {B.26}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCU\_M}}{175}{figure.B.26}
-\contentsline {figure}{\numberline {B.27}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCU\_MF}}{176}{figure.B.27}
-\contentsline {figure}{\numberline {B.28}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCU\_MIF}}{177}{figure.B.28}
+\contentsline {figure}{\numberline {B.1}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BFD}}{149}{figure.B.1}
+\contentsline {figure}{\numberline {B.2}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCF}}{150}{figure.B.2}
+\contentsline {figure}{\numberline {B.3}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCF\_F}}{151}{figure.B.3}
+\contentsline {figure}{\numberline {B.4}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCF\_IF}}{152}{figure.B.4}
+\contentsline {figure}{\numberline {B.5}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCU\_M}}{153}{figure.B.5}
+\contentsline {figure}{\numberline {B.6}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCU\_MF}}{154}{figure.B.6}
+\contentsline {figure}{\numberline {B.7}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Summer'' and scheduler BCU\_MIF}}{155}{figure.B.7}
+\contentsline {figure}{\numberline {B.8}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BFD}}{157}{figure.B.8}
+\contentsline {figure}{\numberline {B.9}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCF}}{158}{figure.B.9}
+\contentsline {figure}{\numberline {B.10}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCF\_F}}{159}{figure.B.10}
+\contentsline {figure}{\numberline {B.11}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCF\_IF}}{160}{figure.B.11}
+\contentsline {figure}{\numberline {B.12}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCU\_M}}{161}{figure.B.12}
+\contentsline {figure}{\numberline {B.13}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCU\_MF}}{162}{figure.B.13}
+\contentsline {figure}{\numberline {B.14}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``DA Spring'' and scheduler BCU\_MIF}}{163}{figure.B.14}
+\contentsline {figure}{\numberline {B.15}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BFD}}{165}{figure.B.15}
+\contentsline {figure}{\numberline {B.16}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCF}}{166}{figure.B.16}
+\contentsline {figure}{\numberline {B.17}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCF\_F}}{167}{figure.B.17}
+\contentsline {figure}{\numberline {B.18}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCF\_IF}}{168}{figure.B.18}
+\contentsline {figure}{\numberline {B.19}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCU\_M}}{169}{figure.B.19}
+\contentsline {figure}{\numberline {B.20}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCU\_MF}}{170}{figure.B.20}
+\contentsline {figure}{\numberline {B.21}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Summer'' and scheduler BCU\_MIF}}{171}{figure.B.21}
+\contentsline {figure}{\numberline {B.22}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BFD}}{173}{figure.B.22}
+\contentsline {figure}{\numberline {B.23}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCF}}{174}{figure.B.23}
+\contentsline {figure}{\numberline {B.24}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCF\_F}}{175}{figure.B.24}
+\contentsline {figure}{\numberline {B.25}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCF\_IF}}{176}{figure.B.25}
+\contentsline {figure}{\numberline {B.26}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCU\_M}}{177}{figure.B.26}
+\contentsline {figure}{\numberline {B.27}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCU\_MF}}{178}{figure.B.27}
+\contentsline {figure}{\numberline {B.28}{\ignorespaces Energy prices, energy price forecasts and utilization levels per location for simulation ``RT Spring'' and scheduler BCU\_MIF}}{179}{figure.B.28}

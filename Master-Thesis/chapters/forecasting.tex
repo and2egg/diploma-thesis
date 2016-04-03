@@ -891,7 +891,7 @@ evaluateModels(String simulationName, String priceType, Long locationId,
 This method is responsible for conducting a model evaluation by calling the respective same-named function on the \textit{RManager}. This method is called for each simulation run triggered by the \textit{runSimulation} method, i.e.~it is called for different training-, test- and interval periods. In order to distinguish different simulations where each simulation is saved in a folder named after the simulation name the simulationName has been normed (Listing \ref{lst:simulationName_definition}): 
 
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[caption=Definition of the simulation name, label={lst:simulationName_definition}]
+\begin{lstlisting}[caption=Simulation name definition, label={lst:simulationName_definition}]
 Definition of the simulation name: 
 	
 <priceType>_sim_<locationId>_<trainingPeriod>_<testPeriod>_<intervalPeriod>

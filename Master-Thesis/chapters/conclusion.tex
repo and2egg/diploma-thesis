@@ -3,25 +3,48 @@
 
 
 
-ARIMA models showed reasonably good performance, in many cases they showed the best results compared to other evaluated models in this work. 
 
 
 
+Today cloud providers offering services on a large scale exhibit significant energy costs which may result in decreased revenue for provided cloud services. Therefore cost reductions in cloud environments are critical for cloud providers to gain maximum profit and ensure continuous operation of the services. 
+
+In this work the cost efficiency of geo-distributed clouds has been investigated. 
+Through intelligent load scheduling significant cost savings could be achieved in relation to a baseline approach. Thereby the basic tradeoff between cost reductions and prevention of SLA penalties has been considered in simulations. 
+
+Different energy markets and data have been analyzed to evaluate characteristics of different energy price time series that may impact the performance of forecasting methods. Various forecasting models have been introduced that should be compared regarding forecast accuracy on different data sets. 
+
+A large scale forecast evaluation has been conducted to find the best suited model for generating forecasts for both day ahead and real time energy prices. Results show that forecast accuracy varies greatly on different datasets and different forecasting models. However common behavior across different simulations could be detected such as consistently lower prediction errors for certain forecast horizons and model training periods. From the evaluated forecasting models the ARIMA model has been chosen as the best model exhibiting the least forecast errors on a consistent basis. 
+
+The simulation framework comprises a cloud scheduler which is capable of executing different scenarios that integrate different scheduling algorithms for maximum cost savings. 
+The core mechanism of the scheduler consists of an utility function that decides whether a VM should be migrated at the current point in time based on different criteria. Five criteria have been defined to model specific constraints that should be considered in scheduling decisions. 
+These criteria may be extended at any time by constraints useful to a particular cloud environment. 
+
+The utility function has been optimized regarding minimization of SLA penalties and maximum cost reductions across simulations. Results have shown that weights chosen for the different criteria have significant impact on the resulting number of SLA penalties and cost reductions. Therefore different experiments have been conducted to determine the best suited utility weights for the given cloud setting. 
+
+Large scale simulations have been defined and executed on a cloud framework to evaluate the performance of the schedulers on different datasets and cloud conditions. The results of these simulations show that schedulers based on the utility function incorporating energy price forecasts achieve the best results and even outperform schedulers based on ideal forecasts. Through handling the tradeoff between maximum cost reductions and prevention of SLA penalties substantial cost savings could be achieved in relation to a baseline scheduler. 
+
+These results show the validity of our approach in utilizing energy price differences across different energy markets. With appropriately calibrated schedulers maximum energy cost savings can be achieved with geographically dispersed data centers connected to different energy markets. Thus for large scale cloud environments with connections to energy markets significant cost savings are possible using the proposed approach. 
 
 
-In \cite{de2013study} it is shown that the cost of optimal assignment is further reduced by increasing the number of locations with data centers assigned to different energy markets and/or by increasing the variability of energy prices. 
 
-As Qureshi et al.~pointed out in \cite{qureshi2009cutting} most companies would need to renegotiate their energy contracts in order to utilize the proposed approach. Companies renting space in co-location facilities usually pay a fixed price for energy rather than directly taking part in the price offers of wholesale markets. 
 
 
 \section{Future Work}
 
 
+Various optimizations are possible for the introduced cloud framework. The weights of the utility function have been estimated empirically to find the best fit regarding defined cloud settings. However a more strategic approach may be applied to estimate parameters based on maximum likelihood estimations. Furthermore additional criteria may be defined to model constraints in a cloud environment. 
+
 Forecasting models may be improved, or different models may be investigated based on electricity price data. 
+Dynamic Regression (DR) and Transfer function (TF) models have been shown to provide a significantly better performance than ARIMA models \cite{aggarwal2009electricity,weron2005forecasting}. This may be due to the additional regressor variables that are considered in multivariate models (DR and TF) in contrast to models based on a single univariate time series (ARIMA). However the amount of data and computational effort needed for model training increases for multivariate models. Therefore the expected benefit from improved forecasts vs the model generation costs have to be weighted carefully. 
 
-Dynamic Regression (DR) and Transfer function (TF) models have been shown to provide a significantly better performance than ARIMA models \cite{aggarwal2009electricity,weron2005forecasting}. This may be due to the additional regressor variables that are considered in multivariate models (DR and TF) in contrast to models based on a single univariate time series (ARIMA). 
+Cloud parameters could be amended to model different conditions for cloud environments. Parameters include the price of VMs and bandwidth costs that directly impact the resulting cloud costs and migration costs. Additional SLA levels could be introduced which may result in different penalty costs depending on the scenario. Modeling of long running VMs (web servers) show different resource utilizations and impact the resulting cloud costs and penalty costs. 
 
-In general multivariate models seem to provide better results than univariate models as they are able to include more information into the model generation process \cite{weron2005forecasting}. 
+In \cite{de2013study} it is shown that the cost of optimal assignment is further reduced by increasing the number of locations with data centers assigned to different energy markets and/or by increasing the variability of energy prices. Thus the simulation scenarios may be adjusted to include data from additional locations in different time zones to evaluate the effect of time lag on energy cost reductions. 
 
-Demand response programs are a way of further decreasing energy costs as consumers agree on a reduced price in exchange for a reduced load when it is requested by the grid operator\cite{albadi2008summary}. This is certainly interesting for energy elastic distributed systems that are able to shift load to other locations dynamically. 
+As Qureshi et al.~pointed out in \cite{qureshi2009cutting} most companies would need to renegotiate their energy contracts in order to utilize the proposed approach. Companies renting space in co-location facilities usually pay a fixed price for energy rather than directly taking part in the price offers of wholesale markets. However for cloud providers running several distributed data centers the proposed approach provides real opportunities for energy cost reductions compared to a fixed price scheme. 
+
+Demand response programs provide a way of further decreasing energy costs as electricity consumers agree on a reduced price in exchange for reduced load when it is requested by the grid operator\cite{liu2013data}. 
+The program can be incorporated in data center operations as long as the reduction of load requests can be handled without a significant increase of SLA violations. 
+This can be achieved by dynamically shifting load to other locations when requested or by installing local generation facilities that provide additional energy sources on demand. 
+
 
